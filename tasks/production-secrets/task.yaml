@@ -1,0 +1,37 @@
+id: production-secrets
+version: 1
+module: launch
+order: 3
+title: { de: Secrets auch in Produktion schützen, en: Protect secrets in production too }
+summary:
+  de: Sorge dafür, dass geheime Keys nur auf dem Server bleiben und nie im Browser landen.
+  en: Make sure secret keys stay on the server and never reach the browser.
+requiresRepo: true
+appTypes: [web, mobile]
+prerequisites: [go-live, no-secrets]
+check:
+  type: url
+  scope: { paths: ["src/**", "app/**", "pages/**", "lib/**", ".env.example"] }
+  preChecks:
+    - noSecretsInClientBundle: true
+  criteria:
+    - id: no-secret-in-bundle
+      required: true
+      text:
+        de: Im ausgelieferten JavaScript der Live-Seite sind keine geheimen Keys zu finden.
+        en: No secret keys can be found in the JavaScript delivered by the live site.
+    - id: public-prefix
+      required: true
+      text:
+        de: Nur Werte, die öffentlich sein dürfen, nutzen ein Browser-Präfix wie NEXT_PUBLIC_ oder VITE_.
+        en: Only values that may be public use a browser prefix such as NEXT_PUBLIC_ or VITE_.
+    - id: server-side-calls
+      required: true
+      text:
+        de: Aufrufe an Dienste mit geheimen Keys (z. B. KI-APIs, Zahlungsanbieter) laufen über den Server, nicht direkt aus dem Browser.
+        en: Calls to services with secret keys (e.g. AI APIs, payment providers) go through the server, not directly from the browser.
+    - id: explained
+      required: false
+      text:
+        de: In der README oder in docs ist erklärt, welche Variablen öffentlich und welche geheim sind.
+        en: The README or docs explain which variables are public and which are secret.

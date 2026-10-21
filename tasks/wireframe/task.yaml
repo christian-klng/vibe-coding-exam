@@ -1,0 +1,37 @@
+id: wireframe
+version: 1
+module: planning
+order: 4
+title: { de: Ein Wireframe für deine Startseite, en: A wireframe for your home page }
+summary:
+  de: Skizziere grob, was auf der wichtigsten Seite zu sehen ist.
+  en: Sketch roughly what appears on the most important page.
+requiresRepo: true
+appTypes: [web, mobile, landingpage]
+prerequisites: [sitemap]
+check:
+  type: ai
+  scope: { paths: ["docs/wireframe*", "docs/*.md", "docs/**/*.png", "docs/**/*.jpg", "docs/**/*.svg", "docs/**/*.excalidraw"] }
+  preChecks:
+    - fileExists: "docs/wireframe*"
+  criteria:
+    - id: file
+      required: true
+      text:
+        de: Im Ordner docs liegt ein Wireframe (Bild, Excalidraw-Datei oder Text-Skizze), dessen Name mit „wireframe“ beginnt.
+        en: The docs folder contains a wireframe (image, Excalidraw file or text sketch) whose name starts with “wireframe”.
+    - id: elements
+      required: true
+      text:
+        de: Die wichtigsten Bereiche der Seite sind benannt (z. B. Navigation, Hauptinhalt, Aktionen).
+        en: The main areas of the page are labeled (e.g. navigation, main content, actions).
+    - id: linked
+      required: true
+      text:
+        de: Das Wireframe ist in docs/sitemap.md oder in der README verlinkt oder eingebunden.
+        en: The wireframe is linked or embedded in docs/sitemap.md or the README.
+    - id: explanation
+      required: false
+      text:
+        de: Es gibt eine kurze Erklärung, was Nutzer auf dieser Seite als Erstes tun sollen.
+        en: There is a short explanation of what users should do first on this page.

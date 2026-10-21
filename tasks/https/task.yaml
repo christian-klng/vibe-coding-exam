@@ -1,0 +1,38 @@
+id: https
+version: 1
+module: launch
+order: 2
+title: { de: Sicher mit HTTPS, en: Secure with HTTPS }
+summary:
+  de: Stell sicher, dass deine App nur verschlüsselt erreichbar ist.
+  en: Make sure your app is only reachable over an encrypted connection.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [go-live]
+check:
+  type: url
+  scope: { paths: ["README.md"] }
+  preChecks:
+    - httpsValid: true
+    - httpRedirectsToHttps: true
+  criteria:
+    - id: https-url
+      required: true
+      text:
+        de: Die Live-URL in der README beginnt mit https://.
+        en: The live URL in the README starts with https://.
+    - id: valid-certificate
+      required: true
+      text:
+        de: Das SSL/TLS-Zertifikat ist gültig (Browser zeigt keine Warnung).
+        en: The SSL/TLS certificate is valid (the browser shows no warning).
+    - id: redirect
+      required: true
+      text:
+        de: Wer die Adresse mit http:// aufruft, wird automatisch auf https:// weitergeleitet.
+        en: Anyone opening the address with http:// is redirected to https:// automatically.
+    - id: custom-domain
+      required: false
+      text:
+        de: Die App läuft unter einer eigenen Domain, ebenfalls mit gültigem Zertifikat.
+        en: The app runs on its own domain, also with a valid certificate.

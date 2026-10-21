@@ -1,0 +1,42 @@
+id: sitemap
+version: 1
+module: planning
+order: 3
+title: { de: Die Seitenstruktur deiner App, en: Your app's page structure }
+summary:
+  de: Lege fest, welche Seiten es gibt und wie man zwischen ihnen wechselt.
+  en: Decide which pages exist and how users move between them.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [user-stories]
+check:
+  type: ai
+  scope: { paths: ["docs/sitemap.md", "docs/*.md"] }
+  preChecks:
+    - fileExists: "docs/sitemap.md"
+  criteria:
+    - id: file
+      required: true
+      text:
+        de: Es gibt eine Datei docs/sitemap.md.
+        en: There is a file docs/sitemap.md.
+    - id: pages
+      required: true
+      text:
+        de: Alle Seiten bzw. Bildschirme der App sind aufgelistet.
+        en: All pages or screens of the app are listed.
+    - id: hierarchy
+      required: true
+      text:
+        de: Es ist erkennbar, wie die Seiten zusammenhängen (Hierarchie oder Navigation).
+        en: It is clear how the pages are connected (hierarchy or navigation).
+    - id: purpose
+      required: true
+      text:
+        de: Zu jeder Seite steht kurz, wofür sie da ist.
+        en: Each page has a short note on its purpose.
+    - id: diagram
+      required: false
+      text:
+        de: Die Struktur ist zusätzlich als Diagramm dargestellt (z. B. Mermaid).
+        en: The structure is also shown as a diagram (e.g. Mermaid).

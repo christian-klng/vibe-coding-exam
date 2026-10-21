@@ -1,0 +1,42 @@
+id: claude-md
+version: 1
+module: build
+order: 1
+title: { de: "Gib der KI ein Gedächtnis: CLAUDE.md", en: "Give the AI a memory: CLAUDE.md" }
+summary:
+  de: Halte Regeln und Wissen über dein Projekt fest, die die KI bei jeder Sitzung lesen soll.
+  en: Record rules and knowledge about your project that the AI should read in every session.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [tech-stack]
+check:
+  type: ai
+  scope: { paths: ["CLAUDE.md", "AGENTS.md", ".claude/CLAUDE.md"] }
+  preChecks:
+    - fileExists: "{CLAUDE,AGENTS}.md"
+  criteria:
+    - id: file
+      required: true
+      text:
+        de: Im Hauptordner liegt eine CLAUDE.md (oder AGENTS.md).
+        en: The root folder contains a CLAUDE.md (or AGENTS.md).
+    - id: project
+      required: true
+      text:
+        de: Sie beschreibt kurz, was das Projekt ist, und verweist auf die Dokumente in docs.
+        en: It briefly describes the project and points to the documents in docs.
+    - id: stack-commands
+      required: true
+      text:
+        de: Sie nennt den Tech-Stack und die wichtigsten Befehle (z. B. starten, testen).
+        en: It names the tech stack and the most important commands (e.g. run, test).
+    - id: rules
+      required: true
+      text:
+        de: Sie enthält mindestens drei konkrete Arbeitsregeln für die KI (z. B. „keine Secrets in den Code schreiben“).
+        en: It contains at least three concrete working rules for the AI (e.g. “never write secrets into the code”).
+    - id: concise
+      required: false
+      text:
+        de: Sie ist knapp gehalten (keine kopierten Romane, keine veralteten Angaben).
+        en: It is kept concise (no copied essays, no outdated information).

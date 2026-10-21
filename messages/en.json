@@ -17,7 +17,31 @@
   "Tasks": {
     "title": "Your tasks",
     "welcome": "Welcome, {name}!",
-    "comingSoon": "Your task list will appear here soon."
+    "intro": "Work through the tasks in order. We check many of them directly in your GitHub repository.",
+    "progress": "{done} of {total} tasks done",
+    "module": "Module {number}",
+    "status": {
+      "open": "Open",
+      "checking": "Being checked",
+      "passed": "Passed",
+      "failed": "Not passed"
+    },
+    "requiresRepo": "GitHub repo required",
+    "checkType": {
+      "ai": "AI check",
+      "auto": "Automatic check",
+      "url": "Live URL check",
+      "quiz": "Quiz",
+      "self": "Self-confirmation"
+    },
+    "back": "Back to overview",
+    "criteria": "Criteria",
+    "required": "Required",
+    "optional": "Optional",
+    "criteriaHint": "The task is passed when all required criteria are met.",
+    "prerequisites": "Best done first",
+    "checkNow": "Check now",
+    "checkComingSoon": "The automatic check is still being built. You can already start working on the task."
   },
   "Auth": {
     "name": "Name",

@@ -1,0 +1,42 @@
+id: tech-stack
+version: 1
+module: decisions
+order: 5
+title: { de: Wähle deinen Tech-Stack bewusst, en: Choose your tech stack deliberately }
+summary:
+  de: Halte fest, mit welchen Technologien du baust – und warum.
+  en: Write down which technologies you build with – and why.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [app-idea]
+check:
+  type: ai
+  scope: { paths: ["docs/tech-stack.md", "README.md", "docs/*.md", "package.json"] }
+  preChecks:
+    - fileExists: "docs/tech-stack.md"
+  criteria:
+    - id: file
+      required: true
+      text:
+        de: Es gibt eine Datei docs/tech-stack.md.
+        en: There is a file docs/tech-stack.md.
+    - id: layers
+      required: true
+      text:
+        de: Frontend, Datenspeicherung (oder „keine Datenbank“) und Hosting sind genannt.
+        en: Frontend, data storage (or “no database”) and hosting are named.
+    - id: reasons
+      required: true
+      text:
+        de: Jede Wahl ist kurz begründet.
+        en: Each choice is briefly justified.
+    - id: matches-code
+      required: true
+      text:
+        de: Der beschriebene Stack passt zu dem, was im Repo tatsächlich verwendet wird.
+        en: The described stack matches what the repository actually uses.
+    - id: alternatives
+      required: false
+      text:
+        de: Mindestens eine verworfene Alternative ist genannt.
+        en: At least one rejected alternative is mentioned.

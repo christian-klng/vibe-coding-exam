@@ -1,0 +1,40 @@
+id: row-level-security
+version: 1
+module: pitfalls
+order: 3
+title: { de: Jeder sieht nur seine eigenen Daten, en: Everyone sees only their own data }
+summary:
+  de: Sorge mit Zugriffsregeln wie Row-Level Security dafür, dass Nutzer nicht an fremde Daten kommen.
+  en: Use access rules such as row-level security so users cannot reach other people's data.
+requiresRepo: true
+appTypes: [web, mobile, api]
+prerequisites: [data-model]
+check:
+  type: ai
+  scope: { paths: ["supabase/migrations/**", "supabase/**/*.sql", "**/*.sql", "prisma/schema.prisma", "src/**/*.ts", "docs/datenmodell.md", "docs/data-model.md"] }
+  criteria:
+    - id: user-reference
+      required: true
+      text:
+        de: Tabellen mit persönlichen Daten haben ein Feld, das auf den besitzenden Nutzer verweist (z. B. user_id).
+        en: Tables with personal data have a field that references the owning user (e.g. user_id).
+    - id: rules-in-repo
+      required: true
+      text:
+        de: Die Zugriffsregeln liegen als Code im Repo (z. B. RLS-Policies in SQL-Migrationen oder Prüfungen im Server-Code).
+        en: The access rules are stored as code in the repo (e.g. RLS policies in SQL migrations or checks in server code).
+    - id: rls-enabled
+      required: true
+      text:
+        de: Für jede Tabelle mit persönlichen Daten ist Row-Level Security aktiviert bzw. jeder Zugriff serverseitig auf den angemeldeten Nutzer beschränkt.
+        en: Row-level security is enabled for every table with personal data, or every access is restricted server-side to the signed-in user.
+    - id: no-open-policies
+      required: true
+      text:
+        de: Es gibt keine Regeln, die allen uneingeschränkten Zugriff erlauben (z. B. „using (true)“ für persönliche Daten).
+        en: There are no rules granting everyone unrestricted access (e.g. “using (true)” on personal data).
+    - id: explained
+      required: false
+      text:
+        de: Im Datenmodell ist kurz beschrieben, wer welche Daten lesen und ändern darf.
+        en: The data model briefly describes who may read and change which data.

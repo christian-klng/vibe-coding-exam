@@ -1,0 +1,36 @@
+id: commit-messages
+version: 1
+module: decisions
+order: 2
+title: { de: Commits mit Aussage, en: Meaningful commits }
+summary:
+  de: Speichere deine Arbeit in kleinen Schritten mit verständlichen Beschreibungen.
+  en: Save your work in small steps with clear descriptions.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [github-repo]
+check:
+  type: ai
+  preChecks:
+    - minCommits: 5
+  criteria:
+    - id: count
+      required: true
+      text:
+        de: Das Repository hat mindestens fünf Commits.
+        en: The repository has at least five commits.
+    - id: descriptive
+      required: true
+      text:
+        de: Die letzten fünf Commit-Messages beschreiben verständlich, was geändert wurde (nicht nur „update“ oder „fix“).
+        en: The last five commit messages clearly describe what changed (not just “update” or “fix”).
+    - id: small-steps
+      required: true
+      text:
+        de: Die Commits sind kleine, zusammenhängende Schritte statt einer einzigen riesigen Änderung.
+        en: The commits are small, coherent steps instead of one huge change.
+    - id: imperative
+      required: false
+      text:
+        de: Die Messages folgen einem einheitlichen Stil (z. B. „Add login page“ oder „Login-Seite hinzufügen“).
+        en: The messages follow a consistent style (e.g. “Add login page”).

@@ -36,9 +36,25 @@ Zurücksetzen des Passworts erscheinen dann im Terminal, in dem `npm run dev` l�
 
 | Befehl | Zweck |
 |---|---|
-| `npm run auth:generate` | Auth-Tabellen in `src/lib/db/schema.ts` neu erzeugen (nach Änderungen an `src/lib/auth.ts`) |
+| `npm run auth:generate` | Auth-Tabellen in `src/lib/db/auth-schema.ts` neu erzeugen (nach Änderungen an `src/lib/auth.ts`) |
 | `npm run db:generate` | Migration aus Schema-Änderungen erzeugen (landet in `drizzle/`) |
 | `npm run db:migrate` | Offene Migrationen einspielen (auf Railway automatisch vor jedem Deployment) |
+
+## Aufgaben
+
+Die Aufgaben liegen als Dateien im Ordner `tasks/` – ein Ordner pro Aufgabe:
+
+```
+tasks/
+├─ modules.yaml          # Module (Gruppen auf der Startseite) und ihre Reihenfolge
+└─ readme/
+   ├─ task.yaml          # Metadaten, Prüfart und Kriterien (Texte auf Deutsch und Englisch)
+   ├─ de.md              # Erklärtext auf Deutsch
+   └─ en.md              # Erklärtext auf Englisch
+```
+
+Nach Änderungen prüft `npm run tasks:check`, ob alle Aufgaben gültig sind (Schema, beide Sprachen,
+Verweise auf Module und Voraussetzungen).
 
 ## Mehrsprachigkeit
 

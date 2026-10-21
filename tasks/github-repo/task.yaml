@@ -1,0 +1,26 @@
+id: github-repo
+version: 1
+module: start
+order: 1
+title: { de: Dein erstes GitHub-Repository, en: Your first GitHub repository }
+summary:
+  de: Lege ein öffentliches Repository an und trage seine Adresse in der App ein.
+  en: Create a public repository and enter its address in the app.
+requiresRepo: true
+appTypes: [all]
+check:
+  type: auto
+  preChecks:
+    - repoIsPublic: true
+    - minCommits: 1
+  criteria:
+    - id: public
+      required: true
+      text:
+        de: Das Repository ist öffentlich erreichbar.
+        en: The repository is publicly accessible.
+    - id: first-commit
+      required: true
+      text:
+        de: Das Repository enthält mindestens einen Commit.
+        en: The repository contains at least one commit.

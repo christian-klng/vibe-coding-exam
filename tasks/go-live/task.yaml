@@ -1,0 +1,33 @@
+id: go-live
+version: 1
+module: launch
+order: 1
+title: { de: Deine App ist live, en: Your app is live }
+summary:
+  de: Veröffentliche deine App bei einem Hosting-Anbieter und verlinke sie in der README.
+  en: Deploy your app with a hosting provider and link it in the README.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [no-secrets]
+check:
+  type: url
+  scope: { paths: ["README.md"] }
+  preChecks:
+    - readmeHasUrl: true
+    - urlReachable: true
+  criteria:
+    - id: url-in-readme
+      required: true
+      text:
+        de: In der README steht die öffentliche Adresse (URL) deiner App.
+        en: The README contains the public address (URL) of your app.
+    - id: reachable
+      required: true
+      text:
+        de: Die Adresse ist erreichbar und liefert eine Seite deiner App (keine Fehlerseite).
+        en: The address is reachable and returns a page of your app (not an error page).
+    - id: hosting-documented
+      required: false
+      text:
+        de: In der README steht, wo die App gehostet ist und wie ein neues Deployment ausgelöst wird.
+        en: The README states where the app is hosted and how a new deployment is triggered.

@@ -1,0 +1,35 @@
+id: first-feature
+version: 1
+module: build
+order: 3
+title: { de: Dein erstes Feature von Anfang bis Ende, en: Your first feature end to end }
+summary:
+  de: Setze eine User Story vollständig um – so, dass sie wirklich benutzbar ist.
+  en: Implement one user story completely – so that it is actually usable.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [plan-first]
+check:
+  type: ai
+  scope: { paths: ["docs/user-stories.md", "docs/plans/*.md", "README.md"] }
+  criteria:
+    - id: story-marked
+      required: true
+      text:
+        de: In docs/user-stories.md ist mindestens eine Story als erledigt markiert (z. B. mit ✅ oder [x]).
+        en: At least one story in docs/user-stories.md is marked as done (e.g. with ✅ or [x]).
+    - id: code-matches
+      required: true
+      text:
+        de: Im Code ist die markierte Story erkennbar umgesetzt (Oberfläche und, falls nötig, Datenspeicherung).
+        en: The marked story is recognizably implemented in the code (interface and, if needed, data storage).
+    - id: done-criteria
+      required: true
+      text:
+        de: Zur Story ist beschrieben, woran man erkennt, dass sie fertig ist (Definition of Done).
+        en: The story has a description of how to tell it is finished (definition of done).
+    - id: readme-updated
+      required: false
+      text:
+        de: Die README erwähnt das neue Feature.
+        en: The README mentions the new feature.

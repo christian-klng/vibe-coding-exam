@@ -1,0 +1,43 @@
+id: no-secrets
+version: 1
+module: pitfalls
+order: 2
+title: { de: Keine API-Keys im Code, en: No API keys in the code }
+summary:
+  de: Lagere Passwörter und Keys in Umgebungsvariablen aus – und stell sicher, dass keine im Repo stehen.
+  en: Move passwords and keys into environment variables – and make sure none are in the repo.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [gitignore]
+check:
+  type: ai
+  scope: { paths: [".env.example", ".env.sample", "README.md"] }
+  preChecks:
+    - noSecretsInFiles: true
+    - noSecretsInHistory: true
+  criteria:
+    - id: no-secrets-files
+      required: true
+      text:
+        de: In den aktuellen Dateien des Repos stehen keine API-Keys, Passwörter oder Tokens.
+        en: The current files in the repo contain no API keys, passwords or tokens.
+    - id: no-secrets-history
+      required: true
+      text:
+        de: Auch in der Commit-Historie finden sich keine Secrets (gelöschte Keys bleiben dort sichtbar!).
+        en: The commit history contains no secrets either (deleted keys remain visible there!).
+    - id: env-example
+      required: true
+      text:
+        de: Es gibt eine .env.example, die alle benötigten Variablen mit Platzhaltern statt echten Werten auflistet.
+        en: There is a .env.example listing all required variables with placeholders instead of real values.
+    - id: env-usage
+      required: true
+      text:
+        de: Der Code liest Keys aus Umgebungsvariablen (z. B. process.env.…) statt sie direkt hineinzuschreiben.
+        en: The code reads keys from environment variables (e.g. process.env.…) instead of hard-coding them.
+    - id: documented
+      required: false
+      text:
+        de: Die README erklärt, wie man die Umgebungsvariablen einrichtet.
+        en: The README explains how to set up the environment variables.

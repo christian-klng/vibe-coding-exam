@@ -17,7 +17,31 @@
   "Tasks": {
     "title": "Deine Aufgaben",
     "welcome": "Willkommen, {name}!",
-    "comingSoon": "Hier erscheint bald deine Aufgabenliste."
+    "intro": "Arbeite die Aufgaben der Reihe nach durch. Viele davon prüfen wir direkt in deinem GitHub-Repository.",
+    "progress": "{done} von {total} Aufgaben erledigt",
+    "module": "Modul {number}",
+    "status": {
+      "open": "Offen",
+      "checking": "Wird geprüft",
+      "passed": "Bestanden",
+      "failed": "Nicht bestanden"
+    },
+    "requiresRepo": "GitHub-Repo nötig",
+    "checkType": {
+      "ai": "KI-Prüfung",
+      "auto": "Automatische Prüfung",
+      "url": "Prüfung der Live-URL",
+      "quiz": "Quiz",
+      "self": "Selbstbestätigung"
+    },
+    "back": "Zurück zur Übersicht",
+    "criteria": "Prüfkriterien",
+    "required": "Pflicht",
+    "optional": "Optional",
+    "criteriaHint": "Bestanden ist die Aufgabe, wenn alle Pflicht-Kriterien erfüllt sind.",
+    "prerequisites": "Am besten vorher erledigen",
+    "checkNow": "Jetzt prüfen",
+    "checkComingSoon": "Die automatische Prüfung ist noch in Arbeit. Du kannst die Aufgabe aber schon bearbeiten."
   },
   "Auth": {
     "name": "Name",

@@ -1,0 +1,42 @@
+id: user-stories
+version: 1
+module: planning
+order: 2
+title: { de: User Stories schreiben, en: Write user stories }
+summary:
+  de: Beschreibe fünf Dinge, die Nutzer mit deiner App erreichen wollen.
+  en: Describe five things users want to achieve with your app.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [app-idea]
+check:
+  type: ai
+  scope: { paths: ["docs/user-stories.md", "docs/*.md"] }
+  preChecks:
+    - fileExists: "docs/user-stories.md"
+  criteria:
+    - id: file
+      required: true
+      text:
+        de: Es gibt eine Datei docs/user-stories.md.
+        en: There is a file docs/user-stories.md.
+    - id: count
+      required: true
+      text:
+        de: Die Datei enthält mindestens fünf User Stories.
+        en: The file contains at least five user stories.
+    - id: format
+      required: true
+      text:
+        de: "Jede Story folgt dem Muster „Als … möchte ich …, damit …“ (oder „As a … I want … so that …“)."
+        en: "Each story follows the pattern “As a … I want … so that …” (or the German equivalent)."
+    - id: user-view
+      required: true
+      text:
+        de: Die Stories beschreiben Ziele aus Sicht der Nutzer, nicht technische Umsetzung.
+        en: The stories describe goals from the user's point of view, not technical implementation.
+    - id: priority
+      required: false
+      text:
+        de: Die Stories sind priorisiert (z. B. „Muss“, „Soll“, „Kann“).
+        en: The stories are prioritized (e.g. “must”, “should”, “could”).

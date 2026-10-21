@@ -156,6 +156,7 @@ Ein Test stellt sicher, dass jede Aufgabe beide Sprachdateien und alle Kriterien
 
 **Prüfungsarten**
 - `ai` – Agent liest Repo und bewertet Kriterien (Kern der App)
+- `url` – Prüfung der Live-URL aus der README (erreichbar, HTTPS, Zertifikat, keine Secrets im ausgelieferten JavaScript); braucht ein zusätzliches Agent-Tool
 - `auto` – rein deterministisch (z. B. „Datei `.gitignore` existiert und enthält `node_modules`")
 - `quiz` – Verständnisfragen in der App, ohne Repo
 - `self` – Selbstbestätigung (für Dinge, die nicht prüfbar sind)
@@ -303,7 +304,7 @@ vibe-coding-exam/
 | M6 | Ausbau nach dem MVP | GitHub-Konto verknüpfen (Repo-Besitz belegen), Kohorten, Lehrenden-Ansicht mit Fortschritt und Prüfläufen |
 | M7 | Qualität | Eval-Set ausbauen, Monitoring von Dauer, Fehlerquote und Warteschlange |
 
-**Stand 21.10.2026:** M0 lokal fertig, Railway-Deployment steht wegen einer Railway-Störung noch aus. M1 fertig.
+**Stand 21.10.2026:** M0 lokal fertig, Railway-Deployment steht wegen einer Railway-Störung noch aus. M1 und M2 fertig (19 Aufgaben in 6 Modulen unter `tasks/`; Prüf-Button folgt mit M4).
 
 M4 ist das riskanteste Stück und sollte früh als Prototyp (z. B. Kommandozeilen-Skript gegen ein
 Test-Repo) laufen, bevor die UI fertig ist.

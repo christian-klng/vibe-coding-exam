@@ -1,0 +1,36 @@
+id: branch-pull-request
+version: 1
+module: decisions
+order: 3
+title: { de: Arbeiten mit Branch und Pull Request, en: Working with a branch and pull request }
+summary:
+  de: Entwickle eine Änderung auf einem eigenen Branch und führe sie per Pull Request zusammen.
+  en: Build a change on its own branch and merge it via a pull request.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [commit-messages]
+check:
+  type: ai
+  preChecks:
+    - mergedPullRequest: true
+  criteria:
+    - id: merged-pr
+      required: true
+      text:
+        de: Es gibt mindestens einen Pull Request, der in den Haupt-Branch gemergt wurde.
+        en: There is at least one pull request that was merged into the main branch.
+    - id: branch-name
+      required: true
+      text:
+        de: Der Branch des Pull Requests hat einen sprechenden Namen (z. B. feature/login).
+        en: The pull request's branch has a descriptive name (e.g. feature/login).
+    - id: description
+      required: true
+      text:
+        de: Der Pull Request hat eine Beschreibung, was geändert wurde und warum.
+        en: The pull request has a description of what changed and why.
+    - id: focused
+      required: false
+      text:
+        de: Der Pull Request enthält eine einzelne, abgegrenzte Änderung.
+        en: The pull request contains a single, focused change.

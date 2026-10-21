@@ -1,0 +1,42 @@
+id: app-idea
+version: 1
+module: planning
+order: 1
+title: { de: Beschreibe deine App in einem Satz, en: Describe your app in one sentence }
+summary:
+  de: Halte fest, welches Problem deine App für wen löst.
+  en: Write down which problem your app solves and for whom.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [github-repo]
+check:
+  type: ai
+  scope: { paths: ["docs/idee.md", "docs/idea.md", "docs/*.md"] }
+  preChecks:
+    - fileExists: "docs/{idee,idea}.md"
+  criteria:
+    - id: file
+      required: true
+      text:
+        de: Es gibt eine Datei docs/idee.md (oder docs/idea.md).
+        en: There is a file docs/idea.md (or docs/idee.md).
+    - id: problem
+      required: true
+      text:
+        de: Das Problem, das die App löst, ist konkret beschrieben.
+        en: The problem the app solves is described concretely.
+    - id: audience
+      required: true
+      text:
+        de: Die Zielgruppe ist genannt (wer genau nutzt die App?).
+        en: The target audience is named (who exactly uses the app?).
+    - id: one-sentence
+      required: true
+      text:
+        de: Es gibt einen einzelnen Satz, der die App auf den Punkt bringt.
+        en: There is a single sentence that sums up the app.
+    - id: not-goals
+      required: false
+      text:
+        de: Es ist festgehalten, was die App bewusst nicht kann.
+        en: It states what the app deliberately does not do.

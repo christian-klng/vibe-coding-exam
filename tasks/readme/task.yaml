@@ -1,0 +1,42 @@
+id: readme
+version: 1
+module: decisions
+order: 1
+title: { de: Schreibe eine README, en: Write a README }
+summary:
+  de: Erkläre neuen Besuchern deines Repos, was deine App ist und wie man sie startet.
+  en: Explain to new visitors of your repo what your app is and how to run it.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [app-idea]
+check:
+  type: ai
+  scope: { paths: ["README.md", "README*", "readme*"] }
+  preChecks:
+    - fileExists: "README*"
+  criteria:
+    - id: location
+      required: true
+      text:
+        de: Die README liegt im Hauptordner des Repos.
+        en: The README is in the root folder of the repository.
+    - id: what
+      required: true
+      text:
+        de: Erklärt in den ersten Absätzen, was die App ist und für wen sie gedacht ist.
+        en: Explains in the first paragraphs what the app is and who it is for.
+    - id: features
+      required: true
+      text:
+        de: Beschreibt die wichtigsten Funktionen.
+        en: Describes the main features.
+    - id: setup
+      required: true
+      text:
+        de: Enthält eine Anleitung, wie man das Projekt lokal startet.
+        en: Contains instructions for running the project locally.
+    - id: structure
+      required: false
+      text:
+        de: Nutzt Markdown-Überschriften zur Gliederung.
+        en: Uses Markdown headings for structure.

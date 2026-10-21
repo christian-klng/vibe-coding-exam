@@ -1,0 +1,42 @@
+id: data-model
+version: 1
+module: decisions
+order: 4
+title: { de: Dein Datenmodell, en: Your data model }
+summary:
+  de: Lege fest, welche Daten deine App speichert und wie sie zusammenhängen.
+  en: Decide which data your app stores and how it is connected.
+requiresRepo: true
+appTypes: [web, mobile, api]
+prerequisites: [user-stories]
+check:
+  type: ai
+  scope: { paths: ["docs/datenmodell.md", "docs/data-model.md", "docs/*.md"] }
+  preChecks:
+    - fileExists: "docs/{datenmodell,data-model}.md"
+  criteria:
+    - id: file
+      required: true
+      text:
+        de: Es gibt eine Datei docs/datenmodell.md (oder docs/data-model.md).
+        en: There is a file docs/data-model.md (or docs/datenmodell.md).
+    - id: entities
+      required: true
+      text:
+        de: Alle wichtigen Dinge (Tabellen), die die App speichert, sind aufgeführt.
+        en: All important things (tables) the app stores are listed.
+    - id: fields
+      required: true
+      text:
+        de: Zu jeder Tabelle sind die Felder mit ihrer Art angegeben (z. B. Text, Zahl, Datum).
+        en: Each table lists its fields with their type (e.g. text, number, date).
+    - id: relations
+      required: true
+      text:
+        de: Die Beziehungen zwischen den Tabellen sind beschrieben (z. B. „ein Nutzer hat viele Aufgaben“).
+        en: The relationships between tables are described (e.g. “one user has many tasks”).
+    - id: diagram
+      required: false
+      text:
+        de: Das Modell ist zusätzlich als ER-Diagramm dargestellt (z. B. Mermaid erDiagram).
+        en: The model is also shown as an ER diagram (e.g. Mermaid erDiagram).

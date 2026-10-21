@@ -1,0 +1,43 @@
+id: gitignore
+version: 1
+module: pitfalls
+order: 1
+title: { de: "Was gehört nicht ins Repo? (.gitignore)", en: "What doesn't belong in the repo? (.gitignore)" }
+summary:
+  de: Schließe Abhängigkeiten, Build-Ordner, Secrets und persönliche Einstellungen aus deinem Repo aus.
+  en: Keep dependencies, build folders, secrets and personal settings out of your repo.
+requiresRepo: true
+appTypes: [all]
+prerequisites: [github-repo]
+check:
+  type: ai
+  scope: { paths: [".gitignore", ".claude/**", "CLAUDE.md"] }
+  preChecks:
+    - fileExists: ".gitignore"
+    - notTracked: ["node_modules/**", ".env", ".env.local", ".claude/settings.local.json"]
+  criteria:
+    - id: exists
+      required: true
+      text:
+        de: Im Hauptordner liegt eine .gitignore-Datei.
+        en: The root folder contains a .gitignore file.
+    - id: dependencies
+      required: true
+      text:
+        de: Abhängigkeiten und Build-Ergebnisse sind ausgeschlossen (z. B. node_modules, .next, dist) und liegen nicht im Repo.
+        en: Dependencies and build output are excluded (e.g. node_modules, .next, dist) and are not in the repo.
+    - id: env-files
+      required: true
+      text:
+        de: .env-Dateien sind ausgeschlossen und liegen nicht im Repo.
+        en: .env files are excluded and are not in the repo.
+    - id: claude-local
+      required: true
+      text:
+        de: "Von Claude Code liegen nur geteilte Dateien ohne sensible Daten im Repo (z. B. CLAUDE.md, .claude/settings.json); persönliche Dateien wie .claude/settings.local.json sind ausgeschlossen."
+        en: "Only shared Claude Code files without sensitive data are in the repo (e.g. CLAUDE.md, .claude/settings.json); personal files such as .claude/settings.local.json are excluded."
+    - id: os-files
+      required: false
+      text:
+        de: Systemdateien wie .DS_Store sind ausgeschlossen.
+        en: System files such as .DS_Store are excluded.

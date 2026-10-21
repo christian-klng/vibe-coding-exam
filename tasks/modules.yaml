@@ -1,0 +1,37 @@
+# Modules group the tasks on the start page. Order defines the sequence.
+- id: start
+  order: 0
+  title: { de: Startklar, en: Getting started }
+  description:
+    de: Lege dein GitHub-Repository an – hier entsteht ab jetzt dein Projekt.
+    en: Create your GitHub repository – this is where your project lives from now on.
+- id: planning
+  order: 1
+  title: { de: Planen, bevor gebaut wird, en: Plan before you build }
+  description:
+    de: Wer nutzt deine App, was soll sie können und wie ist sie aufgebaut? Gute KI-Ergebnisse beginnen mit einem klaren Plan.
+    en: Who uses your app, what should it do and how is it structured? Good AI results start with a clear plan.
+- id: decisions
+  order: 2
+  title: { de: Technische Entscheidungen am Anfang, en: Technical decisions up front }
+  description:
+    de: Versionskontrolle, Datenmodell und Tech-Stack – Entscheidungen, die später schwer zu ändern sind.
+    en: Version control, data model and tech stack – decisions that are hard to change later.
+- id: build
+  order: 3
+  title: { de: Bauen mit Claude Code, en: Building with Claude Code }
+  description:
+    de: Gib der KI Kontext, lass sie planen und setze dein erstes Feature vollständig um.
+    en: Give the AI context, let it plan and build your first complete feature.
+- id: pitfalls
+  order: 4
+  title: { de: Klassische Vibe-Coding-Fehler vermeiden, en: Avoid classic vibe-coding mistakes }
+  description:
+    de: Offene API-Keys, fehlende Zugriffsregeln, zu viel im Repo – so schützt du deine App und deine Nutzer.
+    en: Exposed API keys, missing access rules, too much in the repo – how to protect your app and your users.
+- id: launch
+  order: 5
+  title: { de: Veröffentlichen und absichern, en: Launch and secure }
+  description:
+    de: Bring deine App ins Internet – erreichbar, verschlüsselt und ohne offene Geheimnisse.
+    en: Put your app on the internet – reachable, encrypted and without exposed secrets.
