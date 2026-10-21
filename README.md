@@ -10,6 +10,8 @@ Architektur und Meilensteine: siehe [PLAN.md](PLAN.md).
 
 - Next.js (App Router, TypeScript), Tailwind CSS
 - PostgreSQL mit Drizzle ORM
+- Registrierung und Login mit Better Auth (E-Mail + Passwort, E-Mail-Bestätigung)
+- Deutsch und Englisch mit next-intl, UI-Bausteine von shadcn/ui
 - KI-Prüfung über das Vercel AI SDK gegen ein selbst gehostetes Modell (Qwen 3.6 auf vLLM, OpenAI-kompatible API)
 - Hosting auf Railway
 
@@ -19,11 +21,30 @@ Voraussetzung: Node.js 22 oder neuer.
 
 ```bash
 npm install
-cp .env.example .env.local   # Werte eintragen
+cp .env.example .env.local   # Werte eintragen, BETTER_AUTH_SECRET erzeugen
+docker compose up -d         # lokale Postgres auf Port 54335
+npm run db:migrate           # Tabellen anlegen
 npm run dev
 ```
 
 Die App läuft dann auf http://localhost:3000, der Healthcheck auf http://localhost:3000/api/health.
+
+Ohne `RESEND_API_KEY` werden E-Mails nicht verschickt. Die Links zum Bestätigen der E-Mail-Adresse und zum
+Zurücksetzen des Passworts erscheinen dann im Terminal, in dem `npm run dev` läuft (Zeilen mit `[email]`).
+
+## Datenbank
+
+| Befehl | Zweck |
+|---|---|
+| `npm run auth:generate` | Auth-Tabellen in `src/lib/db/schema.ts` neu erzeugen (nach Änderungen an `src/lib/auth.ts`) |
+| `npm run db:generate` | Migration aus Schema-Änderungen erzeugen (landet in `drizzle/`) |
+| `npm run db:migrate` | Offene Migrationen einspielen (auf Railway automatisch vor jedem Deployment) |
+
+## Mehrsprachigkeit
+
+Die App ist auf Deutsch und Englisch verfügbar (next-intl, ohne Sprache in der URL). Texte stehen in
+`messages/de.json` und `messages/en.json`; beide Dateien müssen dieselben Schlüssel haben. Die Sprache kommt aus
+dem Cookie `locale` (Sprachumschalter oder beim Login aus dem Profil), sonst aus der Browsersprache.
 
 ## LLM-Server testen
 
@@ -40,6 +61,10 @@ Damit Tool-Calling funktioniert, muss vLLM mit `--enable-auto-tool-choice` und d
 | Variable | Zweck |
 |---|---|
 | `DATABASE_URL` | Postgres-Verbindung |
+| `BETTER_AUTH_SECRET` | Geheimer Schlüssel für Sessions (`openssl rand -base64 32`) |
+| `BETTER_AUTH_URL` | Öffentliche URL der App, z. B. `http://localhost:3000` |
+| `RESEND_API_KEY` | Optional: Versand von E-Mails über Resend |
+| `EMAIL_FROM` | Absender der E-Mails |
 | `LLM_BASE_URL` | Basis-URL des vLLM-Servers inkl. `/v1` |
 | `LLM_MODEL` | Modellname, wie ihn der Server unter `/v1/models` meldet |
 | `LLM_API_KEY` | API-Key, mit dem der vLLM-Server abgesichert ist |

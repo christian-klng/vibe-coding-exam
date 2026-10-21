@@ -1,0 +1,87 @@
+{
+  "Metadata": {
+    "description": "Lerne Vibe Coding mit echten Aufgaben, geprüft an deinem GitHub-Repository."
+  },
+  "Header": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "language": "Sprache"
+  },
+  "Home": {
+    "title": "Vibe Coding lernen – mit echten Aufgaben",
+    "intro": "Lerne die Grundlagen der Software-Entwicklung mit KI. Schritt für Schritt, geprüft an deinem eigenen GitHub-Repository.",
+    "ctaRegister": "Kostenlos registrieren",
+    "ctaLogin": "Ich habe schon ein Konto"
+  },
+  "Tasks": {
+    "title": "Deine Aufgaben",
+    "welcome": "Willkommen, {name}!",
+    "comingSoon": "Hier erscheint bald deine Aufgabenliste."
+  },
+  "Auth": {
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 8 Zeichen",
+    "newPassword": "Neues Passwort",
+    "register": {
+      "title": "Konto erstellen",
+      "description": "Registriere dich, um mit den Aufgaben zu starten.",
+      "submit": "Registrieren",
+      "haveAccount": "Schon registriert?",
+      "toLogin": "Zur Anmeldung"
+    },
+    "login": {
+      "title": "Anmelden",
+      "description": "Melde dich mit deiner E-Mail-Adresse an.",
+      "submit": "Anmelden",
+      "noAccount": "Noch kein Konto?",
+      "toRegister": "Jetzt registrieren",
+      "forgot": "Passwort vergessen?"
+    },
+    "checkEmail": {
+      "title": "Bitte bestätige deine E-Mail-Adresse",
+      "description": "Wir haben dir einen Link an {email} geschickt. Klicke darauf, um dein Konto zu aktivieren.",
+      "resend": "Link erneut senden",
+      "resent": "Wir haben dir einen neuen Link geschickt."
+    },
+    "forgot": {
+      "title": "Passwort vergessen",
+      "description": "Gib deine E-Mail-Adresse ein. Wenn ein Konto existiert, schicken wir dir einen Link zum Zurücksetzen.",
+      "submit": "Link anfordern",
+      "sent": "Falls ein Konto mit dieser Adresse existiert, ist der Link unterwegs.",
+      "back": "Zurück zur Anmeldung"
+    },
+    "reset": {
+      "title": "Neues Passwort festlegen",
+      "submit": "Passwort speichern",
+      "done": "Dein Passwort wurde geändert. Du kannst dich jetzt anmelden.",
+      "invalidLink": "Dieser Link ist ungültig oder abgelaufen. Fordere bitte einen neuen an."
+    },
+    "errors": {
+      "USER_ALREADY_EXISTS": "Mit dieser E-Mail-Adresse gibt es schon ein Konto.",
+      "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "Mit dieser E-Mail-Adresse gibt es schon ein Konto.",
+      "INVALID_EMAIL_OR_PASSWORD": "E-Mail oder Passwort ist falsch.",
+      "EMAIL_NOT_VERIFIED": "Bitte bestätige zuerst deine E-Mail-Adresse. Wir haben dir einen neuen Link geschickt.",
+      "PASSWORD_TOO_SHORT": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "INVALID_EMAIL": "Bitte gib eine gültige E-Mail-Adresse ein.",
+      "INVALID_TOKEN": "Dieser Link ist ungültig oder abgelaufen.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
+    }
+  },
+  "Email": {
+    "verifyEmail": {
+      "subject": "Bestätige deine E-Mail-Adresse",
+      "greeting": "Hallo {name},",
+      "body": "bitte bestätige deine E-Mail-Adresse für Vibe Coding Exam mit diesem Link:",
+      "ignore": "Wenn du dich nicht registriert hast, kannst du diese E-Mail ignorieren."
+    },
+    "resetPassword": {
+      "subject": "Passwort zurücksetzen",
+      "greeting": "Hallo {name},",
+      "body": "über diesen Link kannst du ein neues Passwort für Vibe Coding Exam festlegen:",
+      "ignore": "Wenn du das nicht angefordert hast, kannst du diese E-Mail ignorieren."
+    }
+  }
+}

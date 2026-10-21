@@ -45,6 +45,7 @@ vermitteln (README, `.gitignore`, Branches, Pull Requests, Umgebungsvariablen, T
 | Modell | **Qwen 3.6 auf eigenem Server** (OpenAI-kompatible API), konfiguriert über `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Keine Token-Kosten, Daten bleiben auf eigener Hardware; Modell jederzeit austauschbar |
 | E-Mail | Resend (Verifizierung, Passwort-Reset) | Einfach anzubinden |
 | Hosting | **Railway**: Services `web`, `worker`, `postgres` | Siehe Abschnitt 8 |
+| Next.js-Caching | `cacheComponents` aus | Fast jede Seite hängt von Nutzer und Sprache ab; statisches Caching brächte nur Komplexität |
 
 ## 4. Architektur
 
@@ -243,6 +244,7 @@ LLM_MODEL             Name des Qwen-3.6-Modells, wie der Server ihn meldet
 LLM_API_KEY           Schlüssel, mit dem der eigene Server abgesichert ist
 GITHUB_TOKEN          fein-granularer Token, nur Lesezugriff auf öffentliche Repos
 RESEND_API_KEY        (für E-Mail-Verifizierung)
+EMAIL_FROM            Absenderadresse, z. B. "Vibe Coding Exam <noreply@deine-domain.de>"
 ```
 
 Deploy über GitHub-Integration (Push auf `main` → automatisches Deployment), Preview-Umgebungen für PRs optional.
@@ -300,6 +302,8 @@ vibe-coding-exam/
 | M5 | Onboarding & Personalisierung | Fragebogen, Filterung/Priorisierung der Aufgaben |
 | M6 | Ausbau nach dem MVP | GitHub-Konto verknüpfen (Repo-Besitz belegen), Kohorten, Lehrenden-Ansicht mit Fortschritt und Prüfläufen |
 | M7 | Qualität | Eval-Set ausbauen, Monitoring von Dauer, Fehlerquote und Warteschlange |
+
+**Stand 21.10.2026:** M0 lokal fertig, Railway-Deployment steht wegen einer Railway-Störung noch aus. M1 fertig.
 
 M4 ist das riskanteste Stück und sollte früh als Prototyp (z. B. Kommandozeilen-Skript gegen ein
 Test-Repo) laufen, bevor die UI fertig ist.

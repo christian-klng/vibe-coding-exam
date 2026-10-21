@@ -1,0 +1,15 @@
+# Local development database. Start with: docker compose up -d
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vibe_coding_exam
+    ports:
+      - "54335:5432"  # 54335 on the host to avoid clashing with other local Postgres instances
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
