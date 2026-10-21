@@ -13,7 +13,7 @@ Architektur und Meilensteine: siehe [PLAN.md](PLAN.md).
 - Registrierung und Login mit Better Auth (E-Mail + Passwort, E-Mail-Bestätigung)
 - Deutsch und Englisch mit next-intl, UI-Bausteine von shadcn/ui
 - KI-Prüfung über das Vercel AI SDK gegen ein selbst gehostetes Modell (Qwen 3.6 auf vLLM, OpenAI-kompatible API)
-- Hosting auf Railway
+- Hosting mit Coolify auf einem Hetzner VPS (Docker-Image, siehe [docs/deployment-coolify.md](docs/deployment-coolify.md))
 
 ## Lokal starten
 
@@ -38,7 +38,7 @@ Zurücksetzen des Passworts erscheinen dann im Terminal, in dem `npm run dev` l�
 |---|---|
 | `npm run auth:generate` | Auth-Tabellen in `src/lib/db/auth-schema.ts` neu erzeugen (nach Änderungen an `src/lib/auth.ts`) |
 | `npm run db:generate` | Migration aus Schema-Änderungen erzeugen (landet in `drizzle/`) |
-| `npm run db:migrate` | Offene Migrationen einspielen (auf Railway automatisch vor jedem Deployment) |
+| `npm run db:migrate` | Offene Migrationen einspielen (im Container automatisch beim Start) |
 
 ## Aufgaben
 
@@ -61,6 +61,16 @@ Verweise auf Module und Voraussetzungen).
 Die App ist auf Deutsch und Englisch verfügbar (next-intl, ohne Sprache in der URL). Texte stehen in
 `messages/de.json` und `messages/en.json`; beide Dateien müssen dieselben Schlüssel haben. Die Sprache kommt aus
 dem Cookie `locale` (Sprachumschalter oder beim Login aus dem Profil), sonst aus der Browsersprache.
+
+## Docker-Image lokal testen
+
+```bash
+docker build -t vibe-coding-exam .
+docker run -p 3000:3000 --env-file .env.local vibe-coding-exam
+```
+
+Im Container zeigt `localhost` auf den Container selbst. Für die lokale Datenbank in `DATABASE_URL`
+`host.docker.internal` statt `localhost` verwenden.
 
 ## Tests
 

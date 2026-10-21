@@ -33,10 +33,10 @@ vermitteln (README, `.gitignore`, Branches, Pull Requests, Umgebungsvariablen, T
 | Bereich | Wahl | Begründung |
 |---|---|---|
 | Sprache | **TypeScript** durchgängig | Eine Sprache für UI, API, Worker und Agent |
-| Web-Framework | **Next.js (App Router)** | UI + Server Actions/API in einem Service, gut auf Railway |
+| Web-Framework | **Next.js (App Router)** | UI + Server Actions/API in einem Service, als Docker-Image überall lauffähig |
 | UI | Tailwind CSS + shadcn/ui | Schnell, sauber, gut von KI-Tools unterstützt |
 | Mehrsprachigkeit | **next-intl** (Deutsch + Englisch) | UI-Texte in `messages/de.json` und `messages/en.json`, Sprache pro Person gespeichert |
-| Datenbank | **PostgreSQL** (Railway-Plugin) | Ein Datenspeicher für alles, inkl. Job-Queue |
+| Datenbank | **PostgreSQL** (Coolify-Datenbank) | Ein Datenspeicher für alles, inkl. Job-Queue |
 | ORM | Drizzle ORM | Typsicher, schlanke Migrationen |
 | Auth | **Better Auth** (E-Mail/Passwort, später GitHub-OAuth zuschaltbar) | Sessions in eigener DB, kein externer Dienst nötig |
 | Job-Queue | **pg-boss** (auf Postgres) | Kein Redis nötig; Retries, Timeouts, Concurrency |
@@ -44,7 +44,7 @@ vermitteln (README, `.gitignore`, Branches, Pull Requests, Umgebungsvariablen, T
 | KI-Anbindung | **Vercel AI SDK** (`ai` + `@ai-sdk/openai-compatible`) mit Zod-Tools | Spricht jede OpenAI-kompatible API, bringt die Tool-Schleife (Agent-Loop) mit, anbieterneutral |
 | Modell | **Qwen 3.6 auf eigenem Server** (OpenAI-kompatible API), konfiguriert über `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Keine Token-Kosten, Daten bleiben auf eigener Hardware; Modell jederzeit austauschbar |
 | E-Mail | Resend (Verifizierung, Passwort-Reset) | Einfach anzubinden |
-| Hosting | **Railway**: Services `web`, `worker`, `postgres` | Siehe Abschnitt 8 |
+| Hosting | **Coolify auf Hetzner VPS**: `web`, `worker`, `postgres` (statt Railway, siehe Abschnitt 8) | Eigene Hardware, keine Abhängigkeit von einem PaaS |
 | Next.js-Caching | `cacheComponents` aus | Fast jede Seite hängt von Nutzer und Sprache ab; statisches Caching brächte nur Komplexität |
 
 ## 4. Architektur
@@ -225,38 +225,46 @@ Ein Test stellt sicher, dass jede Aufgabe beide Sprachdateien und alle Kriterien
 - **Eval-Set früh aufbauen** (M4 statt M7): Beispiel-Repos mit erwarteten Ergebnissen, um Modell,
   Prompt und Server-Einstellungen messbar zu vergleichen.
 
-## 8. Deployment auf Railway
+## 8. Deployment mit Coolify (Hetzner VPS)
 
-**Ein Railway-Projekt, drei Services:**
+Ursprünglich war Railway geplant. Wegen eines längeren Railway-Ausfalls am 21.10.2026 läuft die App
+stattdessen mit **Coolify** auf einem eigenen Hetzner VPS. Schritt-für-Schritt-Anleitung:
+[docs/deployment-coolify.md](docs/deployment-coolify.md).
 
-| Service | Quelle | Start-Befehl | Hinweise |
+**Ein Coolify-Projekt, drei Ressourcen:**
+
+| Ressource | Quelle | Start | Hinweise |
 |---|---|---|---|
-| `web` | dieses Repo | `npm run start` | Öffentliche Domain, Healthcheck `/api/health`, Pre-Deploy: `npm run db:migrate` |
-| `worker` | dieses Repo | `npm run worker` | Keine Domain, Concurrency z. B. 3 parallele Prüfungen |
-| `postgres` | Railway-Datenbank | – | `DATABASE_URL` per Referenz-Variable an beide Services |
+| `web` | dieses Repo, Build Pack **Dockerfile** | `CMD` im Dockerfile: Migrationen, dann `node server.js` | Domain mit HTTPS (Let's Encrypt über Coolify), Healthcheck kommt aus dem Dockerfile |
+| `worker` (ab M4) | dieses Repo, dasselbe Image | eigener Start-Befehl | Keine Domain, Concurrency z. B. 1–2 parallele Prüfungen |
+| `postgres` | Coolify-Datenbank (PostgreSQL 17) | – | interne URL als `DATABASE_URL`, tägliche Backups in Coolify einrichten |
 
-**Umgebungsvariablen**
+Das Image (`output: "standalone"`, ca. 435 MB) braucht beim Bauen keine Secrets: Auth und Datenbank
+werden erst bei der ersten Anfrage erzeugt. Migrationen laufen beim Containerstart
+(`scripts/migrate.mjs`), weil Coolify den Pre-Deployment-Befehl beim ersten Deployment überspringt.
+
+**Umgebungsvariablen** (alle zur Laufzeit, keine Build-Variablen)
 ```
-DATABASE_URL          (Referenz auf postgres)
-BETTER_AUTH_SECRET    zufälliger String
+DATABASE_URL          interne Postgres-URL aus Coolify
+BETTER_AUTH_SECRET    zufälliger String (openssl rand -base64 32)
 BETTER_AUTH_URL       https://<domain>
-LLM_BASE_URL          https://<eigener-server>/v1
+GITHUB_TOKEN          fein-granularer Token, nur Lesezugriff auf öffentliche Repos
+RESEND_API_KEY        für Bestätigungs- und Passwort-E-Mails
+EMAIL_FROM            Absenderadresse, z. B. "Vibe Coding Exam <noreply@deine-domain.de>"
+LLM_BASE_URL          https://<eigener-server>/v1   (ab M4)
 LLM_MODEL             Name des Qwen-3.6-Modells, wie der Server ihn meldet
 LLM_API_KEY           Schlüssel, mit dem der eigene Server abgesichert ist
-GITHUB_TOKEN          fein-granularer Token, nur Lesezugriff auf öffentliche Repos
-RESEND_API_KEY        (für E-Mail-Verifizierung)
-EMAIL_FROM            Absenderadresse, z. B. "Vibe Coding Exam <noreply@deine-domain.de>"
 ```
 
-Deploy über GitHub-Integration (Push auf `main` → automatisches Deployment), Preview-Umgebungen für PRs optional.
+Automatische Deployments bei jedem Push auf `main` über die GitHub App von Coolify.
 
 **Verbindung Worker → eigener LLM-Server**
 
-Der Worker läuft auf Railway und ruft den vLLM-Server über das Internet auf. Dafür:
-- vLLM hinter einem Reverse Proxy (z. B. Caddy) mit **HTTPS** betreiben, nicht direkt den vLLM-Port öffnen.
-- vLLM mit `--api-key` starten; derselbe Wert steht auf Railway als `LLM_API_KEY`.
-- Optional: Zugriff per Firewall auf die ausgehenden IPs von Railway beschränken
-  (feste ausgehende IPs gibt es je nach Railway-Tarif).
+- Läuft vLLM auf einem anderen Server: vLLM hinter einem Reverse Proxy mit **HTTPS** betreiben,
+  nicht direkt den vLLM-Port öffnen, und mit `--api-key` starten (derselbe Wert als `LLM_API_KEY`).
+  Zusätzlich per Firewall nur die IP des Hetzner VPS zulassen.
+- Liegen beide Server bei Hetzner, ist ein privates Hetzner-Netzwerk die sicherere Alternative zum
+  öffentlichen Endpunkt.
 - Healthcheck im Worker: Ist der LLM-Server nicht erreichbar, bleiben Jobs in der Queue, statt als
   „nicht bestanden" zu enden; die UI zeigt „Prüfung verzögert".
 
@@ -287,7 +295,8 @@ vibe-coding-exam/
 ├─ tasks/                     # ein Ordner pro Aufgabe: task.yaml, de.md, en.md
 ├─ messages/                  # UI-Texte: de.json, en.json
 ├─ tests/                     # inkl. Test-Repos/Fixtures für den Agenten
-├─ railway.json               # optional: Config-as-Code
+├─ Dockerfile                 # Produktions-Image für Coolify
+├─ docs/deployment-coolify.md # Einrichtung in Coolify
 └─ PLAN.md
 ```
 
@@ -295,7 +304,7 @@ vibe-coding-exam/
 
 | # | Ergebnis | Kern-Arbeit |
 |---|---|---|
-| M0 | Leere App läuft auf Railway, LLM erreichbar | Next.js-Setup, Postgres, Healthcheck, Auto-Deploy; Test-Skript: Tool-Calling mit Qwen 3.6 funktioniert |
+| M0 | Leere App läuft auf dem Server, LLM erreichbar | Next.js-Setup, Postgres, Healthcheck, Auto-Deploy; Test-Skript: Tool-Calling mit Qwen 3.6 funktioniert |
 | M1 | Registrierung & Login, zweisprachig | Better Auth, geschützte Routen, E-Mail-Verifizierung, next-intl (DE/EN) |
 | M2 | Aufgabenliste & Detailseite | Task-Loader, 2–3 Beispielaufgaben, Status pro Person |
 | M3 | Repo hinterlegen | URL-Validierung, Erreichbarkeit prüfen, Sperre für `requiresRepo` |
@@ -304,7 +313,7 @@ vibe-coding-exam/
 | M6 | Ausbau nach dem MVP | GitHub-Konto verknüpfen (Repo-Besitz belegen), Kohorten, Lehrenden-Ansicht mit Fortschritt und Prüfläufen |
 | M7 | Qualität | Eval-Set ausbauen, Monitoring von Dauer, Fehlerquote und Warteschlange |
 
-**Stand 21.10.2026:** M0 lokal fertig, Railway-Deployment steht wegen einer Railway-Störung noch aus. M1, M2 und M3 fertig (19 Aufgaben in 6 Modulen unter `tasks/`; Repo-URL wird gegen die GitHub-API geprüft, Aufgabe 1 dabei automatisch bewertet; Prüf-Button für die übrigen Aufgaben folgt mit M4; Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI).
+**Stand 21.10.2026:** M0 fertig bis auf das erste Deployment (Wechsel von Railway zu Coolify, Docker-Image lokal getestet). M1, M2 und M3 fertig (19 Aufgaben in 6 Modulen unter `tasks/`; Repo-URL wird gegen die GitHub-API geprüft, Aufgabe 1 dabei automatisch bewertet; Prüf-Button für die übrigen Aufgaben folgt mit M4; Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI).
 
 M4 ist das riskanteste Stück und sollte früh als Prototyp (z. B. Kommandozeilen-Skript gegen ein
 Test-Repo) laufen, bevor die UI fertig ist.
@@ -327,7 +336,8 @@ Mögliche Kategorien als Diskussionsgrundlage (Details folgen separat):
 |---|---|
 | KI-Modell | Qwen 3.6 auf eigenem Server, OpenAI-kompatible API, keine Claude-/Anthropic-SDK |
 | Inferenz-Server | vLLM |
-| Prüf-Worker | Läuft auf Railway; LLM-Server per HTTPS + API-Key erreichbar |
+| Prüf-Worker | Läuft in Coolify auf dem Hetzner VPS; LLM-Server per HTTPS + API-Key oder privatem Netzwerk erreichbar |
+| Hosting | Coolify auf Hetzner VPS statt Railway (Railway-Ausfall am 21.10.2026) |
 | Login | E-Mail/Passwort im MVP; GitHub-Konto später verknüpfbar (M6) |
 | Repos | Nur öffentliche Repos |
 | Repo-Zuordnung | Ein Haupt-Repo pro Person, für einzelne Aufgaben überschreibbar |
