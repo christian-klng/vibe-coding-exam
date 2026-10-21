@@ -11,11 +11,13 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "auth:generate": "npx auth@latest generate --config src/lib/auth.ts --output src/lib/db/auth-schema.ts",
-    "tasks:check": "tsx scripts/check-tasks.ts"
+    "tasks:check": "tsx scripts/check-tasks.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.75",
     "@base-ui/react": "^1.9.0",
+    "@octokit/rest": "^22.0.1",
     "ai": "^7.0.148",
     "better-auth": "^1.7.12",
     "class-variance-authority": "^0.7.1",
@@ -39,14 +41,15 @@
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
     "@tailwindcss/typography": "^0.5.20",
-    "@types/node": "^20",
+    "@types/node": "^22.20.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.5"
   },
   "engines": {
     "node": ">=22"

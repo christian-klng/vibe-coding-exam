@@ -4,11 +4,14 @@ import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { RepoCard } from "@/components/repo/repo-card";
 import { StatusIcon } from "@/components/tasks/status-icon";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { isLocale } from "@/i18n/config";
+import { getPrimaryRepository } from "@/lib/repositories";
 import { requireSession } from "@/lib/session";
 import { getCatalog, getTask, getTaskBody } from "@/lib/tasks/loader";
 import { getProgress } from "@/lib/tasks/progress";
@@ -27,7 +30,9 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
   const locale = isLocale(localeValue) ? localeValue : "de";
   const { modules, tasks } = getCatalog();
   const taskModule = modules.find((m) => m.id === task.module)!;
-  const status = (await getProgress(session.user.id)).get(task.id) ?? "open";
+  const [progress, repo] = await Promise.all([getProgress(session.user.id), getPrimaryRepository(session.user.id)]);
+  const status = progress.get(task.id) ?? "open";
+  const locked = task.requiresRepo && !repo;
   const prerequisites = tasks.filter((other) => task.prerequisites.includes(other.id));
 
   return (
@@ -61,6 +66,7 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
+          {task.showRepoForm && <RepoCard repo={repo} />}
           <Card>
             <CardHeader>
               <CardTitle>{t("criteria")}</CardTitle>
@@ -77,10 +83,25 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full" disabled>
-                {t("checkNow")}
-              </Button>
-              <p className="text-xs text-muted-foreground">{t("checkComingSoon")}</p>
+              {locked ? (
+                <Alert>
+                  <AlertDescription>
+                    {t("locked")}.{" "}
+                    <Link href="/tasks/github-repo" className="font-medium underline underline-offset-4">
+                      {t("lockedLink")}
+                    </Link>
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                !task.showRepoForm && (
+                  <>
+                    <Button className="w-full" disabled>
+                      {t("checkNow")}
+                    </Button>
+                    <p className="text-xs text-muted-foreground">{t("checkComingSoon")}</p>
+                  </>
+                )
+              )}
             </CardContent>
           </Card>
 

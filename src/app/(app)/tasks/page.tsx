@@ -1,9 +1,11 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Lock } from "lucide-react";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
+import { RepoCard } from "@/components/repo/repo-card";
 import { StatusIcon } from "@/components/tasks/status-icon";
 import { Progress } from "@/components/ui/progress";
 import { isLocale } from "@/i18n/config";
+import { getPrimaryRepository } from "@/lib/repositories";
 import { requireSession } from "@/lib/session";
 import { getCatalog } from "@/lib/tasks/loader";
 import { getProgress } from "@/lib/tasks/progress";
@@ -14,7 +16,7 @@ export default async function TasksPage() {
   const localeValue = await getLocale();
   const locale = isLocale(localeValue) ? localeValue : "de";
   const { modules, tasks } = getCatalog();
-  const progress = await getProgress(session.user.id);
+  const [progress, repo] = await Promise.all([getProgress(session.user.id), getPrimaryRepository(session.user.id)]);
   const done = tasks.filter((task) => progress.get(task.id) === "passed").length;
 
   return (
@@ -34,6 +36,8 @@ export default async function TasksPage() {
         </div>
       </div>
 
+      <RepoCard repo={repo} id="repo" />
+
       {modules.map((taskModule) => {
         const moduleTasks = tasks.filter((task) => task.module === taskModule.id);
         return (
@@ -50,15 +54,20 @@ export default async function TasksPage() {
             <ul className="divide-y rounded-xl border">
               {moduleTasks.map((task) => {
                 const status = progress.get(task.id) ?? "open";
+                const locked = task.requiresRepo && !repo;
                 return (
                   <li key={task.id}>
                     <Link
                       href={`/tasks/${task.id}`}
                       className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/50"
                     >
-                      <StatusIcon status={status} label={t(`status.${status}`)} />
+                      {locked ? (
+                        <Lock role="img" aria-label={t("locked")} className="size-5 shrink-0 text-muted-foreground" />
+                      ) : (
+                        <StatusIcon status={status} label={t(`status.${status}`)} />
+                      )}
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium">{task.title[locale]}</p>
+                        <p className={locked ? "font-medium text-muted-foreground" : "font-medium"}>{task.title[locale]}</p>
                         <p className="text-sm text-muted-foreground">{task.summary[locale]}</p>
                       </div>
                       <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />

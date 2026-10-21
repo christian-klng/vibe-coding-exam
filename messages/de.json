@@ -41,7 +41,9 @@
     "criteriaHint": "Bestanden ist die Aufgabe, wenn alle Pflicht-Kriterien erfüllt sind.",
     "prerequisites": "Am besten vorher erledigen",
     "checkNow": "Jetzt prüfen",
-    "checkComingSoon": "Die automatische Prüfung ist noch in Arbeit. Du kannst die Aufgabe aber schon bearbeiten."
+    "checkComingSoon": "Die automatische Prüfung ist noch in Arbeit. Du kannst die Aufgabe aber schon bearbeiten.",
+    "locked": "Gesperrt – trage zuerst dein GitHub-Repo ein",
+    "lockedLink": "Repo jetzt eintragen"
   },
   "Auth": {
     "name": "Name",
@@ -106,6 +108,26 @@
       "greeting": "Hallo {name},",
       "body": "über diesen Link kannst du ein neues Passwort für Vibe Coding Exam festlegen:",
       "ignore": "Wenn du das nicht angefordert hast, kannst du diese E-Mail ignorieren."
+    }
+  },
+  "Repo": {
+    "title": "Dein GitHub-Repository",
+    "missing": "Trage die Adresse deines öffentlichen GitHub-Repositorys ein. Damit schaltest du die Aufgaben frei, die wir in deinem Repo prüfen.",
+    "label": "Adresse deines Repositorys",
+    "placeholder": "https://github.com/deinname/meine-app",
+    "submit": "Speichern und prüfen",
+    "submitting": "Wird geprüft …",
+    "change": "Ändern",
+    "cancel": "Abbrechen",
+    "branch": "Haupt-Branch: {branch}",
+    "saved": "Gespeichert! Dein Repo ist öffentlich erreichbar.",
+    "savedNoCommits": "Gespeichert – aber dein Repo enthält noch keinen Commit. Lege zum Beispiel eine README an und speichere dann erneut.",
+    "errors": {
+      "invalidUrl": "Das sieht nicht nach einer GitHub-Adresse aus. Sie sollte so aussehen: https://github.com/deinname/meine-app",
+      "notFound": "Dieses Repo haben wir nicht gefunden. Stimmt die Adresse, und ist das Repo öffentlich?",
+      "private": "Dieses Repo ist privat. Stelle es auf GitHub unter Settings → Danger Zone auf „Public“, damit wir es lesen können.",
+      "rateLimited": "GitHub bremst gerade zu viele Anfragen aus. Versuche es in ein paar Minuten noch einmal.",
+      "unavailable": "GitHub ist gerade nicht erreichbar. Versuche es bitte gleich noch einmal."
     }
   }
 }

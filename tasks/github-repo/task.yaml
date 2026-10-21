@@ -6,7 +6,8 @@ title: { de: Dein erstes GitHub-Repository, en: Your first GitHub repository }
 summary:
   de: Lege ein öffentliches Repository an und trage seine Adresse in der App ein.
   en: Create a public repository and enter its address in the app.
-requiresRepo: true
+requiresRepo: false
+showRepoForm: true
 appTypes: [all]
 check:
   type: auto

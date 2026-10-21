@@ -41,7 +41,9 @@
     "criteriaHint": "The task is passed when all required criteria are met.",
     "prerequisites": "Best done first",
     "checkNow": "Check now",
-    "checkComingSoon": "The automatic check is still being built. You can already start working on the task."
+    "checkComingSoon": "The automatic check is still being built. You can already start working on the task.",
+    "locked": "Locked – enter your GitHub repo first",
+    "lockedLink": "Enter your repo now"
   },
   "Auth": {
     "name": "Name",
@@ -106,6 +108,26 @@
       "greeting": "Hi {name},",
       "body": "use this link to set a new password for Vibe Coding Exam:",
       "ignore": "If you did not request this, you can ignore this email."
+    }
+  },
+  "Repo": {
+    "title": "Your GitHub repository",
+    "missing": "Enter the address of your public GitHub repository. This unlocks the tasks we check in your repo.",
+    "label": "Address of your repository",
+    "placeholder": "https://github.com/yourname/my-app",
+    "submit": "Save and check",
+    "submitting": "Checking …",
+    "change": "Change",
+    "cancel": "Cancel",
+    "branch": "Main branch: {branch}",
+    "saved": "Saved! Your repo is publicly accessible.",
+    "savedNoCommits": "Saved – but your repo has no commits yet. Add a README, for example, and save again.",
+    "errors": {
+      "invalidUrl": "That doesn't look like a GitHub address. It should look like this: https://github.com/yourname/my-app",
+      "notFound": "We couldn't find this repo. Is the address correct and is the repo public?",
+      "private": "This repo is private. On GitHub, go to Settings → Danger Zone and make it “Public” so we can read it.",
+      "rateLimited": "GitHub is currently limiting too many requests. Please try again in a few minutes.",
+      "unavailable": "GitHub is not reachable right now. Please try again shortly."
     }
   }
 }

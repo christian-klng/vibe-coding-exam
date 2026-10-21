@@ -26,6 +26,8 @@ export const taskSchema = z.object({
   title: localized,
   summary: localized,
   requiresRepo: z.boolean(),
+  // Shows the form for entering the GitHub repository on the task page.
+  showRepoForm: z.boolean().default(false),
   appTypes: z.array(z.enum(appTypes)).min(1),
   prerequisites: z.array(z.string()).default([]),
   check: z.object({

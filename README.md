@@ -62,6 +62,13 @@ Die App ist auf Deutsch und Englisch verfügbar (next-intl, ohne Sprache in der 
 `messages/de.json` und `messages/en.json`; beide Dateien müssen dieselben Schlüssel haben. Die Sprache kommt aus
 dem Cookie `locale` (Sprachumschalter oder beim Login aus dem Profil), sonst aus der Browsersprache.
 
+## Tests
+
+```bash
+npm test             # Unit-Tests (Vitest)
+npm run tasks:check  # Aufgaben-Dateien prüfen
+```
+
 ## LLM-Server testen
 
 Prüft, ob der vLLM-Server erreichbar ist, Tool-Calling in mehreren Schritten beherrscht und JSON-Schema-Ausgaben liefert:
@@ -81,6 +88,7 @@ Damit Tool-Calling funktioniert, muss vLLM mit `--enable-auto-tool-choice` und d
 | `BETTER_AUTH_URL` | Öffentliche URL der App, z. B. `http://localhost:3000` |
 | `RESEND_API_KEY` | Optional: Versand von E-Mails über Resend |
 | `EMAIL_FROM` | Absender der E-Mails |
+| `GITHUB_TOKEN` | Optional lokal, in Produktion nötig: GitHub-Token mit Lesezugriff auf öffentliche Repos (ohne Token nur 60 Anfragen pro Stunde) |
 | `LLM_BASE_URL` | Basis-URL des vLLM-Servers inkl. `/v1` |
 | `LLM_MODEL` | Modellname, wie ihn der Server unter `/v1/models` meldet |
 | `LLM_API_KEY` | API-Key, mit dem der vLLM-Server abgesichert ist |
