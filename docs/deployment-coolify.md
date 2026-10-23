@@ -10,8 +10,10 @@ Beim Containerstart werden zuerst die Datenbank-Migrationen eingespielt, danach 
 3. **GitHub-Token:** Auf GitHub unter *Settings → Developer settings → Personal access tokens → Fine-grained tokens*
    einen Token mit Zugriff auf *Public repositories (read-only)* erstellen. Ohne Token erlaubt GitHub nur
    60 Anfragen pro Stunde für den ganzen Server.
-4. **E-Mail:** Bei [Resend](https://resend.com) die Absender-Domain bestätigen und einen API-Key erstellen.
-   Ohne funktionierenden E-Mail-Versand können neue Nutzer ihre Adresse nicht bestätigen und sich nicht anmelden.
+4. **E-Mail:** Ein Postfach mit SMTP-Zugang, z. B. bei IONOS (`smtp.ionos.de`, Port `587`, Benutzer = vollständige
+   E-Mail-Adresse, Passwort des Postfachs). Am besten ein eigenes Postfach oder einen Alias wie `kurs@…` statt der
+   persönlichen Adresse verwenden. Ohne funktionierenden E-Mail-Versand können neue Nutzer ihre Adresse nicht
+   bestätigen und sich nicht anmelden.
 
 ## 1. Projekt und Datenbank
 
@@ -48,9 +50,12 @@ die Option *Build Variable* bei allen **aus** lassen.
 | `DATABASE_URL` | Postgres URL (internal) aus Schritt 1 |
 | `BETTER_AUTH_SECRET` | Ergebnis von `openssl rand -base64 32` |
 | `BETTER_AUTH_URL` | `https://exam.deine-domain.de` – exakt die Domain, ohne Schrägstrich am Ende |
-| `GITHUB_TOKEN` | GitHub-Token aus der Vorbereitung |
-| `RESEND_API_KEY` | API-Key von Resend |
-| `EMAIL_FROM` | z. B. `Vibe Coding Exam <noreply@deine-domain.de>` (Domain muss bei Resend bestätigt sein) |
+| `GITHUB_TOKEN` | GitHub-Token aus der Vorbereitung (für erste Tests optional, vor dem Kursstart nötig) |
+| `SMTP_HOST` | `smtp.ionos.de` |
+| `SMTP_PORT` | `587` |
+| `SMTP_USER` | vollständige E-Mail-Adresse des Postfachs |
+| `SMTP_PASSWORD` | Passwort des Postfachs |
+| `EMAIL_FROM` | z. B. `Vibe Coding Exam <kurs@deine-domain.de>` – muss die Adresse des Postfachs (oder ein Alias davon) sein |
 | `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | ab M4: Zugang zum vLLM-Server mit Qwen 3.6 |
 
 ## 4. Deployen und prüfen
@@ -65,7 +70,8 @@ die Option *Build Variable* bei allen **aus** lassen.
 |---|---|
 | Container wird „unhealthy“, `/api/health` meldet `db: unreachable` | `DATABASE_URL` falsch, oder es wurde die externe statt der internen URL eingetragen |
 | Login oder Registrierung schlägt mit „Invalid origin“ fehl | `BETTER_AUTH_URL` stimmt nicht exakt mit der aufgerufenen Domain überein |
-| Keine Bestätigungs-E-Mail | `RESEND_API_KEY` fehlt (dann steht der Link nur im Container-Log) oder `EMAIL_FROM` nutzt eine nicht bestätigte Domain |
+| Keine Bestätigungs-E-Mail | `SMTP_HOST` fehlt (dann steht der Link nur im Container-Log), Zugangsdaten falsch oder `EMAIL_FROM` ist nicht die Adresse des Postfachs – im Container-Log steht dann `[email] Sending … failed` |
+| E-Mails landen im Spam | Beim Anbieter prüfen, ob SPF und DKIM für die Absender-Domain eingerichtet sind |
 | „GitHub bremst gerade zu viele Anfragen aus“ | `GITHUB_TOKEN` fehlt oder ist abgelaufen |
 
 ## Später: Worker (ab M4)

@@ -10,7 +10,7 @@ Architektur und Meilensteine: siehe [PLAN.md](PLAN.md).
 
 - Next.js (App Router, TypeScript), Tailwind CSS
 - PostgreSQL mit Drizzle ORM
-- Registrierung und Login mit Better Auth (E-Mail + Passwort, E-Mail-Bestätigung)
+- Registrierung und Login mit Better Auth (E-Mail + Passwort, E-Mail-Bestätigung per SMTP)
 - Deutsch und Englisch mit next-intl, UI-Bausteine von shadcn/ui
 - KI-Prüfung über das Vercel AI SDK gegen ein selbst gehostetes Modell (Qwen 3.6 auf vLLM, OpenAI-kompatible API)
 - Hosting mit Coolify auf einem Hetzner VPS (Docker-Image, siehe [docs/deployment-coolify.md](docs/deployment-coolify.md))
@@ -29,7 +29,7 @@ npm run dev
 
 Die App läuft dann auf http://localhost:3000, der Healthcheck auf http://localhost:3000/api/health.
 
-Ohne `RESEND_API_KEY` werden E-Mails nicht verschickt. Die Links zum Bestätigen der E-Mail-Adresse und zum
+Ohne `SMTP_HOST` werden E-Mails nicht verschickt. Die Links zum Bestätigen der E-Mail-Adresse und zum
 Zurücksetzen des Passworts erscheinen dann im Terminal, in dem `npm run dev` läuft (Zeilen mit `[email]`).
 
 ## Datenbank
@@ -96,8 +96,9 @@ Damit Tool-Calling funktioniert, muss vLLM mit `--enable-auto-tool-choice` und d
 | `DATABASE_URL` | Postgres-Verbindung |
 | `BETTER_AUTH_SECRET` | Geheimer Schlüssel für Sessions (`openssl rand -base64 32`) |
 | `BETTER_AUTH_URL` | Öffentliche URL der App, z. B. `http://localhost:3000` |
-| `RESEND_API_KEY` | Optional: Versand von E-Mails über Resend |
-| `EMAIL_FROM` | Absender der E-Mails |
+| `SMTP_HOST`, `SMTP_PORT` | SMTP-Server für E-Mails, z. B. `smtp.ionos.de` und `587` (lokal optional) |
+| `SMTP_USER`, `SMTP_PASSWORD` | Zugangsdaten des Postfachs |
+| `EMAIL_FROM` | Absender, muss die Adresse des Postfachs sein, z. B. `Vibe Coding Exam <kurs@deine-domain.de>` |
 | `GITHUB_TOKEN` | Optional lokal, in Produktion nötig: GitHub-Token mit Lesezugriff auf öffentliche Repos (ohne Token nur 60 Anfragen pro Stunde) |
 | `LLM_BASE_URL` | Basis-URL des vLLM-Servers inkl. `/v1` |
 | `LLM_MODEL` | Modellname, wie ihn der Server unter `/v1/models` meldet |

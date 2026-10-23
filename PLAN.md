@@ -43,7 +43,7 @@ vermitteln (README, `.gitignore`, Branches, Pull Requests, Umgebungsvariablen, T
 | GitHub-Zugriff | GitHub REST API via `@octokit/rest` | Repo-Baum, Dateien, Commits, PRs, Actions lesen |
 | KI-Anbindung | **Vercel AI SDK** (`ai` + `@ai-sdk/openai-compatible`) mit Zod-Tools | Spricht jede OpenAI-kompatible API, bringt die Tool-Schleife (Agent-Loop) mit, anbieterneutral |
 | Modell | **Qwen 3.6 auf eigenem Server** (OpenAI-kompatible API), konfiguriert über `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Keine Token-Kosten, Daten bleiben auf eigener Hardware; Modell jederzeit austauschbar |
-| E-Mail | Resend (Verifizierung, Passwort-Reset) | Einfach anzubinden |
+| E-Mail | SMTP über ein bestehendes Postfach (IONOS) mit nodemailer | Kein zusätzlicher Dienst; jeder Anbieter mit SMTP funktioniert |
 | Hosting | **Coolify auf Hetzner VPS**: `web`, `worker`, `postgres` (statt Railway, siehe Abschnitt 8) | Eigene Hardware, keine Abhängigkeit von einem PaaS |
 | Next.js-Caching | `cacheComponents` aus | Fast jede Seite hängt von Nutzer und Sprache ab; statisches Caching brächte nur Komplexität |
 
@@ -249,8 +249,9 @@ DATABASE_URL          interne Postgres-URL aus Coolify
 BETTER_AUTH_SECRET    zufälliger String (openssl rand -base64 32)
 BETTER_AUTH_URL       https://<domain>
 GITHUB_TOKEN          fein-granularer Token, nur Lesezugriff auf öffentliche Repos
-RESEND_API_KEY        für Bestätigungs- und Passwort-E-Mails
-EMAIL_FROM            Absenderadresse, z. B. "Vibe Coding Exam <noreply@deine-domain.de>"
+SMTP_HOST / SMTP_PORT SMTP-Server, z. B. smtp.ionos.de / 587
+SMTP_USER / SMTP_PASSWORD  Zugangsdaten des Postfachs
+EMAIL_FROM            Absender = Adresse des Postfachs, z. B. "Vibe Coding Exam <kurs@deine-domain.de>"
 LLM_BASE_URL          https://<eigener-server>/v1   (ab M4)
 LLM_MODEL             Name des Qwen-3.6-Modells, wie der Server ihn meldet
 LLM_API_KEY           Schlüssel, mit dem der eigene Server abgesichert ist
