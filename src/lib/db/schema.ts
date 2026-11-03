@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { boolean, index, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema";
 
 export * from "./auth-schema";
@@ -50,3 +50,52 @@ export const repositories = pgTable(
 );
 
 export type Repository = typeof repositories.$inferSelect;
+
+export const checkRunStatuses = ["queued", "running", "passed", "failed", "error"] as const;
+export type CheckRunStatus = (typeof checkRunStatuses)[number];
+export type CheckCriterionResult = { id: string; met: boolean; evidence: string; feedback: string };
+
+// One row per check of a task, kept as history. Results apply to the commit that was checked.
+export const checkRuns = pgTable(
+  "check_runs",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    taskId: text("task_id").notNull(),
+    taskVersion: integer("task_version").notNull(),
+    locale: text("locale").notNull(),
+    repositoryId: text("repository_id").references(() => repositories.id, { onDelete: "set null" }),
+    repoOwner: text("repo_owner").notNull(),
+    repoName: text("repo_name").notNull(),
+    defaultBranch: text("default_branch").notNull(),
+    commitSha: text("commit_sha"),
+    status: text("status", { enum: checkRunStatuses }).default("queued").notNull(),
+    criteriaResults: jsonb("criteria_results").$type<CheckCriterionResult[]>(),
+    summary: text("summary"),
+    nextStep: text("next_step"),
+    model: text("model"),
+    inputTokens: integer("input_tokens"),
+    outputTokens: integer("output_tokens"),
+    durationMs: integer("duration_ms"),
+    // Technical reason for the log; students only see a general message.
+    error: text("error"),
+    attempts: integer("attempts").default(0).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    startedAt: timestamp("started_at"),
+    finishedAt: timestamp("finished_at"),
+  },
+  (table) => [
+    index("check_runs_user_task_idx").on(table.userId, table.taskId, table.createdAt),
+    index("check_runs_status_idx").on(table.status, table.createdAt),
+    // A task can only be checked once at a time, also when the button is clicked twice.
+    uniqueIndex("check_runs_one_active_per_task")
+      .on(table.userId, table.taskId)
+      .where(sql`${table.status} in ('queued', 'running')`),
+  ],
+);
+
+export type CheckRun = typeof checkRuns.$inferSelect;

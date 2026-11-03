@@ -314,7 +314,9 @@ vibe-coding-exam/
 | M6 | Ausbau nach dem MVP | GitHub-Konto verknüpfen (Repo-Besitz belegen), Kohorten, Lehrenden-Ansicht mit Fortschritt und Prüfläufen |
 | M7 | Qualität | Eval-Set ausbauen, Monitoring von Dauer, Fehlerquote und Warteschlange |
 
-**Stand 21.10.2026:** M0 fertig bis auf das erste Deployment (Wechsel von Railway zu Coolify, Docker-Image lokal getestet). M1, M2 und M3 fertig (19 Aufgaben in 6 Modulen unter `tasks/`; Repo-URL wird gegen die GitHub-API geprüft, Aufgabe 1 dabei automatisch bewertet; Prüf-Button für die übrigen Aufgaben folgt mit M4; Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI).
+**Stand 03.11.2026:** M0 bis M3 fertig und live auf Coolify. M4 gebaut (Warteschlange, Worker, Vorprüfungen, Agent, Ergebnis-Anzeige, Eval-Set) und mit simuliertem Modell end-to-end getestet; der Test gegen Qwen 3.6 steht noch aus (`npm run llm:test`, dann `npm run eval`). Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI.
+
+**Abweichungen von Abschnitt 7 in M4:** Das Repo wird einmal als Archiv geladen und im Speicher gelesen statt Datei für Datei über die API (eine Anfrage statt vieler, Suche ohne GitHub-Suchindex). Der Agent hat kein URL-Werkzeug: Die Live-URL prüft der Code selbst und gibt dem Agenten nur die Messwerte, damit ein Prompt-Injection-Angriff keine Anfragen auslösen kann. Bilder kann der Agent nicht ansehen; solche Kriterien gelten mit Hinweis als erfüllt. `list_workflow_runs` entfällt, solange es keine CI-Aufgabe gibt.
 
 M4 ist das riskanteste Stück und sollte früh als Prototyp (z. B. Kommandozeilen-Skript gegen ein
 Test-Repo) laufen, bevor die UI fertig ist.

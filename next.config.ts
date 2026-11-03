@@ -6,6 +6,8 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig: NextConfig = {
   // Self-contained server in .next/standalone with only the files it needs (small Docker image).
   output: "standalone",
+  // pg-boss loads its SQL plans at runtime and must not be bundled.
+  serverExternalPackages: ["pg-boss"],
   turbopack: {
     rules: {
       "*.css": {

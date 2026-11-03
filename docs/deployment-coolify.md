@@ -73,8 +73,29 @@ die Option *Build Variable* bei allen **aus** lassen.
 | Keine Bestätigungs-E-Mail | `SMTP_HOST` fehlt (dann steht der Link nur im Container-Log), Zugangsdaten falsch oder `EMAIL_FROM` ist nicht die Adresse des Postfachs – im Container-Log steht dann `[email] Sending … failed` |
 | E-Mails landen im Spam | Beim Anbieter prüfen, ob SPF und DKIM für die Absender-Domain eingerichtet sind |
 | „GitHub bremst gerade zu viele Anfragen aus“ | `GITHUB_TOKEN` fehlt oder ist abgelaufen |
+| Prüfung bleibt auf „Wartet auf die Prüfung“ | Worker läuft nicht: Log der Worker-Anwendung ansehen, `APP_ROLE=worker` prüfen |
+| Prüfung bleibt auf „verzögert sich“ | Log des Workers: `[worker] Check … failed` nennt den Grund, meist LLM-Server oder GitHub nicht erreichbar |
 
-## Später: Worker (ab M4)
+## 5. Worker für die KI-Prüfung
 
-Der Prüf-Worker nutzt dasselbe Repo und dasselbe Image, aber einen eigenen Start-Befehl und keine Domain.
-Er wird als zweite Anwendung in derselben Umgebung angelegt. Die genaue Einrichtung folgt mit M4.
+Der Worker führt die Prüfungen aus. Ohne ihn bleiben sie in der Warteschlange stehen. Er nutzt dasselbe Repo und
+dasselbe Image, wird aber als zweite Anwendung in derselben Umgebung angelegt:
+
+1. **+ New → Applications → Private Repository (with GitHub App)** → Repository `vibe-coding-exam`, Branch `main`.
+2. **Build Pack:** `Dockerfile`, wie bei der App. **Domains** leer lassen, **Ports Exposes** `3000`.
+3. **Environment Variables** (*Build Variable* jeweils aus):
+
+| Variable | Wert |
+|---|---|
+| `APP_ROLE` | `worker` |
+| `DATABASE_URL` | dieselbe interne Postgres-URL wie bei der App |
+| `GITHUB_TOKEN` | Hier wirklich nötig: Die Secret-Prüfung liest bis zu 50 Commits, ohne Token erlaubt GitHub nur 60 Anfragen pro Stunde |
+| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Zugang zum vLLM-Server mit Qwen 3.6 |
+| `CHECK_CONCURRENCY` | `1`, später erhöhen, wenn der LLM-Server mehr schafft |
+
+4. **Deploy** klicken. Im Log erscheint `[worker] Waiting for checks`.
+
+Der Worker meldet sich auf Port 3000 beim Healthcheck des Images. Die Migrationen spielt nur die App ein, deshalb
+die App zuerst deployen. Beim LLM-Ausfall bleiben Prüfungen etwa 25 Minuten in der Warteschlange und werden
+wiederholt, die App zeigt so lange „Die Prüfung verzögert sich“. Danach erscheint eine Fehlermeldung mit der
+Möglichkeit, erneut zu prüfen.

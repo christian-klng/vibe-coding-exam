@@ -32,9 +32,44 @@
     "criteriaHint": "The task is passed when all criteria marked with * are met.",
     "prerequisites": "Best done first",
     "checkNow": "Check now",
-    "checkComingSoon": "The automatic check is still being built. You can already start working on the task.",
     "locked": "Locked – enter your GitHub repo first",
     "lockedLink": "Enter your repo now"
+  },
+  "Checks": {
+    "pre": {
+      "fileMissing": "The file {pattern} is still missing from the repository.",
+      "tracked": "These files do not belong in the repository: {paths}. Add them to .gitignore and remove them from Git.",
+      "tooFewCommits": "Your repository has only {count} commits, at least {min} are needed.",
+      "noMergedPullRequest": "The repository has no merged pull request yet.",
+      "noUrlInReadme": "We found no address of your app in your README. Add the full live URL, for example on a line starting with “Live:”.",
+      "urlUnreachable": "We could not reach your app at {url}.",
+      "httpsInvalid": "{url} has no valid HTTPS certificate.",
+      "noHttpsRedirect": "{url} does not automatically redirect http:// to https://.",
+      "secretsInFiles": "We found secret keys in your files: {list}. Revoke them with the provider and create new ones.",
+      "secretsInHistory": "We found secret keys in your commit history: {list}. Revoke them with the provider and create new ones.",
+      "secretsInBundle": "We found secret keys in the code your live site delivers: {list}. Revoke them with the provider and create new ones.",
+      "repoGone": "Your repository is no longer publicly reachable. Check that it still exists and is public.",
+      "repoEmpty": "Your repository has no commits yet.",
+      "repoTooLarge": "Your repository is too large for the automatic check. Check whether large files like node_modules or videos got in."
+    },
+    "queued": "Waiting for the check, number {position} in the queue.",
+    "running": "The AI is reading your repository. This usually takes one or two minutes.",
+    "delayed": "The check is delayed. We will try again automatically.",
+    "passed": "Passed",
+    "failed": "Not passed yet",
+    "error": "The check could not be completed. This is not caused by your repository. Please try again.",
+    "nextStep": "Next step",
+    "commit": "Checked version: {sha} from {date}",
+    "recheck": "Check again",
+    "history": "Earlier checks",
+    "evidence": "Evidence",
+    "limits": {
+      "rateLimited": "You started many checks in the last hour. Please try again later.",
+      "cooldown": "You just checked this task. Please wait a moment.",
+      "noRepo": "Enter your GitHub repository first.",
+      "notCheckable": "This task is not checked by the AI."
+    },
+    "errorShort": "Check error"
   },
   "Auth": {
     "name": "Name",

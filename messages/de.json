@@ -32,9 +32,44 @@
     "criteriaHint": "Bestanden ist die Aufgabe, wenn alle mit * markierten Kriterien erfüllt sind.",
     "prerequisites": "Am besten vorher erledigen",
     "checkNow": "Jetzt prüfen",
-    "checkComingSoon": "Die automatische Prüfung ist noch in Arbeit. Du kannst die Aufgabe aber schon bearbeiten.",
     "locked": "Gesperrt – trage zuerst dein GitHub-Repo ein",
     "lockedLink": "Repo jetzt eintragen"
+  },
+  "Checks": {
+    "pre": {
+      "fileMissing": "Die Datei {pattern} fehlt noch im Repository.",
+      "tracked": "Diese Dateien gehören nicht ins Repository: {paths}. Trag sie in die .gitignore ein und entferne sie aus Git.",
+      "tooFewCommits": "Dein Repository hat erst {count} Commits, nötig sind mindestens {min}.",
+      "noMergedPullRequest": "Im Repository gibt es noch keinen gemergten Pull Request.",
+      "noUrlInReadme": "In deiner README haben wir keine Adresse deiner App gefunden. Schreib die vollständige Live-URL hinein, z. B. in eine Zeile, die mit „Live:“ beginnt.",
+      "urlUnreachable": "Unter {url} konnten wir deine App nicht erreichen.",
+      "httpsInvalid": "{url} hat kein gültiges HTTPS-Zertifikat.",
+      "noHttpsRedirect": "{url} leitet http:// nicht automatisch auf https:// weiter.",
+      "secretsInFiles": "Wir haben geheime Schlüssel in deinen Dateien gefunden: {list}. Sperre sie beim Anbieter und erstelle neue.",
+      "secretsInHistory": "Wir haben geheime Schlüssel in deiner Commit-Historie gefunden: {list}. Sperre sie beim Anbieter und erstelle neue.",
+      "secretsInBundle": "Wir haben geheime Schlüssel im ausgelieferten Code deiner Live-Seite gefunden: {list}. Sperre sie beim Anbieter und erstelle neue.",
+      "repoGone": "Dein Repository ist nicht mehr öffentlich erreichbar. Prüfe, ob es noch existiert und öffentlich ist.",
+      "repoEmpty": "Dein Repository enthält noch keinen Commit.",
+      "repoTooLarge": "Dein Repository ist zu groß für die automatische Prüfung. Prüfe, ob große Dateien wie node_modules oder Videos hineingeraten sind."
+    },
+    "queued": "Wartet auf die Prüfung, Platz {position} in der Warteschlange.",
+    "running": "Die KI liest gerade dein Repository. Das dauert meist ein bis zwei Minuten.",
+    "delayed": "Die Prüfung verzögert sich. Wir versuchen es automatisch erneut.",
+    "passed": "Bestanden",
+    "failed": "Noch nicht bestanden",
+    "error": "Die Prüfung konnte nicht abgeschlossen werden. Das liegt nicht an deinem Repository. Versuch es bitte noch einmal.",
+    "nextStep": "Nächster Schritt",
+    "commit": "Geprüfter Stand: {sha} vom {date}",
+    "recheck": "Erneut prüfen",
+    "history": "Frühere Prüfungen",
+    "evidence": "Fundstelle",
+    "limits": {
+      "rateLimited": "Du hast in der letzten Stunde schon viele Prüfungen gestartet. Versuch es bitte später noch einmal.",
+      "cooldown": "Du hast diese Aufgabe gerade erst geprüft. Warte bitte noch einen Moment.",
+      "noRepo": "Trage zuerst dein GitHub-Repository ein.",
+      "notCheckable": "Diese Aufgabe wird nicht von der KI geprüft."
+    },
+    "errorShort": "Fehler bei der Prüfung"
   },
   "Auth": {
     "name": "Name",

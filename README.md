@@ -25,6 +25,7 @@ cp .env.example .env.local   # Werte eintragen, BETTER_AUTH_SECRET erzeugen
 docker compose up -d         # lokale Postgres auf Port 54335
 npm run db:migrate           # Tabellen anlegen
 npm run dev
+npm run worker               # in einem zweiten Terminal: führt die KI-Prüfungen aus
 ```
 
 Die App läuft dann auf http://localhost:3000, der Healthcheck auf http://localhost:3000/api/health.
@@ -79,6 +80,22 @@ npm test             # Unit-Tests (Vitest)
 npm run tasks:check  # Aufgaben-Dateien prüfen
 ```
 
+## KI-Prüfung
+
+Ablauf: Der Button „Jetzt prüfen“ legt einen Eintrag in `check_runs` an und einen Auftrag in die Warteschlange
+(pg-boss, ebenfalls in Postgres). Der Worker (`src/worker`) holt den Auftrag, friert das Repo auf dem aktuellen
+Commit ein und ruft den Prüfer (`src/checker`) auf: zuerst die Vorprüfungen aus `task.yaml`, die ohne KI
+entscheiden, dann der Agent mit nur lesenden Werkzeugen. Ob eine Aufgabe bestanden ist, entscheidet der Code aus
+den Pflicht-Kriterien, nicht das Modell.
+
+| Befehl | Zweck |
+|---|---|
+| `npm run worker` | Worker lokal starten |
+| `npm run check:repo -- <github-url> <task-id> [de\|en]` | Eine Prüfung ohne Warteschlange und Datenbank ausführen, gut zum Ausprobieren von Prompts |
+| `npm run eval` | Modell gegen Beispiel-Repos mit bekanntem Ergebnis messen (`evals/cases.yaml`), Kriterien und Gesamtergebnis |
+
+Das Eval-Set gehört zu jeder Änderung an Modell, Prompt oder Server-Einstellungen.
+
 ## LLM-Server testen
 
 Prüft, ob der vLLM-Server erreichbar ist, Tool-Calling in mehreren Schritten beherrscht und JSON-Schema-Ausgaben liefert:
@@ -103,3 +120,5 @@ Damit Tool-Calling funktioniert, muss vLLM mit `--enable-auto-tool-choice` und d
 | `LLM_BASE_URL` | Basis-URL des vLLM-Servers inkl. `/v1` |
 | `LLM_MODEL` | Modellname, wie ihn der Server unter `/v1/models` meldet |
 | `LLM_API_KEY` | API-Key, mit dem der vLLM-Server abgesichert ist |
+| `CHECK_CONCURRENCY` | Worker: Wie viele Prüfungen gleichzeitig laufen (Standard 1) |
+| `APP_ROLE` | Im Docker-Image: `worker` startet den Worker statt des Web-Servers |

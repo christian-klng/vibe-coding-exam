@@ -12,6 +12,22 @@ export const moduleSchema = z.object({
   description: localized,
 });
 
+// Deterministic checks that run before the AI, see src/checker/pre-checks.ts.
+export const preCheckSchema = z.union([
+  z.strictObject({ fileExists: z.string() }),
+  z.strictObject({ notTracked: z.array(z.string()) }),
+  z.strictObject({ minCommits: z.number().int().positive() }),
+  z.strictObject({ mergedPullRequest: z.literal(true) }),
+  z.strictObject({ repoIsPublic: z.literal(true) }),
+  z.strictObject({ readmeHasUrl: z.literal(true) }),
+  z.strictObject({ urlReachable: z.literal(true) }),
+  z.strictObject({ httpsValid: z.literal(true) }),
+  z.strictObject({ httpRedirectsToHttps: z.literal(true) }),
+  z.strictObject({ noSecretsInFiles: z.literal(true) }),
+  z.strictObject({ noSecretsInHistory: z.literal(true) }),
+  z.strictObject({ noSecretsInClientBundle: z.literal(true) }),
+]);
+
 export const criterionSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   required: z.boolean(),
@@ -34,8 +50,7 @@ export const taskSchema = z.object({
     type: z.enum(checkTypes),
     // Hints for the check agent where to look (glob patterns).
     scope: z.object({ paths: z.array(z.string()) }).optional(),
-    // Deterministic checks that run before the AI (see PLAN.md, section 6).
-    preChecks: z.array(z.record(z.string(), z.unknown())).default([]),
+    preChecks: z.array(preCheckSchema).default([]),
     criteria: z.array(criterionSchema).min(1),
   }),
 });
@@ -43,3 +58,4 @@ export const taskSchema = z.object({
 export type TaskModule = z.infer<typeof moduleSchema>;
 export type Task = z.infer<typeof taskSchema>;
 export type Criterion = z.infer<typeof criterionSchema>;
+export type PreCheck = z.infer<typeof preCheckSchema>;

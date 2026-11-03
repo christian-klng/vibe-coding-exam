@@ -11,7 +11,7 @@ FROM base AS build
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npm run build
+RUN npm run build && npm run worker:build
 
 # --- Runtime: only the standalone server and the files read at runtime ---
 FROM base AS runtime
@@ -25,6 +25,8 @@ COPY --from=build --chown=node:node /app/tasks ./tasks
 COPY --from=build --chown=node:node /app/drizzle ./drizzle
 # The migration script needs the complete packages, not just the files the server uses.
 COPY --from=build --chown=node:node /app/scripts/migrate.mjs ./scripts/migrate.mjs
+# The check worker is one bundled file and shares the tasks folder with the server.
+COPY --from=build --chown=node:node /app/dist/worker.mjs ./worker.mjs
 COPY --from=build --chown=node:node /app/node_modules/drizzle-orm ./node_modules/drizzle-orm
 COPY --from=build --chown=node:node /app/node_modules/postgres ./node_modules/postgres
 
@@ -36,5 +38,6 @@ ENV PORT=3000 HOSTNAME=0.0.0.0
 HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:3000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
 
-# Apply pending migrations, then start the server.
-CMD ["sh", "-c", "node scripts/migrate.mjs && exec node server.js"]
+# Same image for both services: APP_ROLE=worker starts the check worker, anything else the web server.
+# Only the web server applies migrations, so that the two never race for them.
+CMD ["sh", "-c", "if [ \"$APP_ROLE\" = worker ]; then exec node worker.mjs; fi; node scripts/migrate.mjs && exec node server.js"]

@@ -4,7 +4,7 @@ export type RepoLookup =
   | { ok: true; owner: string; name: string; url: string; defaultBranch: string; hasCommits: boolean }
   | { ok: false; reason: "notFound" | "private" | "rateLimited" | "unavailable" };
 
-function getOctokit() {
+export function getOctokit() {
   // Without a token GitHub allows only 60 requests per hour and IP – fine locally, too few in production.
   return new Octokit({
     auth: process.env.GITHUB_TOKEN || undefined,
