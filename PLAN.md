@@ -27,6 +27,7 @@ vermitteln (README, `.gitignore`, Branches, Pull Requests, Umgebungsvariablen, T
 6. **„Jetzt prüfen"** → Prüfauftrag wird in eine Queue gelegt, der Agent prüft im Hintergrund,
    die UI zeigt den Fortschritt und danach das Ergebnis **pro Kriterium** inkl. Feedback und Fundstelle.
 7. **Erneut prüfen** nach Korrektur – jede Prüfung bleibt als Historie erhalten.
+8. **Admin-Bereich** (ab M5): LLM-Zugang eintragen, Module und Aufgaben bearbeiten, sehen, wer welche Aufgabenversion bestanden hat (Abschnitt 13).
 
 ## 3. Tech-Stack (Empfehlung)
 
@@ -42,7 +43,7 @@ vermitteln (README, `.gitignore`, Branches, Pull Requests, Umgebungsvariablen, T
 | Job-Queue | **pg-boss** (auf Postgres) | Kein Redis nötig; Retries, Timeouts, Concurrency |
 | GitHub-Zugriff | GitHub REST API via `@octokit/rest` | Repo-Baum, Dateien, Commits, PRs, Actions lesen |
 | KI-Anbindung | **Vercel AI SDK** (`ai` + `@ai-sdk/openai-compatible`) mit Zod-Tools | Spricht jede OpenAI-kompatible API, bringt die Tool-Schleife (Agent-Loop) mit, anbieterneutral |
-| Modell | **Qwen 3.6 auf eigenem Server** (OpenAI-kompatible API), konfiguriert über `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Keine Token-Kosten, Daten bleiben auf eigener Hardware; Modell jederzeit austauschbar |
+| Modell | **Qwen 3.6 auf eigenem Server** (OpenAI-kompatible API), konfiguriert über `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`, ab M5 auch im Admin-Bereich | Keine Token-Kosten, Daten bleiben auf eigener Hardware; Modell jederzeit austauschbar |
 | E-Mail | SMTP über ein bestehendes Postfach (IONOS) mit nodemailer | Kein zusätzlicher Dienst; jeder Anbieter mit SMTP funktioniert |
 | Hosting | **Coolify auf Hetzner VPS**: `web`, `worker`, `postgres` (statt Railway, siehe Abschnitt 8) | Eigene Hardware, keine Abhängigkeit von einem PaaS |
 | Next.js-Caching | `cacheComponents` aus | Fast jede Seite hängt von Nutzer und Sprache ab; statisches Caching brächte nur Komplexität |
@@ -80,11 +81,13 @@ check_runs         id, user_id, task_id, task_version, repository_id, commit_sha
 cohorts (später)   id, name, invite_code, instructor_id   – für Kurse/Klassen
 ```
 
-**Aufgaben liegen nicht in der DB, sondern als Dateien im Repo** (ein Ordner pro Aufgabe unter `tasks/`).
+**Bis M6 liegen Aufgaben nicht in der DB, sondern als Dateien im Repo** (ein Ordner pro Aufgabe unter `tasks/`). Ab M6 ist die Datenbank die einzige Quelle, siehe Abschnitt 13.
 Vorteile: versioniert, per Pull Request reviewbar, leicht von KI mitzuschreiben. `check_runs.task_version`
 hält fest, gegen welche Fassung geprüft wurde.
 
 ## 6. Aufgaben-Format
+
+Dieses Format gilt bis M6. Danach bleibt es als Format für den Export und den einmaligen Import erhalten.
 
 Jede Aufgabe ist ein Ordner. Die Prüflogik steht **einmal** in `task.yaml` (damit Deutsch und Englisch
 nie auseinanderlaufen), die Erklärtexte je Sprache in eigenen Markdown-Dateien:
@@ -222,7 +225,7 @@ Ein Test stellt sicher, dass jede Aufgabe beide Sprachdateien und alle Kriterien
 - **Kapazität statt Kosten**: Keine Token-Kosten, aber begrenzte GPU-Leistung. Die Queue regelt die
   Parallelität (z. B. 1–2 gleichzeitige Prüfungen); die UI zeigt die Position in der Warteschlange.
   Bei 30 Teilnehmenden, die kurz vor einer Deadline gleichzeitig prüfen, ist das der Engpass.
-- **Eval-Set früh aufbauen** (M4 statt M7): Beispiel-Repos mit erwarteten Ergebnissen, um Modell,
+- **Eval-Set früh aufbauen** (M4 statt erst zum Schluss): Beispiel-Repos mit erwarteten Ergebnissen, um Modell,
   Prompt und Server-Einstellungen messbar zu vergleichen.
 
 ## 8. Deployment mit Coolify (Hetzner VPS)
@@ -310,11 +313,14 @@ vibe-coding-exam/
 | M2 | Aufgabenliste & Detailseite | Task-Loader, 2–3 Beispielaufgaben, Status pro Person |
 | M3 | Repo hinterlegen | URL-Validierung, Erreichbarkeit prüfen, Sperre für `requiresRepo` |
 | M4 | **KI-Prüfung end-to-end** | Worker, Queue, Agent-Tools, `submit_verdict`, Ergebnis-UI, erstes Eval-Set |
-| M5 | Onboarding & Personalisierung | Fragebogen, Filterung/Priorisierung der Aufgaben |
-| M6 | Ausbau nach dem MVP | GitHub-Konto verknüpfen (Repo-Besitz belegen), Kohorten, Lehrenden-Ansicht mit Fortschritt und Prüfläufen |
-| M7 | Qualität | Eval-Set ausbauen, Monitoring von Dauer, Fehlerquote und Warteschlange |
+| M5 | Admin-Grundlage & LLM-Einstellungen | Geschützter Admin-Bereich, Befehl für den ersten Admin, LLM-Zugang im Formular mit Verbindungstest, Key verschlüsselt in der DB |
+| M6 | Aufgaben in der Datenbank, feste Versionen | Einmaliger Import der Dateien, unveränderliche Versionen, Prüfläufe und Fortschritt verweisen auf eine Version |
+| M7 | Editor & Versionsübersicht für Admins | Module und Aufgaben bearbeiten, Entwurf und Veröffentlichen, Übersicht wer welche Version bestanden hat, Export als Datei |
+| M8 | Onboarding & Personalisierung | Fragebogen, Filterung/Priorisierung der Aufgaben |
+| M9 | Ausbau nach dem MVP | GitHub-Konto verknüpfen (Repo-Besitz belegen), Kohorten, Lehrenden-Ansicht mit Fortschritt und Prüfläufen |
+| M10 | Qualität | Eval-Set ausbauen, Monitoring von Dauer, Fehlerquote und Warteschlange |
 
-**Stand 03.11.2026:** M0 bis M3 fertig und live auf Coolify. M4 gebaut (Warteschlange, Worker, Vorprüfungen, Agent, Ergebnis-Anzeige, Eval-Set) und mit simuliertem Modell end-to-end getestet; der Test gegen Qwen 3.6 steht noch aus (`npm run llm:test`, dann `npm run eval`). Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI.
+**Stand 03.11.2026:** M0 bis M3 fertig und live auf Coolify. M4 gebaut (Warteschlange, Worker, Vorprüfungen, Agent, Ergebnis-Anzeige, Eval-Set) und mit simuliertem Modell end-to-end getestet; der Test gegen Qwen 3.6 steht noch aus (`npm run llm:test`, dann `npm run eval`). Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI. Als Nächstes: M4 produktiv abschließen (Worker in Coolify, Test mit Qwen 3.6), dann M5.
 
 **Abweichungen von Abschnitt 7 in M4:** Das Repo wird einmal als Archiv geladen und im Speicher gelesen statt Datei für Datei über die API (eine Anfrage statt vieler, Suche ohne GitHub-Suchindex). Der Agent hat kein URL-Werkzeug: Die Live-URL prüft der Code selbst und gibt dem Agenten nur die Messwerte, damit ein Prompt-Injection-Angriff keine Anfragen auslösen kann. Bilder kann der Agent nicht ansehen; solche Kriterien gelten mit Hinweis als erfüllt. `list_workflow_runs` entfällt, solange es keine CI-Aufgabe gibt.
 
@@ -341,14 +347,67 @@ Mögliche Kategorien als Diskussionsgrundlage (Details folgen separat):
 | Inferenz-Server | vLLM |
 | Prüf-Worker | Läuft in Coolify auf dem Hetzner VPS; LLM-Server per HTTPS + API-Key oder privatem Netzwerk erreichbar |
 | Hosting | Coolify auf Hetzner VPS statt Railway (Railway-Ausfall am 21.10.2026) |
-| Login | E-Mail/Passwort im MVP; GitHub-Konto später verknüpfbar (M6) |
+| Login | E-Mail/Passwort im MVP; GitHub-Konto später verknüpfbar (M9) |
 | Repos | Nur öffentliche Repos |
 | Repo-Zuordnung | Ein Haupt-Repo pro Person, für einzelne Aufgaben überschreibbar |
-| Lehrende/Kohorten | Nach dem MVP (M6) |
+| Lehrende/Kohorten | Nach dem MVP (M9) |
 | Sprache | Deutsch und Englisch ab Start |
 | Bestanden | Bleibt bestanden (gilt für den geprüften Commit) |
 
+### Ergänzt am 03.11.2026
+
+| Thema | Entscheidung |
+|---|---|
+| Admin-Bereich | Kommt vor dem Onboarding (M5 bis M7), weil das Onboarding auf den Aufgaben aufbaut |
+| Quelle der Aufgaben | Ab M6 nur noch die Datenbank; Dateien nur noch als Export, keine zwei parallelen Quellen. Löst die Entscheidung für Dateien aus Abschnitt 5 ab; Review per Pull Request und Mitschreiben per KI im Repo entfallen |
+| Neue Aufgabenversion | „Bestanden“ bleibt erhalten und nennt die Version („Bestanden in Version 2, aktuell ist Version 3“), erneutes Prüfen ist freiwillig |
+| Was eine neue Version auslöst | Jede veröffentlichte Änderung, auch Tippfehler. Beim Veröffentlichen wird markiert, ob sich Kriterien geändert haben |
+
 **Noch offen**
+- Falls es Zertifikate geben soll: Muss sich eine Prüfungsfassung festschreiben lassen, sodass neue Versionen den Kurs nicht mehr betreffen?
 - Welche Aufgaben es gibt und wie sie vom Onboarding abhängen (Abschnitt 11).
 - Wie viele Prüfungen der LLM-Server gleichzeitig schafft. Wird in M0/M4 gemessen und bestimmt die
   Queue-Parallelität und die Rate Limits pro Person.
+
+## 13. Admin-Bereich und Aufgaben-Versionen
+
+Ziel: Admins pflegen LLM-Zugang, Module und Aufgaben ohne Deployment, und es ist jederzeit belegbar, wer welche
+Fassung einer Aufgabe bestanden hat.
+
+### M5: Admin-Grundlage und LLM-Einstellungen
+- **Zugriff:** Routen unter `/admin` prüfen die Rolle `admin` serverseitig, auch in jeder Server Action. Den ersten Admin
+  legt ein Befehl fest (`npm run admin:grant -- <email>`), weitere vergeben Admins im Bereich selbst.
+- **LLM-Zugang:** Tabelle `settings` mit Adresse, Modell und Key. Der Key wird mit AES-256-GCM verschlüsselt, Schlüssel ist die
+  neue Umgebungsvariable `SETTINGS_ENCRYPTION_KEY` (eigener Wert, damit ein Wechsel von `BETTER_AUTH_SECRET` den Key nicht
+  unbrauchbar macht). Er wird nach dem Speichern nie wieder angezeigt.
+- **Vorrang:** Der Worker liest die Werte bei jeder Prüfung, also ohne Neustart. Werte aus der Datenbank gehen vor, die
+  Umgebungsvariablen bleiben Rückfallebene.
+- **Verbindungstest:** Ein Button prüft Erreichbarkeit, Modell und Tool-Calling, wie `npm run llm:test`.
+
+### M6: Aufgaben in der Datenbank
+```
+modules         id, order, title, description        – ohne Versionen, sie beeinflussen kein Ergebnis
+tasks           id, module_id, order, current_version, archived_at
+task_versions   task_id, version, title, summary, body (de/en), check (Kriterien, Vorprüfungen, Hinweise),
+                requires_repo, app_types, prerequisites, criteria_changed, created_by, published_at
+                – Schlüssel (task_id, version); veröffentlichte Zeilen werden nie geändert
+task_drafts     task_id, Inhalt wie task_versions, updated_by, updated_at   – höchstens ein Entwurf pro Aufgabe
+task_progress   zusätzlich passed_version, passed_check_id
+check_runs      task_version wird Fremdschlüssel auf task_versions
+```
+- **Import:** Eine Migration übernimmt die Dateien als Version 1 und trägt für bereits Bestandene `passed_version` nach.
+  Danach entfallen `tasks/` im Image und `npm run tasks:check`; dieselbe Validierung läuft beim Veröffentlichen.
+- **Ohne Prüflauf bestanden:** Die Aufgabe `github-repo` wird beim Speichern des Repos bewertet und hat keinen Prüflauf.
+  Sie schreibt `passed_version` direkt.
+- **Welche Version gilt:** Der Prüflauf legt die Version beim Klick fest. Wird währenddessen eine neue veröffentlicht, läuft
+  die Prüfung noch gegen die Fassung, die die Person gesehen hat.
+- **Anzeige:** Die Aufgabe zeigt immer die aktuelle Version. Ist die bestandene älter, steht das dabei, und die alte Fassung
+  lässt sich öffnen.
+- **Löschen:** Aufgaben werden nur archiviert, weil Prüfläufe auf sie verweisen.
+
+### M7: Editor und Übersicht
+- **Editor:** Module und Aufgaben anlegen und bearbeiten, beide Sprachen, Vorschau. Speichern ergibt einen Entwurf, erst
+  „Veröffentlichen“ erzeugt die nächste Version; dabei zeigt der Editor, ob sich Kriterien geändert haben.
+- **Übersicht:** Pro Aufgabe und Person die bestandene Version, Commit und Datum, filterbar und als CSV exportierbar.
+  Die Lehrenden-Ansicht aus M9 baut darauf auf.
+- **Export:** Alle Aufgaben als Dateien im Format aus Abschnitt 6, als Sicherung und zum Bearbeiten mit KI.
