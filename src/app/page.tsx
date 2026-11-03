@@ -4,9 +4,13 @@ import { getTranslations } from "next-intl/server";
 import { buttonVariants } from "@/components/ui/button";
 import { getSession } from "@/lib/session";
 
-export default async function Home() {
+export default async function Home({ searchParams }: PageProps<"/">) {
   if (await getSession()) {
     redirect("/tasks");
+  }
+  // Better Auth sends failed verification links back here with ?error=TOKEN_EXPIRED or similar.
+  if ((await searchParams).error) {
+    redirect("/login?link=invalid");
   }
   const t = await getTranslations("Home");
 

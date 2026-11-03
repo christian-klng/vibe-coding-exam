@@ -31,7 +31,7 @@ export function RegisterForm() {
       email,
       password: String(form.get("password")),
       locale: isLocale(locale) ? locale : undefined,
-      callbackURL: "/tasks",
+      callbackURL: "/",
     });
     setPending(false);
     if (error) {
@@ -43,7 +43,7 @@ export function RegisterForm() {
 
   async function resend() {
     if (!registeredEmail) return;
-    await authClient.sendVerificationEmail({ email: registeredEmail, callbackURL: "/tasks" });
+    await authClient.sendVerificationEmail({ email: registeredEmail, callbackURL: "/" });
     setResent(true);
   }
 

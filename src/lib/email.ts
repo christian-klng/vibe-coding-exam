@@ -6,7 +6,7 @@ import en from "../../messages/en.json";
 
 const messages = { de, en };
 
-type EmailKind = "verifyEmail" | "resetPassword";
+type EmailKind = "verifyEmail" | "resetPassword" | "existingAccount";
 
 // Any SMTP mailbox works, e.g. IONOS: SMTP_HOST=smtp.ionos.de, SMTP_PORT=587.
 // Port 465 uses TLS from the start, port 587 must upgrade via STARTTLS; other ports (e.g. a local

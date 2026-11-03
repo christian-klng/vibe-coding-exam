@@ -64,11 +64,12 @@
       "submit": "Anmelden",
       "noAccount": "Noch kein Konto?",
       "toRegister": "Jetzt registrieren",
-      "forgot": "Passwort vergessen?"
+      "forgot": "Passwort vergessen?",
+      "linkInvalid": "Dieser Bestätigungslink ist ungültig oder abgelaufen. Melde dich mit E-Mail und Passwort an, dann schicken wir dir automatisch einen neuen."
     },
     "checkEmail": {
-      "title": "Bitte bestätige deine E-Mail-Adresse",
-      "description": "Wir haben dir einen Link an {email} geschickt. Klicke darauf, um dein Konto zu aktivieren.",
+      "title": "Schau in dein Postfach",
+      "description": "Wir haben dir eine E-Mail an {email} geschickt. Folge dem Link darin, um weiterzumachen.",
       "resend": "Link erneut senden",
       "resent": "Wir haben dir einen neuen Link geschickt."
     },
@@ -108,6 +109,12 @@
       "greeting": "Hallo {name},",
       "body": "über diesen Link kannst du ein neues Passwort für Vibe Coding Exam festlegen:",
       "ignore": "Wenn du das nicht angefordert hast, kannst du diese E-Mail ignorieren."
+    },
+    "existingAccount": {
+      "subject": "Du hast bereits ein Konto",
+      "greeting": "Hallo {name},",
+      "body": "gerade wollte sich jemand mit dieser E-Mail-Adresse neu bei Vibe Coding Exam registrieren. Du hast aber schon ein Konto und kannst dich hier anmelden:",
+      "ignore": "Wenn du das nicht warst, kannst du diese E-Mail ignorieren. An deinem Konto hat sich nichts geändert. Falls du dein Passwort vergessen hast, kannst du es auf der Anmeldeseite zurücksetzen."
     }
   },
   "Repo": {

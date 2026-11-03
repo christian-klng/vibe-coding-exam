@@ -64,11 +64,12 @@
       "submit": "Sign in",
       "noAccount": "No account yet?",
       "toRegister": "Sign up now",
-      "forgot": "Forgot your password?"
+      "forgot": "Forgot your password?",
+      "linkInvalid": "This confirmation link is invalid or has expired. Sign in with your email and password and we will send you a new one automatically."
     },
     "checkEmail": {
-      "title": "Please confirm your email address",
-      "description": "We sent a link to {email}. Click it to activate your account.",
+      "title": "Check your inbox",
+      "description": "We sent an email to {email}. Follow the link in it to continue.",
       "resend": "Send link again",
       "resent": "We sent you a new link."
     },
@@ -108,6 +109,12 @@
       "greeting": "Hi {name},",
       "body": "use this link to set a new password for Vibe Coding Exam:",
       "ignore": "If you did not request this, you can ignore this email."
+    },
+    "existingAccount": {
+      "subject": "You already have an account",
+      "greeting": "Hi {name},",
+      "body": "someone just tried to sign up for Vibe Coding Exam with this email address. You already have an account and can sign in here:",
+      "ignore": "If this wasn't you, you can ignore this email. Nothing has changed on your account. If you forgot your password, you can reset it on the sign-in page."
     }
   },
   "Repo": {
