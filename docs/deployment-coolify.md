@@ -56,7 +56,8 @@ die Option *Build Variable* bei allen **aus** lassen.
 | `SMTP_USER` | vollständige E-Mail-Adresse des Postfachs |
 | `SMTP_PASSWORD` | Passwort des Postfachs |
 | `EMAIL_FROM` | z. B. `Vibe Coding Exam <kurs@deine-domain.de>` – muss die Adresse des Postfachs (oder ein Alias davon) sein |
-| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | ab M4: Zugang zum vLLM-Server mit Qwen 3.6 |
+| `SETTINGS_ENCRYPTION_KEY` | Ergebnis von `openssl rand -base64 32`. Verschlüsselt den im Admin-Bereich gespeicherten API-Key. Nicht mehr ändern, sonst muss der Key neu eingetragen werden |
+| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Optional: Besser im Admin-Bereich eintragen (Abschnitt 6) |
 
 ## 4. Deployen und prüfen
 
@@ -90,7 +91,8 @@ dasselbe Image, wird aber als zweite Anwendung in derselben Umgebung angelegt:
 | `APP_ROLE` | `worker` |
 | `DATABASE_URL` | dieselbe interne Postgres-URL wie bei der App |
 | `GITHUB_TOKEN` | Hier wirklich nötig: Die Secret-Prüfung liest bis zu 50 Commits, ohne Token erlaubt GitHub nur 60 Anfragen pro Stunde |
-| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Zugang zum vLLM-Server mit Qwen 3.6 |
+| `SETTINGS_ENCRYPTION_KEY` | derselbe Wert wie bei der App |
+| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Optional: Besser im Admin-Bereich eintragen (Abschnitt 6) |
 | `CHECK_CONCURRENCY` | `1`, später erhöhen, wenn der LLM-Server mehr schafft |
 
 4. **Deploy** klicken. Im Log erscheint `[worker] Waiting for checks`.
@@ -99,3 +101,17 @@ Der Worker meldet sich auf Port 3000 beim Healthcheck des Images. Die Migratione
 die App zuerst deployen. Beim LLM-Ausfall bleiben Prüfungen etwa 25 Minuten in der Warteschlange und werden
 wiederholt, die App zeigt so lange „Die Prüfung verzögert sich“. Danach erscheint eine Fehlermeldung mit der
 Möglichkeit, erneut zu prüfen.
+
+## 6. Admin-Bereich
+
+1. Falls noch nicht geschehen, in der App registrieren und die E-Mail-Adresse bestätigen.
+2. In Coolify in der App-Anwendung das **Terminal** öffnen und sich selbst zum Admin machen:
+
+   ```bash
+   node scripts/admin-grant.mjs deine@adresse.de
+   ```
+
+3. In der App erscheint oben der Link **Admin**. Unter **KI-Modell** Adresse, Modell und API-Key eintragen, speichern und
+   **Verbindung testen** klicken. Der Test läuft aus dem App-Container, der den LLM-Server dafür erreichen muss.
+
+Weitere Admins vergibst du unter **Nutzer**.

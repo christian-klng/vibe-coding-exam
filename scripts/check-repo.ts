@@ -8,7 +8,7 @@ import { openGitHubRepo } from "../src/checker/github-source";
 import { isLocale } from "../src/i18n/config";
 import { lookupRepository } from "../src/lib/github/client";
 import { parseRepoUrl } from "../src/lib/github/url";
-import { getCheckModel, getLlmConfig } from "../src/lib/llm";
+import { createCheckModel, getEnvLlmConfig } from "../src/lib/llm";
 import { getTask } from "../src/lib/tasks/loader";
 
 try {
@@ -32,14 +32,15 @@ async function main() {
   const started = Date.now();
   const source = await openGitHubRepo(repo.owner, repo.name, repo.defaultBranch);
   console.log(`${source.fullName} at ${source.sha.slice(0, 7)}, ${source.files.size} files\n`);
-  const outcome = await runCheck({ task, locale: localeArg, source, model: getCheckModel, modelName: process.env.LLM_MODEL });
+  const llm = getEnvLlmConfig();
+  const outcome = await runCheck({ task, locale: localeArg, source, model: () => createCheckModel(llm), modelName: llm.model });
 
   console.log(`${outcome.status.toUpperCase()}: ${outcome.summary}`);
   for (const criterion of outcome.criteria) {
     console.log(`  [${criterion.met ? "x" : " "}] ${criterion.id} (${criterion.evidence}): ${criterion.feedback}`);
   }
   if (outcome.nextStep) console.log(`Next step: ${outcome.nextStep}`);
-  console.log(`\n${((Date.now() - started) / 1000).toFixed(1)} s, tokens in/out: ${outcome.inputTokens}/${outcome.outputTokens}, model: ${getLlmConfig().model}`);
+  console.log(`\n${((Date.now() - started) / 1000).toFixed(1)} s, tokens in/out: ${outcome.inputTokens}/${outcome.outputTokens}, model: ${llm.model}`);
 }
 
 main().catch((error) => {

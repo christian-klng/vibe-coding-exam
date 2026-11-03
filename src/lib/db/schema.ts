@@ -51,6 +51,14 @@ export const repositories = pgTable(
 
 export type Repository = typeof repositories.$inferSelect;
 
+// Values admins can change at runtime, e.g. the LLM access. Secrets are stored encrypted.
+export const settings = pgTable("settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedBy: text("updated_by").references(() => user.id, { onDelete: "set null" }),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const checkRunStatuses = ["queued", "running", "passed", "failed", "error"] as const;
 export type CheckRunStatus = (typeof checkRunStatuses)[number];
 export type CheckCriterionResult = { id: string; met: boolean; evidence: string; feedback: string };

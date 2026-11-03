@@ -25,6 +25,7 @@ COPY --from=build --chown=node:node /app/tasks ./tasks
 COPY --from=build --chown=node:node /app/drizzle ./drizzle
 # The migration script needs the complete packages, not just the files the server uses.
 COPY --from=build --chown=node:node /app/scripts/migrate.mjs ./scripts/migrate.mjs
+COPY --from=build --chown=node:node /app/scripts/admin-grant.mjs ./scripts/admin-grant.mjs
 # The check worker is one bundled file and shares the tasks folder with the server.
 COPY --from=build --chown=node:node /app/dist/worker.mjs ./worker.mjs
 COPY --from=build --chown=node:node /app/node_modules/drizzle-orm ./node_modules/drizzle-orm

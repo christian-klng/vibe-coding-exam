@@ -6,7 +6,8 @@
     "login": "Sign in",
     "register": "Sign up",
     "logout": "Sign out",
-    "language": "Language"
+    "language": "Language",
+    "admin": "Admin"
   },
   "Home": {
     "title": "Learn vibe coding with real tasks",
@@ -161,6 +162,59 @@
       "private": "This repo is private. On GitHub, go to Settings → Danger Zone and make it “Public” so we can read it.",
       "rateLimited": "GitHub is currently limiting too many requests. Please try again in a few minutes.",
       "unavailable": "GitHub is not reachable right now. Please try again shortly."
+    }
+  },
+  "Admin": {
+    "title": "Administration",
+    "nav": {
+      "llm": "AI model",
+      "users": "Users"
+    },
+    "llm": {
+      "title": "Access to the AI model",
+      "description": "The worker reads these values for every check, no restart is needed.",
+      "updatedAt": "Last changed: {date}.",
+      "baseURL": "Server address",
+      "baseURLHint": "OpenAI-compatible address including /v1.",
+      "model": "Model",
+      "modelHint": "The name the server reports at /v1/models.",
+      "emptyUsesEnv": "Leave empty to use the value from the environment variable: {value}",
+      "apiKey": "API key",
+      "keyStored": "A key is stored encrypted and will not be shown again. Leave empty to keep it.",
+      "keyFromEnv": "The key from the environment variable is in use. An entry here takes precedence.",
+      "keyMissing": "No key has been set yet.",
+      "removeKey": "Delete the stored key",
+      "save": "Save",
+      "saving": "Saving …",
+      "saved": "Saved. The next check uses these values.",
+      "errors": {
+        "invalidUrl": "This is not a valid address. It must start with http:// or https://.",
+        "noEncryptionKey": "The key cannot be saved because SETTINGS_ENCRYPTION_KEY is missing on the server. The other values were not saved either."
+      },
+      "testTitle": "Test the connection",
+      "testDescription": "Tests the saved values. This can take one or two minutes.",
+      "test": "Test the connection",
+      "testing": "Testing …",
+      "testFailed": "The test could not be run. The server log gives the reason.",
+      "testPassed": "All good: the agent can work with this model.",
+      "testNotPassed": "Checks cannot work with these values yet.",
+      "stepOk": "Passed",
+      "stepFailed": "Failed",
+      "steps": {
+        "server": "Server reachable, model available",
+        "tools": "Tool calling over several steps",
+        "structured": "Structured output (JSON schema)"
+      }
+    },
+    "users": {
+      "search": "Search by name or e-mail",
+      "searchSubmit": "Search",
+      "empty": "No users found.",
+      "admin": "Admin",
+      "you": "This is you",
+      "grant": "Make admin",
+      "revoke": "Remove admin rights",
+      "limited": "Showing the latest {count}. Use the search to find others."
     }
   }
 }

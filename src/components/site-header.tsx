@@ -19,6 +19,11 @@ export async function SiteHeader() {
           <LanguageSwitcher />
           {session ? (
             <>
+              {session.user.role === "admin" && (
+                <Link href="/admin" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                  {t("admin")}
+                </Link>
+              )}
               <span className="hidden text-sm text-muted-foreground sm:inline">{session.user.name}</span>
               <LogoutButton />
             </>

@@ -9,7 +9,7 @@ import { parse } from "yaml";
 import { z } from "zod";
 import { runCheck } from "../src/checker";
 import { createFixtureSource } from "../src/checker/fixture-source";
-import { getCheckModel } from "../src/lib/llm";
+import { createCheckModel, getEnvLlmConfig } from "../src/lib/llm";
 import { getTask } from "../src/lib/tasks/loader";
 
 try {
@@ -66,7 +66,7 @@ async function main() {
         task,
         locale: testCase.locale,
         source: createFixtureSource(testCase.repo),
-        model: getCheckModel,
+        model: () => createCheckModel(getEnvLlmConfig()),
       });
       const duration = Date.now() - started;
       totalMs += duration;

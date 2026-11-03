@@ -6,7 +6,8 @@
     "login": "Anmelden",
     "register": "Registrieren",
     "logout": "Abmelden",
-    "language": "Sprache"
+    "language": "Sprache",
+    "admin": "Admin"
   },
   "Home": {
     "title": "Vibe Coding lernen – mit echten Aufgaben",
@@ -161,6 +162,59 @@
       "private": "Dieses Repo ist privat. Stelle es auf GitHub unter Settings → Danger Zone auf „Public“, damit wir es lesen können.",
       "rateLimited": "GitHub bremst gerade zu viele Anfragen aus. Versuche es in ein paar Minuten noch einmal.",
       "unavailable": "GitHub ist gerade nicht erreichbar. Versuche es bitte gleich noch einmal."
+    }
+  },
+  "Admin": {
+    "title": "Administration",
+    "nav": {
+      "llm": "KI-Modell",
+      "users": "Nutzer"
+    },
+    "llm": {
+      "title": "Zugang zum KI-Modell",
+      "description": "Der Worker liest diese Werte bei jeder Prüfung, ein Neustart ist nicht nötig.",
+      "updatedAt": "Zuletzt geändert: {date}.",
+      "baseURL": "Adresse des Servers",
+      "baseURLHint": "OpenAI-kompatible Adresse inklusive /v1.",
+      "model": "Modell",
+      "modelHint": "Name, wie ihn der Server unter /v1/models meldet.",
+      "emptyUsesEnv": "Leer lassen, um den Wert aus der Umgebungsvariable zu nutzen: {value}",
+      "apiKey": "API-Key",
+      "keyStored": "Ein Key ist verschlüsselt gespeichert und wird nicht mehr angezeigt. Leer lassen, um ihn zu behalten.",
+      "keyFromEnv": "Derzeit gilt der Key aus der Umgebungsvariable. Ein Eintrag hier hat Vorrang.",
+      "keyMissing": "Es ist noch kein Key hinterlegt.",
+      "removeKey": "Gespeicherten Key löschen",
+      "save": "Speichern",
+      "saving": "Wird gespeichert …",
+      "saved": "Gespeichert. Die nächste Prüfung nutzt diese Werte.",
+      "errors": {
+        "invalidUrl": "Das ist keine gültige Adresse. Sie muss mit http:// oder https:// beginnen.",
+        "noEncryptionKey": "Der Key kann nicht gespeichert werden, weil SETTINGS_ENCRYPTION_KEY auf dem Server fehlt. Die übrigen Werte sind nicht gespeichert worden."
+      },
+      "testTitle": "Verbindung testen",
+      "testDescription": "Testet die gespeicherten Werte. Das kann ein bis zwei Minuten dauern.",
+      "test": "Verbindung testen",
+      "testing": "Wird getestet …",
+      "testFailed": "Der Test konnte nicht ausgeführt werden. Das Server-Log nennt den Grund.",
+      "testPassed": "Alles in Ordnung: Der Agent kann mit diesem Modell arbeiten.",
+      "testNotPassed": "Mit diesen Werten können Prüfungen noch nicht funktionieren.",
+      "stepOk": "Erfolgreich",
+      "stepFailed": "Fehlgeschlagen",
+      "steps": {
+        "server": "Server erreichbar, Modell verfügbar",
+        "tools": "Tool-Calling in mehreren Schritten",
+        "structured": "Strukturierte Ausgabe (JSON-Schema)"
+      }
+    },
+    "users": {
+      "search": "Nach Name oder E-Mail suchen",
+      "searchSubmit": "Suchen",
+      "empty": "Keine Nutzer gefunden.",
+      "admin": "Admin",
+      "you": "Das bist du",
+      "grant": "Zum Admin machen",
+      "revoke": "Admin-Rechte entziehen",
+      "limited": "Es werden die neuesten {count} angezeigt. Nutze die Suche, um weitere zu finden."
     }
   }
 }

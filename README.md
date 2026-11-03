@@ -96,8 +96,18 @@ den Pflicht-Kriterien, nicht das Modell.
 
 Das Eval-Set gehört zu jeder Änderung an Modell, Prompt oder Server-Einstellungen.
 
+## Admin-Bereich
+
+Unter `/admin` tragen Admins den Zugang zum KI-Modell ein und vergeben Admin-Rechte. Den ersten Admin legt dieser
+Befehl fest, die Person muss schon registriert sein:
+
+```bash
+npm run admin:grant -- person@example.com
+```
+
 ## LLM-Server testen
 
+Dasselbe gibt es im Admin-Bereich als Button für die dort gespeicherten Werte; dieser Befehl testet die Umgebungsvariablen.
 Prüft, ob der vLLM-Server erreichbar ist, Tool-Calling in mehreren Schritten beherrscht und JSON-Schema-Ausgaben liefert:
 
 ```bash
@@ -117,7 +127,8 @@ Damit Tool-Calling funktioniert, muss vLLM mit `--enable-auto-tool-choice` und d
 | `SMTP_USER`, `SMTP_PASSWORD` | Zugangsdaten des Postfachs |
 | `EMAIL_FROM` | Absender, muss die Adresse des Postfachs sein, z. B. `Vibe Coding Exam <kurs@deine-domain.de>` |
 | `GITHUB_TOKEN` | Optional lokal, in Produktion nötig: GitHub-Token mit Lesezugriff auf öffentliche Repos (ohne Token nur 60 Anfragen pro Stunde) |
-| `LLM_BASE_URL` | Basis-URL des vLLM-Servers inkl. `/v1` |
+| `SETTINGS_ENCRYPTION_KEY` | Verschlüsselt im Admin-Bereich gespeicherte Geheimnisse (`openssl rand -base64 32`). Web und Worker brauchen denselben Wert |
+| `LLM_BASE_URL` | Basis-URL des vLLM-Servers inkl. `/v1`. Die drei `LLM_*`-Variablen sind die Rückfallebene, Werte aus dem Admin-Bereich haben Vorrang |
 | `LLM_MODEL` | Modellname, wie ihn der Server unter `/v1/models` meldet |
 | `LLM_API_KEY` | API-Key, mit dem der vLLM-Server abgesichert ist |
 | `CHECK_CONCURRENCY` | Worker: Wie viele Prüfungen gleichzeitig laufen (Standard 1) |

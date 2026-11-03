@@ -7,7 +7,8 @@ import type { CheckOutcome } from "@/checker/types";
 import { getDb } from "@/lib/db";
 import { type CheckRun, checkRuns, taskProgress } from "@/lib/db/schema";
 import { lookupRepository } from "@/lib/github/client";
-import { getCheckModel, getLlmConfig } from "@/lib/llm";
+import { createCheckModel } from "@/lib/llm";
+import { getEffectiveLlmConfig } from "@/lib/settings";
 import { getTask } from "@/lib/tasks/loader";
 
 const STALE_RUNNING_MS = 30 * 60 * 1000;
@@ -87,7 +88,8 @@ async function check(run: CheckRun, startedAt: number) {
     throw error;
   }
 
-  const outcome = await runCheck({ task, locale, source, model: getCheckModel, modelName: getLlmConfig().model });
+  const llm = await getEffectiveLlmConfig();
+  const outcome = await runCheck({ task, locale, source, model: () => createCheckModel(llm), modelName: llm.model });
   await saveOutcome(run, outcome, source.sha, startedAt);
 }
 

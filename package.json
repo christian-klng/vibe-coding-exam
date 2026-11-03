@@ -16,7 +16,8 @@
     "worker": "tsx src/worker/index.ts",
     "worker:build": "esbuild src/worker/index.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/worker.mjs --banner:js=\"import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);\"",
     "check:repo": "tsx scripts/check-repo.ts",
-    "eval": "tsx scripts/eval.ts"
+    "eval": "tsx scripts/eval.ts",
+    "admin:grant": "node scripts/admin-grant.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.75",
