@@ -54,10 +54,6 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
           </Badge>
         </div>
         <p className="text-muted-foreground">{task.summary[locale]}</p>
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="outline">{t(`checkType.${task.check.type}`)}</Badge>
-          {task.requiresRepo && <Badge variant="outline">{t("requiresRepo")}</Badge>}
-        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -73,13 +69,16 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
               <CardDescription>{t("criteriaHint")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ul className="space-y-3">
+              <ul className="list-disc space-y-2 pl-4 text-sm">
                 {task.check.criteria.map((criterion) => (
-                  <li key={criterion.id} className="space-y-1 text-sm">
-                    <Badge variant={criterion.required ? "default" : "outline"} className="text-[0.7rem]">
-                      {criterion.required ? t("required") : t("optional")}
-                    </Badge>
-                    <p>{criterion.text[locale]}</p>
+                  <li key={criterion.id}>
+                    {criterion.text[locale]}
+                    {criterion.required && (
+                      <>
+                        <span aria-hidden> *</span>
+                        <span className="sr-only"> ({t("required")})</span>
+                      </>
+                    )}
                   </li>
                 ))}
               </ul>

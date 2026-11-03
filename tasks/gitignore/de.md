@@ -18,10 +18,5 @@ Claude Code legt eigene Dateien an. So entscheidest du, was ins Repo darf:
 | `CLAUDE.local.md` | ❌ nein | deine persönlichen Notizen für die KI |
 | `.mcp.json` mit eingetragenen Keys | ❌ nein | Keys gehören in Umgebungsvariablen |
 
-## So gehst du vor
-1. Öffne oder erstelle `.gitignore` im Hauptordner.
-2. Trage mindestens ein: `node_modules`, Build-Ordner (z. B. `.next`, `dist`), `.env*`, `.claude/settings.local.json`, `CLAUDE.local.md`, `.DS_Store`.
-3. Wurde etwas davon schon committet? Entferne es aus dem Repo (die Datei bleibt auf deinem Rechner).
-
 ## Tipp: So fragst du Claude Code
 > „Prüf meine .gitignore. Fehlt etwas für meinen Tech-Stack oder für Claude Code? Liegen schon Dateien im Repo, die nicht hineingehören? Entferne sie aus Git, aber nicht von meinem Rechner.“
