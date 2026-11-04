@@ -10,11 +10,14 @@ export function getEnvLlmConfig(): LlmConfig {
   };
 }
 
+/** Waiting does not help here: somebody has to enter the access first. */
+export class LlmNotConfiguredError extends Error {}
+
 // The check agent talks to a self-hosted model (Qwen 3.6 on vLLM) through its
 // OpenAI-compatible API. Swapping the model only means changing these settings.
 export function createCheckModel({ baseURL, model, apiKey }: LlmConfig) {
   if (!baseURL || !model) {
-    throw new Error("The LLM is not configured: base URL and model are needed");
+    throw new LlmNotConfiguredError("The LLM is not configured: base URL and model are needed");
   }
   const provider = createOpenAICompatible({
     name: "local-llm",

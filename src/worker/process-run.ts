@@ -5,9 +5,9 @@ import { NoVerdictError } from "@/checker/agent";
 import { openGitHubRepo, RepoTooLargeError } from "@/checker/github-source";
 import type { CheckOutcome } from "@/checker/types";
 import { getDb } from "@/lib/db";
-import { type CheckRun, checkRuns, taskProgress } from "@/lib/db/schema";
+import { type CheckRun, checkRuns, LLM_NOT_CONFIGURED, taskProgress } from "@/lib/db/schema";
 import { lookupRepository } from "@/lib/github/client";
-import { createCheckModel } from "@/lib/llm";
+import { createCheckModel, LlmNotConfiguredError } from "@/lib/llm";
 import { getEffectiveLlmConfig } from "@/lib/settings";
 import { getTask } from "@/lib/tasks/loader";
 
@@ -111,6 +111,11 @@ export async function processRun(runId: string, attempt: number, attemptsLeft: n
   try {
     await check(run, startedAt);
   } catch (error) {
+    if (error instanceof LlmNotConfiguredError) {
+      console.error(`[worker] Check ${runId} (${run.taskId}): ${error.message}`);
+      await failWithError(run, LLM_NOT_CONFIGURED);
+      return;
+    }
     const message = error instanceof Error ? error.message : String(error);
     console.error(`[worker] Check ${runId} (${run.taskId}) failed on attempt ${attempt + 1}`, error);
     // A model that found no verdict twice will not find one the third time; only outages need patience.

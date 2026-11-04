@@ -3,6 +3,7 @@ import { Readable } from "node:stream";
 import { MockLanguageModelV4 } from "ai/test";
 import { pack } from "tar-stream";
 import { describe, expect, it } from "vitest";
+import { createCheckModel, LlmNotConfiguredError } from "@/lib/llm";
 import { getTask } from "@/lib/tasks/loader";
 import { runCheck } from ".";
 import { NoVerdictError } from "./agent";
@@ -150,6 +151,23 @@ describe("runCheck", () => {
     const outcome = await check("go-live", { files: { "README.md": "See https://github.com/a/b" } }, []);
     expect(outcome.status).toBe("failed");
     expect(outcome.summary).toContain("README");
+  });
+});
+
+describe("createCheckModel", () => {
+  it("names a missing configuration, so that the worker does not retry", () => {
+    expect(() => createCheckModel({})).toThrow(LlmNotConfiguredError);
+    expect(() => createCheckModel({ baseURL: "https://llm.example.com/v1" })).toThrow(LlmNotConfiguredError);
+  });
+
+  it("lets pre-checks decide before the missing configuration matters", async () => {
+    const outcome = await runCheck({
+      task: getTask("readme")!,
+      locale: "de",
+      source: createFixtureSource({ files: {} }),
+      model: () => createCheckModel({}),
+    });
+    expect(outcome.status).toBe("failed");
   });
 });
 

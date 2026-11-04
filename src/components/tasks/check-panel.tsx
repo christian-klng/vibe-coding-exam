@@ -4,7 +4,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Locale } from "@/i18n/config";
-import type { CheckRun } from "@/lib/db/schema";
+import { type CheckRun, LLM_NOT_CONFIGURED } from "@/lib/db/schema";
 import type { Task } from "@/lib/tasks/schema";
 import { CheckButton } from "./check-button";
 import { CheckPoller } from "./check-poller";
@@ -98,7 +98,7 @@ export async function CheckPanel({ task, locale, locked, runs, queuePosition }: 
 
           {latest?.status === "error" && (
             <Alert>
-              <AlertDescription>{tc("error")}</AlertDescription>
+              <AlertDescription>{tc(latest.error === LLM_NOT_CONFIGURED ? "notConfigured" : "error")}</AlertDescription>
             </Alert>
           )}
 

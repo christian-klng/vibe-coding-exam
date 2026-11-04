@@ -59,6 +59,7 @@
     "passed": "Bestanden",
     "failed": "Noch nicht bestanden",
     "error": "Die Prüfung konnte nicht abgeschlossen werden. Das liegt nicht an deinem Repository. Versuch es bitte noch einmal.",
+    "notConfigured": "Die KI-Prüfung ist noch nicht eingerichtet. Bitte wende dich an die Kursleitung.",
     "nextStep": "Nächster Schritt",
     "commit": "Geprüfter Stand: {sha} vom {date}",
     "recheck": "Erneut prüfen",

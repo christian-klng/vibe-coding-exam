@@ -61,6 +61,8 @@ export const settings = pgTable("settings", {
 
 export const checkRunStatuses = ["queued", "running", "passed", "failed", "error"] as const;
 export type CheckRunStatus = (typeof checkRunStatuses)[number];
+// Stored in check_runs.error when the page should say more than "something went wrong".
+export const LLM_NOT_CONFIGURED = "llm-not-configured";
 export type CheckCriterionResult = { id: string; met: boolean; evidence: string; feedback: string };
 
 // One row per check of a task, kept as history. Results apply to the commit that was checked.

@@ -59,6 +59,7 @@
     "passed": "Passed",
     "failed": "Not passed yet",
     "error": "The check could not be completed. This is not caused by your repository. Please try again.",
+    "notConfigured": "The AI check has not been set up yet. Please contact your course leader.",
     "nextStep": "Next step",
     "commit": "Checked version: {sha} from {date}",
     "recheck": "Check again",
