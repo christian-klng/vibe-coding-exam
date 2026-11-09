@@ -322,7 +322,8 @@ vibe-coding-exam/
 
 **Stand 03.11.2026:** M0 bis M3 fertig und live auf Coolify. M4 gebaut (Warteschlange, Worker, Vorprüfungen, Agent, Ergebnis-Anzeige, Eval-Set) und mit simuliertem Modell end-to-end getestet; der Test gegen Qwen 3.6 steht noch aus (`npm run llm:test`, dann `npm run eval`). Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI. Noch offen: M4 produktiv abschließen (Worker in Coolify, Test mit Qwen 3.6). M5 gebaut (Admin-Bereich, LLM-Zugang im Formular, Verbindungstest, Nutzerverwaltung). Als Nächstes M6.
 
-**Stand 09.11.2026:** Umsetzungsplan für den Aufgaben-Editor und die Admin-Erkennung per E-Mail in Abschnitt 14.
+**Stand 09.11.2026:** Umsetzungsplan für den Aufgaben-Editor und die Admin-Erkennung per E-Mail in Abschnitt 14. Schritt 1
+(`ADMIN_EMAILS`) und Schritt 2 (Aufgaben in der Datenbank, Import beim Start, `passed_version`) sind gebaut.
 
 **Abweichungen von Abschnitt 7 in M4:** Das Repo wird einmal als Archiv geladen und im Speicher gelesen statt Datei für Datei über die API (eine Anfrage statt vieler, Suche ohne GitHub-Suchindex). Der Agent hat kein URL-Werkzeug: Die Live-URL prüft der Code selbst und gibt dem Agenten nur die Messwerte, damit ein Prompt-Injection-Angriff keine Anfragen auslösen kann. Bilder kann der Agent nicht ansehen; solche Kriterien gelten mit Hinweis als erfüllt. `list_workflow_runs` entfällt, solange es keine CI-Aufgabe gibt.
 
@@ -438,8 +439,11 @@ Deployment. Studierende sehen die Änderung sofort; wer eine ältere Fassung bes
   den YAML-Parser), idempotent: importiert nur, solange `tasks` leer ist. Im Container läuft es nach `db:migrate`.
   Für bereits bestandene Aufgaben wird `passed_version = 1` nachgetragen.
 - Neuer Zugriff `src/lib/tasks/catalog.ts` (Module, aktuelle Versionen, Body) ersetzt `loader.ts` in Seiten, Server
-  Actions und Worker. Cache: im Server per `unstable_cache`/`revalidateTag("tasks")` beim Veröffentlichen, im Worker eine
-  Abfrage pro Prüflauf (wie heute die LLM-Einstellungen). `loader.ts` bleibt nur für Import, Export und `npm run eval`.
+  Actions und Worker. Kein Cache: pro Seitenaufruf bzw. Prüflauf eine Abfrage, so erscheint eine Veröffentlichung sofort.
+  `loader.ts` bleibt für Import, Export, Tests und `npm run eval`.
+- Umgesetzt mit zwei Abweichungen: `check_runs.task_version` bekommt keinen Fremdschlüssel, weil die Zeilen älter sind als
+  `task_versions` und der Import erst nach der Migration läuft. `tasks.current_version` ist null, bis eine Aufgabe das erste
+  Mal veröffentlicht wird; so kann der Editor neue Aufgaben als Entwurf anlegen.
 - Die Regeln aus `scripts/check-tasks.ts` (eindeutige Kriterien-IDs, mindestens ein Pflichtkriterium, Voraussetzungen
   zeigen nach vorn, Modul existiert) wandern nach `src/lib/tasks/validate.ts` und laufen beim Veröffentlichen und im Skript.
 - `tasks/` verlässt das Docker-Image erst, wenn der Import einmal produktiv gelaufen ist (Rückfallebene).

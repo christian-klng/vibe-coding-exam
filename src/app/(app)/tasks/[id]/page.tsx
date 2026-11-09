@@ -12,13 +12,12 @@ import { isLocale } from "@/i18n/config";
 import { getTaskChecks } from "@/lib/checks";
 import { getPrimaryRepository } from "@/lib/repositories";
 import { requireSession } from "@/lib/session";
-import { getCatalog, getTask, getTaskBody } from "@/lib/tasks/loader";
+import { getCatalog, getTask } from "@/lib/tasks/catalog";
 import { getProgress } from "@/lib/tasks/progress";
 
 export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
   const { id } = await params;
-  // Look the id up in the catalog first: it is used to build a file path.
-  const task = getTask(id);
+  const task = await getTask(id);
   if (!task) {
     notFound();
   }
@@ -27,13 +26,13 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
   const t = await getTranslations("Tasks");
   const localeValue = await getLocale();
   const locale = isLocale(localeValue) ? localeValue : "de";
-  const { modules, tasks } = getCatalog();
-  const taskModule = modules.find((m) => m.id === task.module)!;
-  const [progress, repo, checks] = await Promise.all([
+  const [{ modules, tasks }, progress, repo, checks] = await Promise.all([
+    getCatalog(),
     getProgress(session.user.id),
     getPrimaryRepository(session.user.id),
     getTaskChecks(session.user.id, task.id),
   ]);
+  const taskModule = modules.find((m) => m.id === task.module)!;
   const status = progress.get(task.id) ?? "open";
   const locked = task.requiresRepo && !repo;
   const prerequisites = tasks.filter((other) => task.prerequisites.includes(other.id));
@@ -61,7 +60,7 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <article className="prose prose-neutral max-w-none dark:prose-invert prose-headings:font-semibold prose-h2:text-lg prose-pre:overflow-x-auto prose-code:before:content-none prose-code:after:content-none [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{getTaskBody(task.id, locale)}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{task.body[locale]}</ReactMarkdown>
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">

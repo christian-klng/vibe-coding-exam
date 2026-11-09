@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { isLocale } from "@/i18n/config";
 import { getPrimaryRepository } from "@/lib/repositories";
 import { requireSession } from "@/lib/session";
-import { getCatalog } from "@/lib/tasks/loader";
+import { getCatalog } from "@/lib/tasks/catalog";
 import { getProgress } from "@/lib/tasks/progress";
 
 export default async function TasksPage() {
@@ -15,8 +15,11 @@ export default async function TasksPage() {
   const t = await getTranslations("Tasks");
   const localeValue = await getLocale();
   const locale = isLocale(localeValue) ? localeValue : "de";
-  const { modules, tasks } = getCatalog();
-  const [progress, repo] = await Promise.all([getProgress(session.user.id), getPrimaryRepository(session.user.id)]);
+  const [{ modules, tasks }, progress, repo] = await Promise.all([
+    getCatalog(),
+    getProgress(session.user.id),
+    getPrimaryRepository(session.user.id),
+  ]);
   const done = tasks.filter((task) => progress.get(task.id) === "passed").length;
 
   return (

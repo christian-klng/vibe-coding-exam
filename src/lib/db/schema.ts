@@ -1,8 +1,63 @@
 import { sql } from "drizzle-orm";
 import { boolean, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import type { Localized, TaskDefinition } from "@/lib/tasks/schema";
 import { user } from "./auth-schema";
 
 export * from "./auth-schema";
+
+// Modules group the tasks. They carry no versions because they do not influence any result.
+export const modules = pgTable("modules", {
+  id: text("id").primaryKey(),
+  order: integer("order").notNull(),
+  title: jsonb("title").$type<Localized>().notNull(),
+  description: jsonb("description").$type<Localized>().notNull(),
+});
+
+// One row per task. Module and order are not versioned: moving a task changes no result.
+// current_version is null until the first publication; archived tasks keep their versions.
+export const tasks = pgTable("tasks", {
+  id: text("id").primaryKey(),
+  moduleId: text("module_id")
+    .notNull()
+    .references(() => modules.id),
+  order: integer("order").notNull(),
+  currentVersion: integer("current_version"),
+  archivedAt: timestamp("archived_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// A published version is never changed. Check runs and progress refer to (task_id, version).
+export const taskVersions = pgTable(
+  "task_versions",
+  {
+    taskId: text("task_id")
+      .notNull()
+      .references(() => tasks.id),
+    version: integer("version").notNull(),
+    definition: jsonb("definition").$type<TaskDefinition>().notNull(),
+    bodyDe: text("body_de").notNull(),
+    bodyEn: text("body_en").notNull(),
+    // Whether the criteria differ from the previous version, so a repeated check may end differently.
+    criteriaChanged: boolean("criteria_changed").default(false).notNull(),
+    createdBy: text("created_by").references(() => user.id, { onDelete: "set null" }),
+    publishedAt: timestamp("published_at").defaultNow().notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.taskId, table.version] })],
+);
+
+// At most one draft per task; publishing turns it into the next version and deletes it.
+export const taskDrafts = pgTable("task_drafts", {
+  taskId: text("task_id")
+    .primaryKey()
+    .references(() => tasks.id),
+  definition: jsonb("definition").$type<TaskDefinition>().notNull(),
+  bodyDe: text("body_de").notNull(),
+  bodyEn: text("body_en").notNull(),
+  updatedBy: text("updated_by").references(() => user.id, { onDelete: "set null" }),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type TaskVersionRow = typeof taskVersions.$inferSelect;
 
 export const taskStatuses = ["open", "checking", "passed", "failed"] as const;
 export type TaskStatus = (typeof taskStatuses)[number];
@@ -16,6 +71,8 @@ export const taskProgress = pgTable(
       .references(() => user.id, { onDelete: "cascade" }),
     taskId: text("task_id").notNull(),
     status: text("status", { enum: taskStatuses }).default("open").notNull(),
+    // The version that was passed. Stays when a newer version is published.
+    passedVersion: integer("passed_version"),
     updatedAt: timestamp("updated_at")
       .defaultNow()
       .$onUpdate(() => new Date())
@@ -76,6 +133,7 @@ export const checkRuns = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     taskId: text("task_id").notNull(),
+    // No foreign key on purpose: the rows predate task_versions and the import runs after the migration.
     taskVersion: integer("task_version").notNull(),
     locale: text("locale").notNull(),
     repositoryId: text("repository_id").references(() => repositories.id, { onDelete: "set null" }),

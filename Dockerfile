@@ -11,7 +11,7 @@ FROM base AS build
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npm run build && npm run worker:build
+RUN npm run build && npm run worker:build && npm run tasks:import:build
 
 # --- Runtime: only the standalone server and the files read at runtime ---
 FROM base AS runtime
@@ -20,13 +20,14 @@ ENV NODE_ENV=production
 COPY --from=build --chown=node:node /app/.next/standalone ./
 COPY --from=build --chown=node:node /app/.next/static ./.next/static
 COPY --from=build --chown=node:node /app/public ./public
-# Task definitions and database migrations are read from disk at runtime.
+# Task files are imported into the database on first start; migrations are read at runtime.
 COPY --from=build --chown=node:node /app/tasks ./tasks
+COPY --from=build --chown=node:node /app/dist/import-tasks.mjs ./import-tasks.mjs
 COPY --from=build --chown=node:node /app/drizzle ./drizzle
 # The migration script needs the complete packages, not just the files the server uses.
 COPY --from=build --chown=node:node /app/scripts/migrate.mjs ./scripts/migrate.mjs
 COPY --from=build --chown=node:node /app/scripts/admin-grant.mjs ./scripts/admin-grant.mjs
-# The check worker is one bundled file and shares the tasks folder with the server.
+# The check worker is one bundled file; it reads the tasks from the database.
 COPY --from=build --chown=node:node /app/dist/worker.mjs ./worker.mjs
 COPY --from=build --chown=node:node /app/node_modules/drizzle-orm ./node_modules/drizzle-orm
 COPY --from=build --chown=node:node /app/node_modules/postgres ./node_modules/postgres
@@ -41,4 +42,4 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
 
 # Same image for both services: APP_ROLE=worker starts the check worker, anything else the web server.
 # Only the web server applies migrations, so that the two never race for them.
-CMD ["sh", "-c", "if [ \"$APP_ROLE\" = worker ]; then exec node worker.mjs; fi; node scripts/migrate.mjs && exec node server.js"]
+CMD ["sh", "-c", "if [ \"$APP_ROLE\" = worker ]; then exec node worker.mjs; fi; node scripts/migrate.mjs && node import-tasks.mjs && exec node server.js"]

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-const localized = z.object({ de: z.string().min(1), en: z.string().min(1) });
+export const localized = z.object({ de: z.string().min(1), en: z.string().min(1) });
+export type Localized = z.infer<typeof localized>;
 
 export const checkTypes = ["ai", "auto", "url", "quiz", "self"] as const;
 export const appTypes = ["all", "web", "mobile", "api", "landingpage"] as const;
@@ -34,11 +35,8 @@ export const criterionSchema = z.object({
   text: localized,
 });
 
-export const taskSchema = z.object({
-  id: z.string().regex(/^[a-z0-9-]+$/),
-  version: z.number().int().positive(),
-  module: z.string(),
-  order: z.number().int(),
+// What a version of a task contains. Id, version, module and order live next to it.
+export const taskDefinitionSchema = z.object({
   title: localized,
   summary: localized,
   requiresRepo: z.boolean(),
@@ -55,7 +53,16 @@ export const taskSchema = z.object({
   }),
 });
 
+// A task file (task.yaml) and the shape every consumer of the catalog gets.
+export const taskSchema = taskDefinitionSchema.extend({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  version: z.number().int().positive(),
+  module: z.string(),
+  order: z.number().int(),
+});
+
 export type TaskModule = z.infer<typeof moduleSchema>;
+export type TaskDefinition = z.infer<typeof taskDefinitionSchema>;
 export type Task = z.infer<typeof taskSchema>;
 export type Criterion = z.infer<typeof criterionSchema>;
 export type PreCheck = z.infer<typeof preCheckSchema>;

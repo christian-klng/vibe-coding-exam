@@ -6,14 +6,14 @@ import { defaultLocale, isLocale } from "@/i18n/config";
 import { startCheck } from "@/lib/checks";
 import { getPrimaryRepository } from "@/lib/repositories";
 import { requireSession } from "@/lib/session";
-import { getTask } from "@/lib/tasks/loader";
+import { getTask } from "@/lib/tasks/catalog";
 
 export type CheckErrorKey = "rateLimited" | "cooldown" | "noRepo" | "notCheckable";
 export type RequestCheckState = { error?: CheckErrorKey };
 
 export async function requestCheck(taskId: string): Promise<RequestCheckState> {
   const session = await requireSession();
-  const task = getTask(taskId);
+  const task = await getTask(taskId);
   if (!task || (task.check.type !== "ai" && task.check.type !== "url")) {
     return { error: "notCheckable" };
   }

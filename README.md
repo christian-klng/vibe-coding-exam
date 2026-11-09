@@ -43,7 +43,11 @@ Zurücksetzen des Passworts erscheinen dann im Terminal, in dem `npm run dev` l�
 
 ## Aufgaben
 
-Die Aufgaben liegen als Dateien im Ordner `tasks/` – ein Ordner pro Aufgabe:
+Die App liest Module und Aufgaben aus der Datenbank (Tabellen `modules`, `tasks`, `task_versions`). Jede
+Veröffentlichung einer Aufgabe ist eine eigene, unveränderliche Version; Prüfläufe und bestandene Aufgaben verweisen
+auf die Version, die die Person gesehen hat.
+
+Die Startbefüllung kommt aus dem Ordner `tasks/` – ein Ordner pro Aufgabe:
 
 ```
 tasks/
@@ -54,8 +58,10 @@ tasks/
    └─ en.md              # Erklärtext auf Englisch
 ```
 
-Nach Änderungen prüft `npm run tasks:check`, ob alle Aufgaben gültig sind (Schema, beide Sprachen,
-Verweise auf Module und Voraussetzungen).
+`npm run tasks:check` prüft, ob alle Dateien gültig sind (Schema, beide Sprachen, Verweise auf Module und
+Voraussetzungen). `npm run tasks:import` übernimmt sie als Version 1 in eine leere Datenbank; der Web-Container
+tut das bei jedem Start selbst, importiert aber nichts mehr, sobald Aufgaben in der Datenbank liegen. Die Dateien
+dienen danach als Fixtures für Tests, `npm run eval` und `npm run check:repo`.
 
 ## Mehrsprachigkeit
 
@@ -78,6 +84,7 @@ Im Container zeigt `localhost` auf den Container selbst. Für die lokale Datenba
 ```bash
 npm test             # Unit-Tests (Vitest)
 npm run tasks:check  # Aufgaben-Dateien prüfen
+npm run tasks:import # Aufgaben-Dateien in eine leere Datenbank übernehmen
 ```
 
 ## KI-Prüfung

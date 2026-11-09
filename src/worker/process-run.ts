@@ -9,7 +9,7 @@ import { type CheckRun, checkRuns, LLM_NOT_CONFIGURED, taskProgress } from "@/li
 import { lookupRepository } from "@/lib/github/client";
 import { createCheckModel, LlmNotConfiguredError } from "@/lib/llm";
 import { getEffectiveLlmConfig } from "@/lib/settings";
-import { getTask } from "@/lib/tasks/loader";
+import { getTaskVersion } from "@/lib/tasks/catalog";
 
 const STALE_RUNNING_MS = 30 * 60 * 1000;
 const STALE_QUEUED_MS = 6 * 60 * 60 * 1000;
@@ -18,7 +18,7 @@ const STALE_QUEUED_MS = 6 * 60 * 60 * 1000;
 async function settleProgress(run: CheckRun, status: "passed" | "failed" | "open") {
   await getDb()
     .update(taskProgress)
-    .set({ status })
+    .set({ status, passedVersion: status === "passed" ? run.taskVersion : undefined })
     .where(and(eq(taskProgress.userId, run.userId), eq(taskProgress.taskId, run.taskId), ne(taskProgress.status, "passed")));
 }
 
@@ -58,8 +58,9 @@ async function saveOutcome(run: CheckRun, outcome: CheckOutcome, commitSha: stri
 }
 
 async function check(run: CheckRun, startedAt: number) {
-  const task = getTask(run.taskId);
-  if (!task) throw new Error(`Unknown task ${run.taskId}`);
+  // The version the student saw when clicking, even if a newer one was published since.
+  const task = await getTaskVersion(run.taskId, run.taskVersion);
+  if (!task) throw new Error(`Unknown task ${run.taskId} version ${run.taskVersion}`);
   const locale = isLocale(run.locale) ? run.locale : defaultLocale;
   const t = checkTranslator(locale);
   const failed = (key: "repoGone" | "repoEmpty" | "repoTooLarge"): CheckOutcome => ({

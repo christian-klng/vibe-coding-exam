@@ -62,19 +62,13 @@ export function loadCatalog(): TaskCatalog {
   return { modules, tasks };
 }
 
-// Tasks only change with a deployment, so production reads them once per process.
+// The app reads tasks from the database (see catalog.ts). The files are the import source
+// for a fresh database and the fixtures for tests, evals and check-repo.
 let cached: TaskCatalog | undefined;
 
-export function getCatalog(): TaskCatalog {
-  if (process.env.NODE_ENV !== "production") {
-    return loadCatalog();
-  }
-  cached ??= loadCatalog();
-  return cached;
-}
-
 export function getTask(id: string): Task | undefined {
-  return getCatalog().tasks.find((task) => task.id === id);
+  cached ??= loadCatalog();
+  return cached.tasks.find((task) => task.id === id);
 }
 
 export function getTaskBody(id: string, locale: Locale): string {

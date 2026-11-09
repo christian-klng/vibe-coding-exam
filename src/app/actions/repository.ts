@@ -7,6 +7,7 @@ import { repositories, taskProgress } from "@/lib/db/schema";
 import { lookupRepository } from "@/lib/github/client";
 import { parseRepoUrl } from "@/lib/github/url";
 import { requireSession } from "@/lib/session";
+import { getTask } from "@/lib/tasks/catalog";
 
 export type RepoErrorKey = "invalidUrl" | "notFound" | "private" | "rateLimited" | "unavailable";
 
@@ -52,12 +53,14 @@ export async function saveRepository(_previous: SaveRepoState, formData: FormDat
     }
 
     const status = repo.hasCommits ? "passed" : "failed";
+    // This task has no check run, so the passed version is the one published right now.
+    const passedVersion = status === "passed" ? ((await getTask(REPO_TASK_ID))?.version ?? null) : null;
     await tx
       .insert(taskProgress)
-      .values({ userId, taskId: REPO_TASK_ID, status })
+      .values({ userId, taskId: REPO_TASK_ID, status, passedVersion })
       .onConflictDoUpdate({
         target: [taskProgress.userId, taskProgress.taskId],
-        set: { status },
+        set: { status, passedVersion },
         // A passed task stays passed (see PLAN.md, decisions), even if the repo is changed later.
         setWhere: ne(taskProgress.status, "passed"),
       });
