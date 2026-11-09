@@ -35,7 +35,11 @@
     "checkNow": "Jetzt prüfen",
     "locked": "Gesperrt – trage zuerst dein GitHub-Repo ein",
     "lockedLink": "Repo jetzt eintragen",
-    "edit": "Bearbeiten"
+    "edit": "Bearbeiten",
+    "olderVersionPassed": "Du hast diese Aufgabe mit Version {passed} bestanden. Inzwischen gibt es Version {current} mit überarbeiteten Inhalten; dein Ergebnis bleibt bestehen.",
+    "viewPassedVersion": "Bestandene Fassung ansehen",
+    "passedVersion": "Version {version} (bestanden)",
+    "backToCurrent": "Zur aktuellen Fassung"
   },
   "Checks": {
     "pre": {

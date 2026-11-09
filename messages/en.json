@@ -35,7 +35,11 @@
     "checkNow": "Check now",
     "locked": "Locked – enter your GitHub repo first",
     "lockedLink": "Enter your repo now",
-    "edit": "Edit"
+    "edit": "Edit",
+    "olderVersionPassed": "You passed this task with version {passed}. There is now version {current} with revised content; your result stands.",
+    "viewPassedVersion": "View the version you passed",
+    "passedVersion": "Version {version} (passed)",
+    "backToCurrent": "Back to the current version"
   },
   "Checks": {
     "pre": {

@@ -324,7 +324,8 @@ vibe-coding-exam/
 
 **Stand 09.11.2026:** Umsetzungsplan für den Aufgaben-Editor und die Admin-Erkennung per E-Mail in Abschnitt 14. Schritt 1
 (`ADMIN_EMAILS`), Schritt 2 (Aufgaben in der Datenbank, Import beim Start, `passed_version`) und Schritt 3 (Editor für Aufgaben,
-Kriterien und Module unter `/admin/tasks` und `/admin/modules`, Entwurf, Veröffentlichen, Vorschau, Archivieren) sind gebaut.
+Kriterien und Module unter `/admin/tasks` und `/admin/modules`, Entwurf, Veröffentlichen, Vorschau, Archivieren) und Schritt 4 (Hinweis und Ansicht der bestandenen älteren Fassung) sind gebaut.
+Offen aus Abschnitt 14: Übersicht pro Aufgabe und Person mit CSV-Export sowie der Export der Aufgaben als Dateien.
 
 **Abweichungen von Abschnitt 7 in M4:** Das Repo wird einmal als Archiv geladen und im Speicher gelesen statt Datei für Datei über die API (eine Anfrage statt vieler, Suche ohne GitHub-Suchindex). Der Agent hat kein URL-Werkzeug: Die Live-URL prüft der Code selbst und gibt dem Agenten nur die Messwerte, damit ein Prompt-Injection-Angriff keine Anfragen auslösen kann. Bilder kann der Agent nicht ansehen; solche Kriterien gelten mit Hinweis als erfüllt. `list_workflow_runs` entfällt, solange es keine CI-Aufgabe gibt.
 
