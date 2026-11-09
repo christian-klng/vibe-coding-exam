@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Download, Plus } from "lucide-react";
 import Link from "next/link";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
@@ -20,10 +20,16 @@ export default async function AdminTasksPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">{t("intro")}</p>
-        <Link href="/admin/tasks/new" className={buttonVariants({ size: "sm" })}>
-          <Plus data-icon="inline-start" aria-hidden />
-          {t("new")}
-        </Link>
+        <div className="flex gap-2">
+          <a href="/api/admin/tasks.zip" className={buttonVariants({ variant: "outline", size: "sm" })} download>
+            <Download data-icon="inline-start" aria-hidden />
+            {t("export")}
+          </a>
+          <Link href="/admin/tasks/new" className={buttonVariants({ size: "sm" })}>
+            <Plus data-icon="inline-start" aria-hidden />
+            {t("new")}
+          </Link>
+        </div>
       </div>
       {tasks.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t("empty")}</p>

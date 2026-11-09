@@ -176,7 +176,8 @@
       "llm": "KI-Modell",
       "users": "Nutzer",
       "tasks": "Aufgaben",
-      "modules": "Module"
+      "modules": "Module",
+      "progress": "Bestanden"
     },
     "llm": {
       "title": "Zugang zum KI-Modell",
@@ -296,7 +297,8 @@
         "up": "Nach oben",
         "down": "Nach unten",
         "remove": "Entfernen"
-      }
+      },
+      "export": "Als Dateien exportieren"
     },
     "modules": {
       "intro": "Module gruppieren die Aufgaben auf der Startseite. Sie haben keine Versionen, weil sie kein Ergebnis beeinflussen.",
@@ -315,6 +317,21 @@
       "saving": "Speichert …",
       "save": "Speichern",
       "create": "Modul anlegen"
+    },
+    "progress": {
+      "intro": "Wer hat welche Aufgabe mit welcher Version bestanden. Der Commit ist der Stand, der geprüft wurde.",
+      "task": "Aufgabe",
+      "allTasks": "Alle Aufgaben",
+      "search": "Nach Name oder E-Mail suchen",
+      "filter": "Filtern",
+      "csv": "CSV herunterladen",
+      "empty": "Keine bestandenen Aufgaben für diese Auswahl.",
+      "person": "Person",
+      "version": "Version",
+      "date": "Datum",
+      "commit": "Commit",
+      "outdated": "(aktuell {current})",
+      "count": "{count, plural, one {# Eintrag} other {# Einträge}}"
     }
   }
 }

@@ -176,7 +176,8 @@
       "llm": "AI model",
       "users": "Users",
       "tasks": "Tasks",
-      "modules": "Modules"
+      "modules": "Modules",
+      "progress": "Passed"
     },
     "llm": {
       "title": "Access to the AI model",
@@ -296,7 +297,8 @@
         "up": "Move up",
         "down": "Move down",
         "remove": "Remove"
-      }
+      },
+      "export": "Export as files"
     },
     "modules": {
       "intro": "Modules group the tasks on the start page. They have no versions because they influence no result.",
@@ -315,6 +317,21 @@
       "saving": "Saving …",
       "save": "Save",
       "create": "Create module"
+    },
+    "progress": {
+      "intro": "Who passed which task with which version. The commit is the state that was checked.",
+      "task": "Task",
+      "allTasks": "All tasks",
+      "search": "Search by name or e-mail",
+      "filter": "Filter",
+      "csv": "Download CSV",
+      "empty": "No passed tasks for this selection.",
+      "person": "Person",
+      "version": "Version",
+      "date": "Date",
+      "commit": "Commit",
+      "outdated": "(current {current})",
+      "count": "{count, plural, one {# entry} other {# entries}}"
     }
   }
 }

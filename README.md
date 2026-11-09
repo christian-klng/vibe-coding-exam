@@ -107,7 +107,9 @@ Das Eval-Set gehört zu jeder Änderung an Modell, Prompt oder Server-Einstellun
 
 Unter `/admin` tragen Admins den Zugang zum KI-Modell ein, vergeben Admin-Rechte und bearbeiten Module, Aufgaben und
 Kriterien. Speichern erzeugt einen Entwurf, den nur Admins in der Vorschau sehen; Veröffentlichen erzeugt die nächste
-Version. Auf jeder Aufgabenseite führt für Admins ein Button „Bearbeiten“ in den Editor. Admins sind alle Adressen aus der
+Version. Auf jeder Aufgabenseite führt für Admins ein Button „Bearbeiten“ in den Editor. Unter **Bestanden** steht, wer welche
+Aufgabe mit welcher Version bestanden hat (mit Commit, filterbar, als CSV). Die Aufgabenliste exportiert alle Aufgaben
+als ZIP im Dateiformat von `tasks/`, als Sicherung oder zum Bearbeiten mit einer KI. Admins sind alle Adressen aus der
 Umgebungsvariable `ADMIN_EMAILS` (kommagetrennt), auch wenn sie sich erst später registrieren. Alternativ macht dieser
 Befehl eine bereits registrierte Person zum Admin:
 

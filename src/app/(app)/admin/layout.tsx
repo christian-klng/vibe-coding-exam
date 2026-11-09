@@ -23,6 +23,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/modules" className="font-medium underline-offset-4 hover:underline">
             {t("nav.modules")}
           </Link>
+          <Link href="/admin/progress" className="font-medium underline-offset-4 hover:underline">
+            {t("nav.progress")}
+          </Link>
         </nav>
       </div>
       {children}
