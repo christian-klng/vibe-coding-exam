@@ -4,6 +4,7 @@ import { setUserRole } from "@/app/actions/admin";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { isConfiguredAdmin } from "@/lib/admin";
 import { getDb } from "@/lib/db";
 import { user } from "@/lib/db/schema";
 import { requireAdmin } from "@/lib/session";
@@ -39,7 +40,8 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
       ) : (
         <ul className="divide-y rounded-xl border">
           {users.map((person) => {
-            const isAdmin = person.role === "admin";
+            const configured = isConfiguredAdmin(person.email);
+            const isAdmin = configured || person.role === "admin";
             return (
               <li key={person.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-sm">
                 <div className="min-w-0 basis-full sm:flex-1 sm:basis-0">
@@ -50,6 +52,8 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
                 {isAdmin && <Badge>{t("admin")}</Badge>}
                 {person.id === session.user.id ? (
                   <span className="text-xs text-muted-foreground">{t("you")}</span>
+                ) : configured ? (
+                  <span className="text-xs text-muted-foreground">{t("configured")}</span>
                 ) : (
                   <form action={setUserRole.bind(null, person.id, isAdmin ? "student" : "admin")}>
                     <Button type="submit" variant="outline" size="sm">

@@ -98,8 +98,9 @@ Das Eval-Set gehört zu jeder Änderung an Modell, Prompt oder Server-Einstellun
 
 ## Admin-Bereich
 
-Unter `/admin` tragen Admins den Zugang zum KI-Modell ein und vergeben Admin-Rechte. Den ersten Admin legt dieser
-Befehl fest, die Person muss schon registriert sein:
+Unter `/admin` tragen Admins den Zugang zum KI-Modell ein und vergeben Admin-Rechte. Admins sind alle Adressen aus der
+Umgebungsvariable `ADMIN_EMAILS` (kommagetrennt), auch wenn sie sich erst später registrieren. Alternativ macht dieser
+Befehl eine bereits registrierte Person zum Admin:
 
 ```bash
 npm run admin:grant -- person@example.com

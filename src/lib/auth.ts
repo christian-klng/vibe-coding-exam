@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createEmailVerificationToken } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { defaultLocale, locales } from "@/i18n/config";
+import { isConfiguredAdmin } from "@/lib/admin";
 import { getDb } from "@/lib/db";
 import * as schema from "@/lib/db/schema";
 import { sendAuthEmail } from "@/lib/email";
@@ -42,6 +43,14 @@ function createAuth() {
       autoSignInAfterVerification: true,
       sendVerificationEmail: async ({ user, url }) => {
         void sendAuthEmail("verifyEmail", user, url);
+      },
+    },
+    databaseHooks: {
+      user: {
+        create: {
+          // Addresses from ADMIN_EMAILS are admins from the start, so the user list shows them as such.
+          before: async (user) => (isConfiguredAdmin(user.email) ? { data: { ...user, role: "admin" } } : undefined),
+        },
       },
     },
     user: {

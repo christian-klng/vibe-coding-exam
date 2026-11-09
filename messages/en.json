@@ -213,6 +213,7 @@
       "empty": "No users found.",
       "admin": "Admin",
       "you": "This is you",
+      "configured": "Admin by configuration (ADMIN_EMAILS)",
       "grant": "Make admin",
       "revoke": "Remove admin rights",
       "limited": "Showing the latest {count}. Use the search to find others."

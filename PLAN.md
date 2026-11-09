@@ -322,6 +322,8 @@ vibe-coding-exam/
 
 **Stand 03.11.2026:** M0 bis M3 fertig und live auf Coolify. M4 gebaut (Warteschlange, Worker, Vorprüfungen, Agent, Ergebnis-Anzeige, Eval-Set) und mit simuliertem Modell end-to-end getestet; der Test gegen Qwen 3.6 steht noch aus (`npm run llm:test`, dann `npm run eval`). Repo-Überschreibung pro Aufgabe ist im Datenmodell vorbereitet, aber noch ohne UI. Noch offen: M4 produktiv abschließen (Worker in Coolify, Test mit Qwen 3.6). M5 gebaut (Admin-Bereich, LLM-Zugang im Formular, Verbindungstest, Nutzerverwaltung). Als Nächstes M6.
 
+**Stand 09.11.2026:** Umsetzungsplan für den Aufgaben-Editor und die Admin-Erkennung per E-Mail in Abschnitt 14.
+
 **Abweichungen von Abschnitt 7 in M4:** Das Repo wird einmal als Archiv geladen und im Speicher gelesen statt Datei für Datei über die API (eine Anfrage statt vieler, Suche ohne GitHub-Suchindex). Der Agent hat kein URL-Werkzeug: Die Live-URL prüft der Code selbst und gibt dem Agenten nur die Messwerte, damit ein Prompt-Injection-Angriff keine Anfragen auslösen kann. Bilder kann der Agent nicht ansehen; solche Kriterien gelten mit Hinweis als erfüllt. `list_workflow_runs` entfällt, solange es keine CI-Aufgabe gibt.
 
 M4 ist das riskanteste Stück und sollte früh als Prototyp (z. B. Kommandozeilen-Skript gegen ein
@@ -411,3 +413,65 @@ check_runs      task_version wird Fremdschlüssel auf task_versions
 - **Übersicht:** Pro Aufgabe und Person die bestandene Version, Commit und Datum, filterbar und als CSV exportierbar.
   Die Lehrenden-Ansicht aus M9 baut darauf auf.
 - **Export:** Alle Aufgaben als Dateien im Format aus Abschnitt 6, als Sicherung und zum Bearbeiten mit KI.
+
+## 14. Umsetzungsplan: Aufgaben und Kriterien im Admin-Bereich bearbeiten (Stand 09.11.2026)
+
+Konkretisiert M6 und M7 aus Abschnitt 13. Ziel: Admins ändern Aufgabentexte und Kriterien direkt in der App, ohne
+Deployment. Studierende sehen die Änderung sofort; wer eine ältere Fassung bestanden hat, bleibt bestanden.
+
+### Schritt 1: Admins an E-Mail-Adressen erkennen (klein, zuerst)
+- Neue Umgebungsvariable `ADMIN_EMAILS` (kommagetrennt, Vergleich in Kleinbuchstaben), z. B. `ADMIN_EMAILS=christian@xplrs.net`.
+- `src/lib/session.ts` bekommt `isAdmin(user)`: wahr bei Rolle `admin` **oder** E-Mail in `ADMIN_EMAILS`. `requireAdmin`,
+  der Header-Link und der neue „Bearbeiten“-Button nutzen nur noch diese Funktion.
+- Beim Anlegen eines Nutzers (Better-Auth-Hook `databaseHooks.user.create.before`) wird die Rolle direkt auf `admin` gesetzt,
+  wenn die Adresse in der Liste steht; so taucht die Person auch in der Nutzerverwaltung als Admin auf. Für bereits
+  registrierte Adressen greift `isAdmin` ohne Datenbankänderung.
+- Nutzerverwaltung: Bei Adressen aus `ADMIN_EMAILS` steht „per Konfiguration“ statt des Entziehen-Buttons, weil Entziehen
+  dort keine Wirkung hätte. `npm run admin:grant` und das Vergeben im Admin-Bereich bleiben als zweiter Weg.
+- Dokumentieren in `.env.example`, README und `docs/deployment-coolify.md`.
+
+### Schritt 2: Aufgaben in die Datenbank (M6)
+- Tabellen wie in Abschnitt 13 (`modules`, `tasks`, `task_versions`, `task_drafts`), Inhalte der Version als `jsonb` in
+  der Form von `taskSchema` plus `body_de`/`body_en`. `task_progress` erhält `passed_version`, `check_runs.task_version`
+  wird Fremdschlüssel auf `task_versions`.
+- Migration `0005` legt die Tabellen an. Der Import der Dateien läuft als Skript `npm run tasks:import` (TypeScript, braucht
+  den YAML-Parser), idempotent: importiert nur, solange `tasks` leer ist. Im Container läuft es nach `db:migrate`.
+  Für bereits bestandene Aufgaben wird `passed_version = 1` nachgetragen.
+- Neuer Zugriff `src/lib/tasks/catalog.ts` (Module, aktuelle Versionen, Body) ersetzt `loader.ts` in Seiten, Server
+  Actions und Worker. Cache: im Server per `unstable_cache`/`revalidateTag("tasks")` beim Veröffentlichen, im Worker eine
+  Abfrage pro Prüflauf (wie heute die LLM-Einstellungen). `loader.ts` bleibt nur für Import, Export und `npm run eval`.
+- Die Regeln aus `scripts/check-tasks.ts` (eindeutige Kriterien-IDs, mindestens ein Pflichtkriterium, Voraussetzungen
+  zeigen nach vorn, Modul existiert) wandern nach `src/lib/tasks/validate.ts` und laufen beim Veröffentlichen und im Skript.
+- `tasks/` verlässt das Docker-Image erst, wenn der Import einmal produktiv gelaufen ist (Rückfallebene).
+
+### Schritt 3: Editor (M7, Teil 1)
+- **Einstieg:** Auf `/tasks/[id]` sehen Admins neben dem Titel einen Button „Bearbeiten“ → `/admin/tasks/[id]`.
+  Im Admin-Menü kommt „Aufgaben“ hinzu (`/admin/tasks`): Liste mit Modul, Version, Entwurf-Hinweis, archiviert.
+- **Formular** (ein Entwurf pro Aufgabe, Server Actions in `src/app/actions/tasks-admin.ts`, alle mit `requireAdmin`):
+  - Deutsch und Englisch nebeneinander oder als Tabs: Titel, Kurzbeschreibung, Aufgabentext (Markdown mit Vorschau).
+  - Einstellungen: Modul, Reihenfolge, `requiresRepo`, `showRepoForm`, App-Typen, Voraussetzungen, Prüfart, Suchpfade.
+  - **Kriterien:** Zeilen mit ID (aus dem Text vorgeschlagen, änderbar), Pflicht ja/nein, Text de/en; hinzufügen,
+    löschen, verschieben. Die ID bleibt stabil, damit alte Prüfergebnisse zuordenbar bleiben.
+  - **Vorprüfungen:** in der ersten Fassung ein YAML-Feld, validiert gegen `preCheckSchema`; eine Klick-Oberfläche folgt bei Bedarf.
+- **Speichern** schreibt den Entwurf. **Veröffentlichen** validiert, erzeugt `version + 1`, setzt `current_version`,
+  leert den Entwurf und markiert `criteria_changed`, wenn sich IDs, Pflicht oder Texte der Kriterien geändert haben.
+  Der Editor zeigt vor dem Veröffentlichen, ob Kriterien betroffen sind. „Entwurf verwerfen“ setzt auf die aktuelle Version zurück.
+- **Vorschau:** Der Entwurf wird mit derselben Komponente wie die Studierenden-Seite gerendert.
+- **Neue Aufgabe** (`/admin/tasks/new`) und **Archivieren** (verschwindet aus der Liste, Prüfläufe bleiben).
+- **Module:** `/admin/modules` mit Titel, Beschreibung, Reihenfolge; ohne Versionen.
+
+### Schritt 4: Anzeige bei Studierenden
+- Die Aufgabe zeigt immer die aktuelle Version. Steht in `task_progress.passed_version` eine ältere, erscheint ein
+  Hinweis „Bestanden mit Fassung 2, aktuell ist Fassung 3“; die Aufgabe bleibt bestanden.
+- Der Prüflauf speichert die Version beim Klick (wie heute `taskVersion`) und prüft gegen genau diese Fassung.
+
+### Später (M7, Teil 2)
+- Übersicht pro Aufgabe und Person mit bestandener Version, Commit, Datum; CSV-Export.
+- Export aller Aufgaben als Dateien im Format aus Abschnitt 6.
+
+### Entscheidungen zum Abstimmen
+1. `ADMIN_EMAILS` **zusätzlich** zur Rolle in der Datenbank (Empfehlung) oder als einzige Quelle?
+2. Vorprüfungen in der ersten Fassung als YAML-Feld (Empfehlung) oder gleich als Klick-Oberfläche?
+3. Jedes Veröffentlichen erzeugt eine neue Version, auch bei Tippfehlern (Empfehlung: ja, einfach und nachvollziehbar;
+   `criteria_changed` unterscheidet inhaltliche von kosmetischen Änderungen).
+4. Reihenfolge: Schritt 1 sofort als eigener kleiner Commit, Schritte 2 bis 4 zusammen als M6/M7.

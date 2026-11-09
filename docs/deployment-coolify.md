@@ -57,6 +57,7 @@ die Option *Build Variable* bei allen **aus** lassen.
 | `SMTP_PASSWORD` | Passwort des Postfachs |
 | `EMAIL_FROM` | z. B. `Vibe Coding Exam <kurs@deine-domain.de>` – muss die Adresse des Postfachs (oder ein Alias davon) sein |
 | `SETTINGS_ENCRYPTION_KEY` | Ergebnis von `openssl rand -base64 32`. Verschlüsselt den im Admin-Bereich gespeicherten API-Key. Nicht mehr ändern, sonst muss der Key neu eingetragen werden |
+| `ADMIN_EMAILS` | Deine Adresse, weitere kommagetrennt. Diese Personen sind Admins, sobald sie registriert sind (Abschnitt 6) |
 | `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Optional: Besser im Admin-Bereich eintragen (Abschnitt 6) |
 
 ## 4. Deployen und prüfen
@@ -105,7 +106,8 @@ Möglichkeit, erneut zu prüfen.
 ## 6. Admin-Bereich
 
 1. Falls noch nicht geschehen, in der App registrieren und die E-Mail-Adresse bestätigen.
-2. In Coolify in der App-Anwendung das **Terminal** öffnen und sich selbst zum Admin machen:
+2. Die eigene Adresse in `ADMIN_EMAILS` eintragen (mehrere kommagetrennt) und die App neu deployen. Ohne Neustart geht es
+   über das **Terminal** der App-Anwendung in Coolify:
 
    ```bash
    node scripts/admin-grant.mjs deine@adresse.de

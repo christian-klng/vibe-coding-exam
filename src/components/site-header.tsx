@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { LogoutButton } from "@/components/logout-button";
 import { buttonVariants } from "@/components/ui/button";
+import { isAdmin } from "@/lib/admin";
 import { getSession } from "@/lib/session";
 
 export async function SiteHeader() {
@@ -19,7 +20,7 @@ export async function SiteHeader() {
           <LanguageSwitcher />
           {session ? (
             <>
-              {session.user.role === "admin" && (
+              {isAdmin(session.user) && (
                 <Link href="/admin" className={buttonVariants({ variant: "ghost", size: "sm" })}>
                   {t("admin")}
                 </Link>

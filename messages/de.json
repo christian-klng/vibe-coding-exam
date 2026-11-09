@@ -213,6 +213,7 @@
       "empty": "Keine Nutzer gefunden.",
       "admin": "Admin",
       "you": "Das bist du",
+      "configured": "Admin per Konfiguration (ADMIN_EMAILS)",
       "grant": "Zum Admin machen",
       "revoke": "Admin-Rechte entziehen",
       "limited": "Es werden die neuesten {count} angezeigt. Nutze die Suche, um weitere zu finden."
