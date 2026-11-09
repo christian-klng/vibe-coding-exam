@@ -1,14 +1,15 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Pencil } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { RepoCard } from "@/components/repo/repo-card";
 import { CheckPanel } from "@/components/tasks/check-panel";
 import { StatusIcon } from "@/components/tasks/status-icon";
+import { TaskArticle } from "@/components/tasks/task-article";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { isLocale } from "@/i18n/config";
+import { isAdmin } from "@/lib/admin";
 import { getTaskChecks } from "@/lib/checks";
 import { getPrimaryRepository } from "@/lib/repositories";
 import { requireSession } from "@/lib/session";
@@ -39,10 +40,18 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
 
   return (
     <div className="space-y-6">
-      <Link href="/tasks" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="size-4" aria-hidden />
-        {t("back")}
-      </Link>
+      <div className="flex items-center justify-between gap-4">
+        <Link href="/tasks" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="size-4" aria-hidden />
+          {t("back")}
+        </Link>
+        {isAdmin(session.user) && (
+          <Link href={`/admin/tasks/${task.id}`} className={buttonVariants({ variant: "outline", size: "sm" })}>
+            <Pencil data-icon="inline-start" aria-hidden />
+            {t("edit")}
+          </Link>
+        )}
+      </div>
 
       <div className="space-y-2">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -59,9 +68,7 @@ export default async function TaskPage({ params }: PageProps<"/tasks/[id]">) {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <article className="prose prose-neutral max-w-none dark:prose-invert prose-headings:font-semibold prose-h2:text-lg prose-pre:overflow-x-auto prose-code:before:content-none prose-code:after:content-none [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{task.body[locale]}</ReactMarkdown>
-        </article>
+        <TaskArticle markdown={task.body[locale]} />
 
         <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
           {task.showRepoForm && <RepoCard repo={repo} />}

@@ -34,7 +34,8 @@
     "prerequisites": "Best done first",
     "checkNow": "Check now",
     "locked": "Locked – enter your GitHub repo first",
-    "lockedLink": "Enter your repo now"
+    "lockedLink": "Enter your repo now",
+    "edit": "Edit"
   },
   "Checks": {
     "pre": {
@@ -169,7 +170,9 @@
     "title": "Administration",
     "nav": {
       "llm": "AI model",
-      "users": "Users"
+      "users": "Users",
+      "tasks": "Tasks",
+      "modules": "Modules"
     },
     "llm": {
       "title": "Access to the AI model",
@@ -217,6 +220,97 @@
       "grant": "Make admin",
       "revoke": "Remove admin rights",
       "limited": "Showing the latest {count}. Use the search to find others."
+    },
+    "tasks": {
+      "intro": "Saving creates a draft, publishing a new version. Students always see the current version.",
+      "new": "New task",
+      "newTitle": "Create a new task",
+      "empty": "No tasks yet.",
+      "archived": "Archived",
+      "draftSince": "Draft from {date}",
+      "version": "Version {version}",
+      "unpublished": "Unpublished",
+      "draft": "Draft",
+      "openTask": "Open task",
+      "preview": "Preview",
+      "previewOf": "Preview",
+      "backToEditor": "Back to the editor",
+      "archive": "Archive",
+      "unarchive": "Activate again",
+      "editingDraft": "You are editing the draft from {date}. Students still see the published version.",
+      "discardDraft": "Discard draft",
+      "savedDraft": "Draft saved. Students see the change only after publishing.",
+      "published": "Version {version} is published.",
+      "publishedCriteriaChanged": "The criteria changed; whoever passed the old version stays passed.",
+      "invalid": "The task cannot be saved like this:",
+      "criteriaDiffer": "The criteria differ from the published version.",
+      "saving": "Saving …",
+      "saveDraft": "Save draft",
+      "publish": "Publish",
+      "versions": "Published versions",
+      "criteriaChanged": "Criteria changed",
+      "language": {
+        "de": "German",
+        "en": "English"
+      },
+      "sections": {
+        "settings": "Settings",
+        "check": "Check",
+        "criteria": "Criteria"
+      },
+      "fields": {
+        "id": "Identifier",
+        "idHint": "Lowercase letters, digits and hyphens; cannot be changed later.",
+        "module": "Module",
+        "order": "Order within the module",
+        "title": "Title",
+        "summary": "Summary",
+        "body": "Task text (Markdown)",
+        "requiresRepo": "Needs a GitHub repository",
+        "showRepoForm": "Shows the form for entering the repository",
+        "appTypes": "App types",
+        "prerequisites": "Best done before",
+        "checkType": "Check type",
+        "scopePaths": "Search paths for the agent",
+        "scopePathsHint": "One pattern per line, e.g. README* or docs/*.md.",
+        "preChecks": "Pre-checks (YAML)",
+        "preChecksHint": "A list as in task.yaml, e.g. - fileExists: \"README*\". Leave empty for none."
+      },
+      "checkTypes": {
+        "ai": "AI checks the repository",
+        "auto": "Automatic",
+        "url": "Live URL",
+        "quiz": "Quiz",
+        "self": "Self-assessment"
+      },
+      "criteria": {
+        "add": "Add criterion",
+        "hint": "The identifier stays stable so old check results remain traceable. Required criteria decide whether the task is passed.",
+        "id": "Identifier",
+        "required": "Required",
+        "text": "Criterion",
+        "up": "Move up",
+        "down": "Move down",
+        "remove": "Remove"
+      }
+    },
+    "modules": {
+      "intro": "Modules group the tasks on the start page. They have no versions because they influence no result.",
+      "newTitle": "New module",
+      "id": "Identifier",
+      "order": "Order",
+      "title": {
+        "de": "Title (German)",
+        "en": "Title (English)"
+      },
+      "description": {
+        "de": "Description (German)",
+        "en": "Description (English)"
+      },
+      "saved": "Saved.",
+      "saving": "Saving …",
+      "save": "Save",
+      "create": "Create module"
     }
   }
 }

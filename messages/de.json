@@ -34,7 +34,8 @@
     "prerequisites": "Am besten vorher erledigen",
     "checkNow": "Jetzt prüfen",
     "locked": "Gesperrt – trage zuerst dein GitHub-Repo ein",
-    "lockedLink": "Repo jetzt eintragen"
+    "lockedLink": "Repo jetzt eintragen",
+    "edit": "Bearbeiten"
   },
   "Checks": {
     "pre": {
@@ -169,7 +170,9 @@
     "title": "Administration",
     "nav": {
       "llm": "KI-Modell",
-      "users": "Nutzer"
+      "users": "Nutzer",
+      "tasks": "Aufgaben",
+      "modules": "Module"
     },
     "llm": {
       "title": "Zugang zum KI-Modell",
@@ -217,6 +220,97 @@
       "grant": "Zum Admin machen",
       "revoke": "Admin-Rechte entziehen",
       "limited": "Es werden die neuesten {count} angezeigt. Nutze die Suche, um weitere zu finden."
+    },
+    "tasks": {
+      "intro": "Speichern erzeugt einen Entwurf, Veröffentlichen eine neue Version. Studierende sehen immer die aktuelle Version.",
+      "new": "Neue Aufgabe",
+      "newTitle": "Neue Aufgabe anlegen",
+      "empty": "Noch keine Aufgaben.",
+      "archived": "Archiviert",
+      "draftSince": "Entwurf vom {date}",
+      "version": "Version {version}",
+      "unpublished": "Unveröffentlicht",
+      "draft": "Entwurf",
+      "openTask": "Aufgabe öffnen",
+      "preview": "Vorschau",
+      "previewOf": "Vorschau",
+      "backToEditor": "Zurück zum Editor",
+      "archive": "Archivieren",
+      "unarchive": "Wieder aktivieren",
+      "editingDraft": "Du bearbeitest den Entwurf vom {date}. Studierende sehen weiterhin die veröffentlichte Version.",
+      "discardDraft": "Entwurf verwerfen",
+      "savedDraft": "Entwurf gespeichert. Studierende sehen die Änderung erst nach dem Veröffentlichen.",
+      "published": "Version {version} ist veröffentlicht.",
+      "publishedCriteriaChanged": "Die Kriterien haben sich geändert; wer die alte Version bestanden hat, bleibt bestanden.",
+      "invalid": "Die Aufgabe kann so nicht gespeichert werden:",
+      "criteriaDiffer": "Die Kriterien unterscheiden sich von der veröffentlichten Version.",
+      "saving": "Speichert …",
+      "saveDraft": "Entwurf speichern",
+      "publish": "Veröffentlichen",
+      "versions": "Veröffentlichte Versionen",
+      "criteriaChanged": "Kriterien geändert",
+      "language": {
+        "de": "Deutsch",
+        "en": "Englisch"
+      },
+      "sections": {
+        "settings": "Einstellungen",
+        "check": "Prüfung",
+        "criteria": "Kriterien"
+      },
+      "fields": {
+        "id": "Kennung",
+        "idHint": "Kleinbuchstaben, Ziffern und Bindestriche; später nicht mehr änderbar.",
+        "module": "Modul",
+        "order": "Reihenfolge im Modul",
+        "title": "Titel",
+        "summary": "Kurzbeschreibung",
+        "body": "Aufgabentext (Markdown)",
+        "requiresRepo": "Braucht ein GitHub-Repository",
+        "showRepoForm": "Zeigt das Formular zum Eintragen des Repos",
+        "appTypes": "App-Typen",
+        "prerequisites": "Am besten vorher erledigen",
+        "checkType": "Prüfart",
+        "scopePaths": "Suchpfade für den Agenten",
+        "scopePathsHint": "Ein Muster pro Zeile, z. B. README* oder docs/*.md.",
+        "preChecks": "Vorprüfungen (YAML)",
+        "preChecksHint": "Eine Liste wie in task.yaml, z. B. - fileExists: \"README*\". Leer lassen, wenn keine."
+      },
+      "checkTypes": {
+        "ai": "KI prüft das Repository",
+        "auto": "Automatisch",
+        "url": "Live-URL",
+        "quiz": "Quiz",
+        "self": "Selbsteinschätzung"
+      },
+      "criteria": {
+        "add": "Kriterium hinzufügen",
+        "hint": "Die Kennung bleibt stabil, damit alte Prüfergebnisse zuordenbar bleiben. Pflichtkriterien entscheiden über Bestehen.",
+        "id": "Kennung",
+        "required": "Pflicht",
+        "text": "Kriterium",
+        "up": "Nach oben",
+        "down": "Nach unten",
+        "remove": "Entfernen"
+      }
+    },
+    "modules": {
+      "intro": "Module gruppieren die Aufgaben auf der Startseite. Sie haben keine Versionen, weil sie kein Ergebnis beeinflussen.",
+      "newTitle": "Neues Modul",
+      "id": "Kennung",
+      "order": "Reihenfolge",
+      "title": {
+        "de": "Titel (Deutsch)",
+        "en": "Titel (Englisch)"
+      },
+      "description": {
+        "de": "Beschreibung (Deutsch)",
+        "en": "Beschreibung (Englisch)"
+      },
+      "saved": "Gespeichert.",
+      "saving": "Speichert …",
+      "save": "Speichern",
+      "create": "Modul anlegen"
     }
   }
 }
