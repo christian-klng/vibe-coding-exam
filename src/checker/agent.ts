@@ -1,6 +1,7 @@
 import { generateText, isStepCount, type LanguageModel, tool } from "ai";
 import { z } from "zod";
 import type { Locale } from "@/i18n/config";
+import { describeToolInputError, repairToolInput } from "@/lib/llm";
 import type { Task } from "@/lib/tasks/schema";
 import { hiddenFolders, isHiddenPath } from "./github-source";
 import type { CriterionResult, RepoSource } from "./types";
@@ -228,6 +229,7 @@ export async function runAgent({
     prompt: taskPrompt(task, locale, facts),
     tools,
     temperature: 0,
+    repairToolCall: repairToolInput,
     abortSignal: AbortSignal.timeout(TIMEOUT_MS),
     stopWhen: [isStepCount(MAX_STEPS), () => verdict !== undefined],
     // Near the limit there is no more looking around, so that a long check still ends in a result.
@@ -238,7 +240,12 @@ export async function runAgent({
   });
 
   if (!verdict) {
-    throw new NoVerdictError(`No valid verdict after ${result.steps.length} steps`);
+    // The last rejected verdict usually explains why, e.g. a field in the wrong format.
+    const rejected = result.steps
+      .flatMap((step) => step.toolCalls)
+      .findLast((call) => call.toolName === "submit_verdict" && "invalid" in call && call.invalid);
+    const reason = rejected && "error" in rejected ? `: ${describeToolInputError(rejected.error, rejected.input)}` : "";
+    throw new NoVerdictError(`No valid verdict after ${result.steps.length} steps${reason}`);
   }
   // The model may judge a criterion twice; the last judgement counts.
   const criteria = criterionIds.map((id) => verdict!.criteria.findLast((criterion) => criterion.id === id)!);

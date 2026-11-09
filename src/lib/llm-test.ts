@@ -1,6 +1,6 @@
 import { generateText, hasToolCall, isStepCount, Output, tool } from "ai";
 import { z } from "zod";
-import { createCheckModel, type LlmConfig } from "@/lib/llm";
+import { createCheckModel, describeToolInputError, type LlmConfig, repairToolInput } from "@/lib/llm";
 
 const STEP_TIMEOUT_MS = 2 * 60 * 1000;
 
@@ -96,18 +96,25 @@ async function checkToolLoop(config: LlmConfig): Promise<LlmTestStep> {
       }),
     },
     stopWhen: [isStepCount(10), hasToolCall("submit_verdict")],
+    repairToolCall: repairToolInput,
     abortSignal: AbortSignal.timeout(STEP_TIMEOUT_MS),
   });
 
   const calls = result.steps.flatMap((step) => step.toolCalls);
   const names = calls.map((call) => call.toolName);
-  const verdict = verdictSchema.safeParse(calls.find((call) => call.toolName === "submit_verdict")?.input);
+  const verdictCall = calls.findLast((call) => call.toolName === "submit_verdict");
+  const verdict = verdictSchema.safeParse(verdictCall?.input);
+  const problem = !verdictCall
+    ? "submit_verdict was not called"
+    : !verdict.success
+      ? `submit_verdict: ${describeToolInputError("invalid" in verdictCall && verdictCall.invalid ? verdictCall.error : verdict.error, verdictCall.input)}`
+      : undefined;
   return {
     name: "tools",
     ok: names.includes("read_file") && verdict.success,
     detail:
       `${((Date.now() - started) / 1000).toFixed(1)} s; ${names.join(" -> ") || "-"}; ` +
-      `tokens ${result.totalUsage.inputTokens}/${result.totalUsage.outputTokens}`,
+      `tokens ${result.totalUsage.inputTokens}/${result.totalUsage.outputTokens}${problem ? `. ${problem}` : ""}`,
   };
 }
 

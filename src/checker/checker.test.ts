@@ -105,6 +105,25 @@ describe("runCheck", () => {
     expect(outcome.status).toBe("passed");
   });
 
+  it("repairs a verdict whose list and yes/no values arrive as text", async () => {
+    const verdict = verdictFor("readme", () => true);
+    const asText = {
+      ...verdict,
+      input: {
+        ...verdict.input,
+        criteria: JSON.stringify(verdict.input.criteria.map((criterion) => ({ ...criterion, met: "true" }))),
+      },
+    };
+    const outcome = await check("readme", goodReadme, [asText]);
+    expect(outcome.status).toBe("passed");
+    expect(outcome.criteria.every((criterion) => criterion.met === true)).toBe(true);
+  });
+
+  it("names the field when a verdict cannot be repaired", async () => {
+    const broken = { name: "submit_verdict", input: { criteria: "keine Liste", summary: "x", nextStep: "y" } };
+    await expect(check("readme", goodReadme, [broken])).rejects.toThrow(/criteria: .*Received: /);
+  });
+
   it("rejects a verdict that leaves out a criterion", async () => {
     const incomplete = verdictFor("readme", () => true);
     (incomplete.input.criteria as unknown[]).pop();
