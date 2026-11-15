@@ -8,7 +8,7 @@ summary:
   en: Write down which technologies you build with – and why.
 requiresRepo: true
 appTypes: [all]
-prerequisites: [app-idea]
+prerequisites: [github-repo]
 check:
   type: ai
   scope: { paths: ["docs/tech-stack.md", "README.md", "docs/*.md", "package.json"] }

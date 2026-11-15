@@ -9,4 +9,4 @@ It says *who* wants to do something and *why* – but not *how* it is built tech
 User stories are the perfect input for the AI: each story can later become its own prompt and its own feature. And you notice early which features really matter.
 
 ## Tip: How to ask Claude Code
-> “Read docs/idea.md and suggest ten user stories. I will then pick the five most important ones.”
+> “I want to build an app that … (briefly describe your idea). Suggest ten user stories. I will then pick the five most important ones.”

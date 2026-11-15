@@ -9,4 +9,4 @@ Sie sagt *wer* etwas *warum* tun will – aber nicht *wie* es technisch gebaut w
 User Stories sind die perfekte Arbeitsgrundlage für die KI: Jede Story kann später ein eigener Prompt und ein eigenes Feature werden. Und du merkst früh, welche Funktionen wirklich wichtig sind.
 
 ## Tipp: So fragst du Claude Code
-> „Lies docs/idee.md und schlag mir zehn User Stories vor. Ich wähle dann die fünf wichtigsten aus.“
+> „Ich möchte eine App bauen, die … (beschreib kurz deine Idee). Schlag mir zehn User Stories vor. Ich wähle dann die fünf wichtigsten aus.“

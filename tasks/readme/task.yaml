@@ -8,7 +8,7 @@ summary:
   en: Explain to new visitors of your repo what your app is and how to run it.
 requiresRepo: true
 appTypes: [all]
-prerequisites: [app-idea]
+prerequisites: [github-repo]
 check:
   type: ai
   scope: { paths: ["README.md", "README*", "readme*"] }

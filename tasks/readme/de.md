@@ -5,4 +5,4 @@ Die **README** ist die Visitenkarte deines Repos. GitHub zeigt sie automatisch a
 Wer dein Repo öffnet – Mitgründer:innen, Lehrende, Investor:innen oder du selbst in drei Monaten – soll in einer Minute verstehen, worum es geht und wie man die App startet. Auch Claude Code liest die README, um dein Projekt zu verstehen.
 
 ## Tipp: So fragst du Claude Code
-> „Schreib eine README für mein Projekt. Nutze docs/idee.md für die Beschreibung und schau im Code nach, wie man die App startet. Halte sie kurz und verständlich für Einsteiger.“
+> „Schreib eine README für mein Projekt. Frag mich kurz, was die App macht, und schau im Code nach, wie man die App startet. Halte sie kurz und verständlich für Einsteiger.“

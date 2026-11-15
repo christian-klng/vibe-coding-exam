@@ -85,7 +85,7 @@ describe("runCheck", () => {
 
   it("fails on a missing file without asking the model", async () => {
     const outcome = await runCheck({
-      task: getTask("app-idea")!,
+      task: getTask("user-stories")!,
       locale: "de",
       source: createFixtureSource({ files: { "README.md": "x" } }),
       model: () => {
@@ -94,7 +94,7 @@ describe("runCheck", () => {
     });
     expect(outcome.status).toBe("failed");
     expect(outcome.criteria).toEqual([]);
-    expect(outcome.summary).toContain("docs/idee.md / docs/idea.md");
+    expect(outcome.summary).toContain("docs/user-stories.md");
   });
 
   it("rejects evidence for things the agent never saw and lets it try again", async () => {

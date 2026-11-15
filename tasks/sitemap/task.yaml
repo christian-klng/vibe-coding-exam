@@ -1,7 +1,7 @@
 id: sitemap
 version: 1
 module: planning
-order: 3
+order: 2
 title: { de: Die Seitenstruktur deiner App, en: Your app's page structure }
 summary:
   de: Lege fest, welche Seiten es gibt und wie man zwischen ihnen wechselt.

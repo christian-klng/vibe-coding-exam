@@ -8,4 +8,4 @@ The **tech stack** is the set of technologies your app is made of – like the l
 If you don't decide, the AI decides for you – sometimes differently with every prompt. A deliberate choice keeps things consistent and helps you understand what is happening in your project.
 
 ## Tip: How to ask Claude Code
-> “I am building the app from docs/idea.md and have no programming experience. Suggest two possible tech stacks, explain pros and cons in simple words and record my decision in docs/tech-stack.md.”
+> “I am building an app that … (briefly describe your idea) and have no programming experience. Suggest two possible tech stacks, explain pros and cons in simple words and record my decision in docs/tech-stack.md.”

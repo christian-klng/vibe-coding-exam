@@ -1,14 +1,14 @@
 id: user-stories
 version: 1
 module: planning
-order: 2
+order: 1
 title: { de: User Stories schreiben, en: Write user stories }
 summary:
   de: Beschreibe fünf Dinge, die Nutzer mit deiner App erreichen wollen.
   en: Describe five things users want to achieve with your app.
 requiresRepo: true
 appTypes: [all]
-prerequisites: [app-idea]
+prerequisites: [github-repo]
 check:
   type: ai
   scope: { paths: ["docs/user-stories.md", "docs/*.md"] }

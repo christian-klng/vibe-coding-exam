@@ -8,4 +8,4 @@ Der **Tech-Stack** ist die Sammlung der Technologien, aus denen deine App besteh
 Wenn du nichts vorgibst, wählt die KI für dich – manchmal bei jedem Prompt etwas anderes. Eine bewusste Entscheidung sorgt für Einheitlichkeit und hilft dir zu verstehen, was in deinem Projekt passiert.
 
 ## Tipp: So fragst du Claude Code
-> „Ich baue die App aus docs/idee.md und habe keine Programmiererfahrung. Schlag mir zwei mögliche Tech-Stacks vor, erklär Vor- und Nachteile in einfachen Worten und halte meine Entscheidung in docs/tech-stack.md fest.“
+> „Ich baue eine App, die … (beschreib kurz deine Idee), und habe keine Programmiererfahrung. Schlag mir zwei mögliche Tech-Stacks vor, erklär Vor- und Nachteile in einfachen Worten und halte meine Entscheidung in docs/tech-stack.md fest.“

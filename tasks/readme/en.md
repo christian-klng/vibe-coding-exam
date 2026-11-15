@@ -5,4 +5,4 @@ The **README** is your repo's business card. GitHub shows it automatically on yo
 Anyone opening your repo – co-founders, teachers, investors, or you in three months – should understand within a minute what it is about and how to run the app. Claude Code reads the README too, to understand your project.
 
 ## Tip: How to ask Claude Code
-> “Write a README for my project. Use docs/idea.md for the description and check the code for how to run the app. Keep it short and easy to understand for beginners.”
+> “Write a README for my project. Briefly ask me what the app does and check the code for how to run the app. Keep it short and easy to understand for beginners.”
