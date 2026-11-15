@@ -10,8 +10,8 @@
     "admin": "Admin"
   },
   "Home": {
-    "title": "Learn vibe coding with real tasks",
-    "intro": "Learn the basics of software development with AI. Step by step, checked against your own GitHub repository.",
+    "title": "Learn vibe coding",
+    "intro": "Vibe Buddy checks your own GitHub code and guides you through the basics of software development.",
     "ctaRegister": "Sign up for free",
     "ctaLogin": "I already have an account"
   },
