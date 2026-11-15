@@ -8,7 +8,7 @@ export function getOctokit() {
   // Without a token GitHub allows only 60 requests per hour and IP – fine locally, too few in production.
   return new Octokit({
     auth: process.env.GITHUB_TOKEN || undefined,
-    userAgent: "vibe-coding-exam",
+    userAgent: "vibe-buddy",
     // Expected answers like 404 are handled below; unexpected errors are logged there.
     log: { debug: () => {}, info: () => {}, warn: console.warn, error: () => {} },
   });

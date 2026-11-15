@@ -134,19 +134,19 @@
     "verifyEmail": {
       "subject": "Confirm your email address",
       "greeting": "Hi {name},",
-      "body": "please confirm your email address for Vibe Coding Exam with this link:",
+      "body": "please confirm your email address for Vibe Buddy with this link:",
       "ignore": "If you did not sign up, you can ignore this email."
     },
     "resetPassword": {
       "subject": "Reset your password",
       "greeting": "Hi {name},",
-      "body": "use this link to set a new password for Vibe Coding Exam:",
+      "body": "use this link to set a new password for Vibe Buddy:",
       "ignore": "If you did not request this, you can ignore this email."
     },
     "existingAccount": {
       "subject": "You already have an account",
       "greeting": "Hi {name},",
-      "body": "someone just tried to sign up for Vibe Coding Exam with this email address. You already have an account and can sign in here:",
+      "body": "someone just tried to sign up for Vibe Buddy with this email address. You already have an account and can sign in here:",
       "ignore": "If this wasn't you, you can ignore this email. Nothing has changed on your account. If you forgot your password, you can reset it on the sign-in page."
     }
   },

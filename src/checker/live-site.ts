@@ -78,7 +78,7 @@ function request(url: URL): Promise<Fetched> {
     const client = url.protocol === "https:" ? https : http;
     const outgoing = client.get(
       url,
-      { lookup: safeLookup, timeout: TIMEOUT_MS, headers: { "User-Agent": "vibe-coding-exam-checker" } },
+      { lookup: safeLookup, timeout: TIMEOUT_MS, headers: { "User-Agent": "vibe-buddy-checker" } },
       (response) => {
         const chunks: Buffer[] = [];
         let size = 0;

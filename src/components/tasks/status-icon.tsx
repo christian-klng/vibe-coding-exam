@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 
 const icons = {
   open: { Icon: CircleDashed, className: "text-muted-foreground" },
-  checking: { Icon: LoaderCircle, className: "animate-spin text-muted-foreground" },
-  passed: { Icon: CircleCheck, className: "text-emerald-600 dark:text-emerald-400" },
+  checking: { Icon: LoaderCircle, className: "animate-spin text-warning" },
+  passed: { Icon: CircleCheck, className: "text-success" },
   failed: { Icon: CircleX, className: "text-destructive" },
 } satisfies Record<TaskStatus, { Icon: typeof CircleDashed; className: string }>;
 

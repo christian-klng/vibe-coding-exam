@@ -14,7 +14,7 @@ export async function SiteHeader() {
     <header className="border-b">
       <div className="mx-auto flex h-14 w-full max-w-4xl items-center justify-between gap-4 px-4">
         <Link href="/" className="font-semibold tracking-tight">
-          Vibe Coding Exam
+          Vibe Buddy
         </Link>
         <nav className="flex items-center gap-2">
           <LanguageSwitcher />

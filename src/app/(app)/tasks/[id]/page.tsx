@@ -17,6 +17,8 @@ import { requireSession } from "@/lib/session";
 import { getCatalog, getTask, getTaskVersion } from "@/lib/tasks/catalog";
 import { getTaskProgress } from "@/lib/tasks/progress";
 
+const statusBadge = { open: "secondary", checking: "warning", passed: "success", failed: "destructive" } as const;
+
 export default async function TaskPage({ params, searchParams }: PageProps<"/tasks/[id]">) {
   const { id } = await params;
   const task = await getTask(id);
@@ -102,7 +104,7 @@ export default async function TaskPage({ params, searchParams }: PageProps<"/tas
         </p>
         <div className="flex items-start gap-3">
           <h1 className="flex-1 text-2xl font-semibold tracking-tight">{task.title[locale]}</h1>
-          <Badge variant={status === "passed" ? "default" : "secondary"} className="mt-1 gap-1">
+          <Badge variant={statusBadge[status]} className="mt-1 gap-1">
             <StatusIcon status={status} label="" className="size-3.5 text-current" />
             {t(`status.${status}`)}
           </Badge>

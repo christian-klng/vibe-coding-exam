@@ -1,4 +1,4 @@
-# Vibe Coding Exam
+# Vibe Buddy
 
 Lern-App für Studierende und Startup-Gründer:innen, die zum ersten Mal mit KI programmieren („Vibe Coding").
 Nutzer:innen bearbeiten kleine Aufgaben rund um Grundbegriffe der Software-Entwicklung (README, Git, Secrets, Tests …).
@@ -137,7 +137,7 @@ Damit Tool-Calling funktioniert, muss vLLM mit `--enable-auto-tool-choice` und d
 | `BETTER_AUTH_URL` | Öffentliche URL der App, z. B. `http://localhost:3000` |
 | `SMTP_HOST`, `SMTP_PORT` | SMTP-Server für E-Mails, z. B. `smtp.ionos.de` und `587` (lokal optional) |
 | `SMTP_USER`, `SMTP_PASSWORD` | Zugangsdaten des Postfachs |
-| `EMAIL_FROM` | Absender, muss die Adresse des Postfachs sein, z. B. `Vibe Coding Exam <kurs@deine-domain.de>` |
+| `EMAIL_FROM` | Absender, muss die Adresse des Postfachs sein, z. B. `Vibe Buddy <kurs@deine-domain.de>` |
 | `GITHUB_TOKEN` | Optional lokal, in Produktion nötig: GitHub-Token mit Lesezugriff auf öffentliche Repos (ohne Token nur 60 Anfragen pro Stunde) |
 | `SETTINGS_ENCRYPTION_KEY` | Verschlüsselt im Admin-Bereich gespeicherte Geheimnisse (`openssl rand -base64 32`). Web und Worker brauchen denselben Wert |
 | `LLM_BASE_URL` | Basis-URL des vLLM-Servers inkl. `/v1`. Die drei `LLM_*`-Variablen sind die Rückfallebene, Werte aus dem Admin-Bereich haben Vorrang |

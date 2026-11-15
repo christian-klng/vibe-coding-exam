@@ -40,8 +40,8 @@ export async function CheckPanel({ task, locale, locked, runs, queuePosition }: 
         </CardHeader>
         <CardContent className="space-y-4">
           {result && (
-            <Alert>
-              <AlertDescription className="space-y-2">
+            <Alert variant={result.status === "passed" ? "success" : "destructive"}>
+              <AlertDescription className="space-y-2 text-foreground/80!">
                 <p className="font-medium text-foreground">{tc(result.status === "passed" ? "passed" : "failed")}</p>
                 <p>{result.summary}</p>
                 {result.nextStep && result.status !== "passed" && (
@@ -63,7 +63,7 @@ export async function CheckPanel({ task, locale, locked, runs, queuePosition }: 
                     <Icon
                       role="img"
                       aria-label={tc(outcome.met ? "passed" : "failed")}
-                      className={`mt-0.5 size-4 shrink-0 ${outcome.met ? "text-green-600" : "text-destructive"}`}
+                      className={`mt-0.5 size-4 shrink-0 ${outcome.met ? "text-success" : "text-destructive"}`}
                     />
                   )}
                   <div className="min-w-0 space-y-1">
@@ -97,8 +97,8 @@ export async function CheckPanel({ task, locale, locked, runs, queuePosition }: 
           )}
 
           {latest?.status === "error" && (
-            <Alert>
-              <AlertDescription>{tc(latest.error === LLM_NOT_CONFIGURED ? "notConfigured" : "error")}</AlertDescription>
+            <Alert variant="warning">
+              <AlertDescription className="text-foreground/80">{tc(latest.error === LLM_NOT_CONFIGURED ? "notConfigured" : "error")}</AlertDescription>
             </Alert>
           )}
 
@@ -113,7 +113,7 @@ export async function CheckPanel({ task, locale, locked, runs, queuePosition }: 
             </Alert>
           ) : active ? (
             <div className="flex gap-2 text-sm text-muted-foreground" role="status">
-              <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin" aria-hidden />
+              <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-warning" aria-hidden />
               <p>
                 {latest.error
                   ? tc("delayed")

@@ -35,7 +35,7 @@ export function LlmTest() {
                   <Icon
                     role="img"
                     aria-label={t(step.ok ? "stepOk" : "stepFailed")}
-                    className={`mt-0.5 size-4 shrink-0 ${step.ok ? "text-green-600" : "text-destructive"}`}
+                    className={`mt-0.5 size-4 shrink-0 ${step.ok ? "text-success" : "text-destructive"}`}
                   />
                   <div className="min-w-0">
                     <p>{t(`steps.${step.name}`)}</p>

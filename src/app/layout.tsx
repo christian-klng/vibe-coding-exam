@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Metadata");
   return {
-    title: "Vibe Coding Exam",
+    title: "Vibe Buddy",
     description: t("description"),
   };
 }

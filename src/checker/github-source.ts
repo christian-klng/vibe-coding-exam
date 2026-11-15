@@ -68,7 +68,7 @@ export async function readTarball(archive: Readable, maxUnpackedBytes = MAX_UNPA
 async function downloadFiles(owner: string, name: string, sha: string) {
   const token = process.env.GITHUB_TOKEN;
   const response = await fetch(`https://api.github.com/repos/${owner}/${name}/tarball/${sha}`, {
-    headers: { "User-Agent": "vibe-coding-exam", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    headers: { "User-Agent": "vibe-buddy", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
   });
   if (!response.ok || !response.body) {
     throw new Error(`Downloading ${owner}/${name} failed with HTTP ${response.status}`);

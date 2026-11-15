@@ -1,4 +1,4 @@
-# Vibe Coding Exam – Architektur-Plan (Grundgerüst)
+# Vibe Buddy – Architektur-Plan (Grundgerüst)
 
 > Stand: 21.10.2026 · Status: Entwurf zur Abstimmung
 > Die konkreten Aufgaben werden in einem zweiten Schritt geplant (siehe Abschnitt 11).
@@ -254,7 +254,7 @@ BETTER_AUTH_URL       https://<domain>
 GITHUB_TOKEN          fein-granularer Token, nur Lesezugriff auf öffentliche Repos
 SMTP_HOST / SMTP_PORT SMTP-Server, z. B. smtp.ionos.de / 587
 SMTP_USER / SMTP_PASSWORD  Zugangsdaten des Postfachs
-EMAIL_FROM            Absender = Adresse des Postfachs, z. B. "Vibe Coding Exam <kurs@deine-domain.de>"
+EMAIL_FROM            Absender = Adresse des Postfachs, z. B. "Vibe Buddy <kurs@deine-domain.de>"
 LLM_BASE_URL          https://<eigener-server>/v1   (ab M4)
 LLM_MODEL             Name des Qwen-3.6-Modells, wie der Server ihn meldet
 LLM_API_KEY           Schlüssel, mit dem der eigene Server abgesichert ist

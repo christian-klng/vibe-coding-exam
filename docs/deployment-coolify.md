@@ -55,7 +55,7 @@ die Option *Build Variable* bei allen **aus** lassen.
 | `SMTP_PORT` | `587` |
 | `SMTP_USER` | vollständige E-Mail-Adresse des Postfachs |
 | `SMTP_PASSWORD` | Passwort des Postfachs |
-| `EMAIL_FROM` | z. B. `Vibe Coding Exam <kurs@deine-domain.de>` – muss die Adresse des Postfachs (oder ein Alias davon) sein |
+| `EMAIL_FROM` | z. B. `Vibe Buddy <kurs@deine-domain.de>` – muss die Adresse des Postfachs (oder ein Alias davon) sein |
 | `SETTINGS_ENCRYPTION_KEY` | Ergebnis von `openssl rand -base64 32`. Verschlüsselt den im Admin-Bereich gespeicherten API-Key. Nicht mehr ändern, sonst muss der Key neu eingetragen werden |
 | `ADMIN_EMAILS` | Deine Adresse, weitere kommagetrennt. Diese Personen sind Admins, sobald sie registriert sind (Abschnitt 6) |
 | `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` | Optional: Besser im Admin-Bereich eintragen (Abschnitt 6) |
