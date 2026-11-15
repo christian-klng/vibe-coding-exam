@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
@@ -25,8 +25,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Vibe Buddy",
     description: t("description"),
+    appleWebApp: { title: "Vibe Buddy", statusBarStyle: "default" },
   };
 }
+
+// Colours the browser and status bar like the page background.
+export const viewport: Viewport = { themeColor: "#faf6e9" };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
