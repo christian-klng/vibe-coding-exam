@@ -21,6 +21,10 @@ export default async function TasksPage() {
     getPrimaryRepository(session.user.id),
   ]);
   const done = tasks.filter((task) => progress.get(task.id) === "passed").length;
+  // The later modules only appear once every task of the first module (the GitHub repo) has passed.
+  const firstModule = modules[0];
+  const started = tasks.filter((task) => task.module === firstModule?.id).every((task) => progress.get(task.id) === "passed");
+  const visibleModules = started ? modules : modules.slice(0, 1);
 
   return (
     <div className="space-y-10">
@@ -41,7 +45,7 @@ export default async function TasksPage() {
 
       <RepoCard repo={repo} id="repo" />
 
-      {modules.map((taskModule) => {
+      {visibleModules.map((taskModule) => {
         const moduleTasks = tasks.filter((task) => task.module === taskModule.id);
         return (
           <section key={taskModule.id} aria-labelledby={`module-${taskModule.id}`} className="space-y-3">
@@ -82,6 +86,10 @@ export default async function TasksPage() {
           </section>
         );
       })}
+
+      {!started && modules.length > 1 && (
+        <p className="rounded-xl border border-dashed px-4 py-3 text-sm text-muted-foreground">{t("moreModules")}</p>
+      )}
     </div>
   );
 }

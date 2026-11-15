@@ -34,6 +34,7 @@
     "prerequisites": "Am besten vorher erledigen",
     "checkNow": "Jetzt prüfen",
     "locked": "Gesperrt – trage zuerst dein GitHub-Repo ein",
+    "moreModules": "Die weiteren Module erscheinen, sobald dein GitHub-Repository angelegt und geprüft ist.",
     "lockedLink": "Repo jetzt eintragen",
     "edit": "Bearbeiten",
     "olderVersionPassed": "Du hast diese Aufgabe mit Version {passed} bestanden. Inzwischen gibt es Version {current} mit überarbeiteten Inhalten; dein Ergebnis bleibt bestehen.",

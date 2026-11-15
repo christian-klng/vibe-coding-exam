@@ -34,6 +34,7 @@
     "prerequisites": "Best done first",
     "checkNow": "Check now",
     "locked": "Locked – enter your GitHub repo first",
+    "moreModules": "The other modules appear as soon as your GitHub repository is created and checked.",
     "lockedLink": "Enter your repo now",
     "edit": "Edit",
     "olderVersionPassed": "You passed this task with version {passed}. There is now version {current} with revised content; your result stands.",
