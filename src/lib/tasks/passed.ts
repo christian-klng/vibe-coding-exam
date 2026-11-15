@@ -1,6 +1,7 @@
-import { and, desc, eq, ilike, or, type SQL } from "drizzle-orm";
+import { and, count, desc, eq, ilike, inArray, or, type SQL } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { checkRuns, taskProgress, user } from "@/lib/db/schema";
+import { getCatalog } from "./catalog";
 
 export type PassedRow = {
   userId: string;
@@ -13,7 +14,21 @@ export type PassedRow = {
   repo: string | null;
 };
 
-export type PassedFilter = { taskId?: string; search?: string };
+/** `complete` keeps only people who passed every task of the current catalog. */
+export type PassedFilter = { taskId?: string; search?: string; complete?: boolean };
+
+/** Who passed every task the learners currently see (published, not archived). */
+export async function listCompletedUserIds(): Promise<string[]> {
+  const { tasks } = await getCatalog();
+  if (tasks.length === 0) return [];
+  const rows = await getDb()
+    .select({ userId: taskProgress.userId })
+    .from(taskProgress)
+    .where(and(eq(taskProgress.status, "passed"), inArray(taskProgress.taskId, tasks.map((task) => task.id))))
+    .groupBy(taskProgress.userId)
+    .having(eq(count(), tasks.length));
+  return rows.map((row) => row.userId);
+}
 
 /**
  * Who passed which task with which version. The commit comes from the passing check run;
@@ -26,6 +41,11 @@ export async function listPassed(filter: PassedFilter = {}): Promise<PassedRow[]
   if (filter.search) {
     const pattern = `%${filter.search.replace(/[\\%_]/g, "\\$&")}%`;
     conditions.push(or(ilike(user.email, pattern), ilike(user.name, pattern))!);
+  }
+  if (filter.complete) {
+    const userIds = await listCompletedUserIds();
+    if (userIds.length === 0) return [];
+    conditions.push(inArray(taskProgress.userId, userIds));
   }
 
   const [rows, runs] = await Promise.all([

@@ -17,14 +17,19 @@ export default async function AdminProgressPage({ searchParams }: PageProps<"/ad
   const format = await getFormatter();
   const localeValue = await getLocale();
   const locale = isLocale(localeValue) ? localeValue : "de";
-  const { task, q } = await searchParams;
+  const { task, q, complete: completeParam } = await searchParams;
   const taskId = typeof task === "string" ? task : "";
   const search = typeof q === "string" ? q.trim() : "";
+  const complete = completeParam === "1";
 
-  const [tasks, rows] = await Promise.all([listTasksForAdmin(), listPassed({ taskId: taskId || undefined, search: search || undefined })]);
+  const [tasks, rows] = await Promise.all([
+    listTasksForAdmin(),
+    listPassed({ taskId: taskId || undefined, search: search || undefined, complete }),
+  ]);
   const title = new Map(tasks.map((item) => [item.id, item.title[locale]]));
   const currentVersion = new Map(tasks.map((item) => [item.id, item.currentVersion]));
-  const csvParams = new URLSearchParams({ ...(taskId && { task: taskId }), ...(search && { q: search }) });
+  const csvParams = new URLSearchParams({ ...(taskId && { task: taskId }), ...(search && { q: search }), ...(complete && { complete: "1" }) });
+  const completeCount = new Set(rows.map((row) => row.userId)).size;
 
   return (
     <div className="space-y-4">
@@ -39,6 +44,10 @@ export default async function AdminProgressPage({ searchParams }: PageProps<"/ad
           ))}
         </select>
         <Input name="q" type="search" defaultValue={search} placeholder={t("search")} aria-label={t("search")} className="w-56" />
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" name="complete" value="1" defaultChecked={complete} className="size-4 accent-primary" />
+          {t("complete")}
+        </label>
         <Button type="submit" variant="outline">
           {t("filter")}
         </Button>
@@ -93,7 +102,10 @@ export default async function AdminProgressPage({ searchParams }: PageProps<"/ad
           </table>
         </div>
       )}
-      <p className="text-xs text-muted-foreground">{t("count", { count: rows.length })}</p>
+      <p className="text-xs text-muted-foreground">
+        {t("count", { count: rows.length })}
+        {complete && <> · {t("completeCount", { count: completeCount })}</>}
+      </p>
     </div>
   );
 }

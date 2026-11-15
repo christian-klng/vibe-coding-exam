@@ -40,7 +40,9 @@
     "olderVersionPassed": "You passed this task with version {passed}. There is now version {current} with revised content; your result stands.",
     "viewPassedVersion": "View the version you passed",
     "passedVersion": "Version {version} (passed)",
-    "backToCurrent": "Back to the current version"
+    "backToCurrent": "Back to the current version",
+    "completeTitle": "Done! You passed every task.",
+    "completeText": "All {total} tasks are done. If new tasks are added, they will show up in this list."
   },
   "Checks": {
     "pre": {
@@ -332,7 +334,9 @@
       "date": "Date",
       "commit": "Commit",
       "outdated": "(current {current})",
-      "count": "{count, plural, one {# entry} other {# entries}}"
+      "count": "{count, plural, one {# entry} other {# entries}}",
+      "complete": "Only people who passed every task",
+      "completeCount": "{count, plural, one {# person has} other {# people have}} passed every current task."
     }
   }
 }

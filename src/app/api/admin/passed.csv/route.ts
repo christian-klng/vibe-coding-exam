@@ -12,7 +12,11 @@ export async function GET(request: Request) {
   const locale = isLocale(localeValue) ? localeValue : "de";
   const [tasks, rows] = await Promise.all([
     listTasksForAdmin(),
-    listPassed({ taskId: params.get("task") || undefined, search: params.get("q")?.trim() || undefined }),
+    listPassed({
+      taskId: params.get("task") || undefined,
+      search: params.get("q")?.trim() || undefined,
+      complete: params.get("complete") === "1",
+    }),
   ]);
   const title = new Map(tasks.map((task) => [task.id, task.title[locale]]));
   const date = new Date().toISOString().slice(0, 10);

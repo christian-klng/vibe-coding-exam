@@ -40,7 +40,9 @@
     "olderVersionPassed": "Du hast diese Aufgabe mit Version {passed} bestanden. Inzwischen gibt es Version {current} mit überarbeiteten Inhalten; dein Ergebnis bleibt bestehen.",
     "viewPassedVersion": "Bestandene Fassung ansehen",
     "passedVersion": "Version {version} (bestanden)",
-    "backToCurrent": "Zur aktuellen Fassung"
+    "backToCurrent": "Zur aktuellen Fassung",
+    "completeTitle": "Geschafft! Du hast alle Aufgaben bestanden.",
+    "completeText": "Alle {total} Aufgaben sind erledigt. Kommen neue Aufgaben dazu, erscheinen sie hier in der Liste."
   },
   "Checks": {
     "pre": {
@@ -332,7 +334,9 @@
       "date": "Datum",
       "commit": "Commit",
       "outdated": "(aktuell {current})",
-      "count": "{count, plural, one {# Eintrag} other {# Einträge}}"
+      "count": "{count, plural, one {# Eintrag} other {# Einträge}}",
+      "complete": "Nur wer alle Aufgaben bestanden hat",
+      "completeCount": "{count, plural, one {# Person hat} other {# Personen haben}} alle aktuellen Aufgaben bestanden."
     }
   }
 }

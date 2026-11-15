@@ -1,4 +1,4 @@
-import { ChevronRight, Lock } from "lucide-react";
+import { ChevronRight, Lock, PartyPopper } from "lucide-react";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { RepoCard } from "@/components/repo/repo-card";
@@ -21,6 +21,7 @@ export default async function TasksPage() {
     getPrimaryRepository(session.user.id),
   ]);
   const done = tasks.filter((task) => progress.get(task.id) === "passed").length;
+  const complete = tasks.length > 0 && done === tasks.length;
   // The later modules only appear once every task of the first module (the GitHub repo) has passed.
   const firstModule = modules[0];
   const started = tasks.filter((task) => task.module === firstModule?.id).every((task) => progress.get(task.id) === "passed");
@@ -33,14 +34,29 @@ export default async function TasksPage() {
         <p className="text-muted-foreground">
           {t("welcome", { name: session.user.name })} {t("intro")}
         </p>
-        <div className="max-w-sm space-y-1.5">
-          <Progress
-            value={(done / tasks.length) * 100}
-            locale={locale} // same number formatting on server and client
-            aria-label={t("progress", { done, total: tasks.length })}
-          />
-          <p className="text-sm text-muted-foreground">{t("progress", { done, total: tasks.length })}</p>
-        </div>
+        {complete ? (
+          <section
+            aria-labelledby="tasks-complete"
+            className="flex items-start gap-3 rounded-xl border border-success/40 bg-success/15 px-4 py-3"
+          >
+            <PartyPopper className="mt-0.5 size-5 shrink-0 text-success" aria-hidden />
+            <div className="space-y-0.5">
+              <h2 id="tasks-complete" className="font-semibold">
+                {t("completeTitle")}
+              </h2>
+              <p className="text-sm text-muted-foreground">{t("completeText", { total: tasks.length })}</p>
+            </div>
+          </section>
+        ) : (
+          <div className="max-w-sm space-y-1.5">
+            <Progress
+              value={(done / tasks.length) * 100}
+              locale={locale} // same number formatting on server and client
+              aria-label={t("progress", { done, total: tasks.length })}
+            />
+            <p className="text-sm text-muted-foreground">{t("progress", { done, total: tasks.length })}</p>
+          </div>
+        )}
       </div>
 
       <RepoCard repo={repo} id="repo" />
