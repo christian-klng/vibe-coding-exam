@@ -4,8 +4,8 @@ module: pitfalls
 order: 1
 title: { de: "Was gehört nicht ins Repo? (.gitignore)", en: "What doesn't belong in the repo? (.gitignore)" }
 summary:
-  de: Schließe Abhängigkeiten, Build-Ordner, Secrets und persönliche Einstellungen aus deinem Repo aus.
-  en: Keep dependencies, build folders, secrets and personal settings out of your repo.
+  de: "Erstelle die Datei .gitignore im Hauptordner – node_modules und .env dürfen nicht im Repo liegen."
+  en: "Create the file .gitignore in the root folder – node_modules and .env must not be in the repo."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [github-repo]

@@ -4,8 +4,8 @@ module: decisions
 order: 5
 title: { de: Wähle deinen Tech-Stack bewusst, en: Choose your tech stack deliberately }
 summary:
-  de: Halte fest, mit welchen Technologien du baust – und warum.
-  en: Write down which technologies you build with – and why.
+  de: "Erstelle die Datei docs/tech-stack.md mit deinen Technologien und den Gründen dafür."
+  en: "Create the file docs/tech-stack.md with your technologies and the reasons for them."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [github-repo]

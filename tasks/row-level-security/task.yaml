@@ -4,8 +4,8 @@ module: pitfalls
 order: 3
 title: { de: Jeder sieht nur seine eigenen Daten, en: Everyone sees only their own data }
 summary:
-  de: Sorge mit Zugriffsregeln wie Row-Level Security dafür, dass Nutzer nicht an fremde Daten kommen.
-  en: Use access rules such as row-level security so users cannot reach other people's data.
+  de: "Lege Zugriffsregeln als Code im Repo ab, z. B. als SQL-Migration mit RLS-Policies."
+  en: "Add access rules as code to your repo, e.g. as an SQL migration with RLS policies."
 requiresRepo: true
 appTypes: [web, mobile, api]
 prerequisites: [data-model]

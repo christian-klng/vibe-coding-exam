@@ -4,8 +4,8 @@ module: build
 order: 2
 title: { de: Erst planen lassen, dann bauen, en: Plan first, then build }
 summary:
-  de: Lass die KI ein Feature planen, prüfe den Plan und setze ihn erst dann um.
-  en: Let the AI plan a feature, review the plan, and only then build it.
+  de: "Erstelle einen Plan für ein Feature als Datei im Ordner docs/plans, z. B. docs/plans/login.md."
+  en: "Create a plan for one feature as a file in the docs/plans folder, e.g. docs/plans/login.md."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [claude-md]

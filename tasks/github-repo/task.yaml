@@ -4,8 +4,8 @@ module: start
 order: 1
 title: { de: Dein erstes GitHub-Repository, en: Your first GitHub repository }
 summary:
-  de: Lege ein öffentliches Repository an und trage seine Adresse in der App ein.
-  en: Create a public repository and enter its address in the app.
+  de: "Lege ein öffentliches GitHub-Repository mit mindestens einem Commit an und trage seine Adresse hier ein."
+  en: "Create a public GitHub repository with at least one commit and enter its address here."
 requiresRepo: false
 showRepoForm: true
 appTypes: [all]

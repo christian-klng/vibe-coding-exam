@@ -4,8 +4,8 @@ module: launch
 order: 1
 title: { de: Deine App ist live, en: Your app is live }
 summary:
-  de: Veröffentliche deine App bei einem Hosting-Anbieter und verlinke sie in der README.
-  en: Deploy your app with a hosting provider and link it in the README.
+  de: "Trage die öffentliche Adresse deiner App in die README.md ein – sie muss erreichbar sein."
+  en: "Add your app's public address to README.md – it must be reachable."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [no-secrets]

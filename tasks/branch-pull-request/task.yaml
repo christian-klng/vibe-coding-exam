@@ -4,8 +4,8 @@ module: decisions
 order: 3
 title: { de: Arbeiten mit Branch und Pull Request, en: Working with a branch and pull request }
 summary:
-  de: Entwickle eine Änderung auf einem eigenen Branch und führe sie per Pull Request zusammen.
-  en: Build a change on its own branch and merge it via a pull request.
+  de: "Hier entsteht keine Datei: Dein Repo braucht einen gemergten Pull Request mit Beschreibung."
+  en: "No file to create here: your repo needs a merged pull request with a description."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [commit-messages]

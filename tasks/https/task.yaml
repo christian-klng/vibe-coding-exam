@@ -4,8 +4,8 @@ module: launch
 order: 2
 title: { de: Sicher mit HTTPS, en: Secure with HTTPS }
 summary:
-  de: Stell sicher, dass deine App nur verschlüsselt erreichbar ist.
-  en: Make sure your app is only reachable over an encrypted connection.
+  de: "Hier entsteht keine Datei: Die Live-Adresse in der README.md muss mit https:// beginnen und ein gültiges Zertifikat haben."
+  en: "No file to create here: the live address in README.md must start with https:// and have a valid certificate."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [go-live]

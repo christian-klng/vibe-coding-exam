@@ -4,8 +4,8 @@ module: planning
 order: 1
 title: { de: User Stories schreiben, en: Write user stories }
 summary:
-  de: Beschreibe fünf Dinge, die Nutzer mit deiner App erreichen wollen.
-  en: Describe five things users want to achieve with your app.
+  de: "Erstelle die Datei docs/user-stories.md mit mindestens fünf User Stories."
+  en: "Create the file docs/user-stories.md with at least five user stories."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [github-repo]

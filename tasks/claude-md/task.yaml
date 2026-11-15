@@ -4,8 +4,8 @@ module: build
 order: 1
 title: { de: "Gib der KI ein Gedächtnis: CLAUDE.md", en: "Give the AI a memory: CLAUDE.md" }
 summary:
-  de: Halte Regeln und Wissen über dein Projekt fest, die die KI bei jeder Sitzung lesen soll.
-  en: Record rules and knowledge about your project that the AI should read in every session.
+  de: "Erstelle die Datei CLAUDE.md (oder AGENTS.md) im Hauptordner deines Repos."
+  en: "Create the file CLAUDE.md (or AGENTS.md) in the root folder of your repo."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [tech-stack]

@@ -4,8 +4,8 @@ module: decisions
 order: 1
 title: { de: Schreibe eine README, en: Write a README }
 summary:
-  de: Erkläre neuen Besuchern deines Repos, was deine App ist und wie man sie startet.
-  en: Explain to new visitors of your repo what your app is and how to run it.
+  de: "Erstelle die Datei README.md im Hauptordner deines Repos."
+  en: "Create the file README.md in the root folder of your repo."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [github-repo]

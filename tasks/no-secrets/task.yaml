@@ -4,8 +4,8 @@ module: pitfalls
 order: 2
 title: { de: Keine API-Keys im Code, en: No API keys in the code }
 summary:
-  de: Lagere Passwörter und Keys in Umgebungsvariablen aus – und stell sicher, dass keine im Repo stehen.
-  en: Move passwords and keys into environment variables – and make sure none are in the repo.
+  de: "Erstelle die Datei .env.example mit Platzhaltern – im Repo und in der Historie dürfen keine echten Keys stehen."
+  en: "Create the file .env.example with placeholders – no real keys may be in the repo or its history."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [gitignore]

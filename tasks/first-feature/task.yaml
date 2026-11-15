@@ -4,8 +4,8 @@ module: build
 order: 3
 title: { de: Dein erstes Feature von Anfang bis Ende, en: Your first feature end to end }
 summary:
-  de: Setze eine User Story vollständig um – so, dass sie wirklich benutzbar ist.
-  en: Implement one user story completely – so that it is actually usable.
+  de: "Setze eine User Story im Code um und markiere sie in docs/user-stories.md als erledigt."
+  en: "Build one user story in code and mark it as done in docs/user-stories.md."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [plan-first]

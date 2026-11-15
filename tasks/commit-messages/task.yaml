@@ -4,8 +4,8 @@ module: decisions
 order: 2
 title: { de: Commits mit Aussage, en: Meaningful commits }
 summary:
-  de: Speichere deine Arbeit in kleinen Schritten mit verständlichen Beschreibungen.
-  en: Save your work in small steps with clear descriptions.
+  de: "Hier entsteht keine Datei: Dein Repo braucht mindestens fünf Commits mit verständlichen Messages."
+  en: "No file to create here: your repo needs at least five commits with clear messages."
 requiresRepo: true
 appTypes: [all]
 prerequisites: [github-repo]

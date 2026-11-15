@@ -4,8 +4,8 @@ module: launch
 order: 3
 title: { de: Secrets auch in Produktion schützen, en: Protect secrets in production too }
 summary:
-  de: Sorge dafür, dass geheime Keys nur auf dem Server bleiben und nie im Browser landen.
-  en: Make sure secret keys stay on the server and never reach the browser.
+  de: "Hier entsteht keine Datei: Im ausgelieferten JavaScript deiner Live-Seite dürfen keine geheimen Keys stehen."
+  en: "No file to create here: the JavaScript served by your live site must not contain secret keys."
 requiresRepo: true
 appTypes: [web, mobile]
 prerequisites: [go-live, no-secrets]

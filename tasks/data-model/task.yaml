@@ -4,8 +4,8 @@ module: decisions
 order: 4
 title: { de: Dein Datenmodell, en: Your data model }
 summary:
-  de: Lege fest, welche Daten deine App speichert und wie sie zusammenhängen.
-  en: Decide which data your app stores and how it is connected.
+  de: "Erstelle die Datei docs/datenmodell.md mit den Tabellen und Feldern deiner App."
+  en: "Create the file docs/data-model.md with your app's tables and fields."
 requiresRepo: true
 appTypes: [web, mobile, api]
 prerequisites: [user-stories]
